@@ -4,6 +4,7 @@ from MyUser.models import MyUser
 from .models import Student
 from Student.forms import StudentSignUpForm
 from django.contrib.auth import authenticate, login, logout
+from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment
 # Create your views here.
 
 
@@ -18,7 +19,22 @@ def student_signup(request):
                           student_id=form['student_id'], major=form['major']) # Shouldn't we set the value of account_confirmed as well?
 
         student.user = user
+
+        for process_bp in Process_Blueprint.objects.all():
+            process = Process(instance_of=process_bp, owner=student)
+            for task_bp in process_bp.task_blueprint_set:
+                if hasattr(task_bp, 'Employee_Task_Blueprint'):
+                    task = Employee_Task(process=process, instance_of=task_bp)
+                elif hasattr(task_bp, 'Form_Blueprint'):
+                    task = Form(process=process, instance_of=task_bp)
+                elif hasattr(task_bp, 'Payment_Blueprint'):
+                    task = Payment(process=process, instance_of=task_bp)
+
+                task.save()
+            process.save()
+
         student.save()
+
         return HttpResponseRedirect('/student/student_login')
     else:
         return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
