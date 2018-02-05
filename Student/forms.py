@@ -2,7 +2,7 @@ from django import forms
 
 from .models import Student
 from django.utils.translation import ugettext_lazy as _
-#from Administrator.models import ProviderProvideRequest
+
 
 
 class StudentSignUpForm(forms.ModelForm):
@@ -66,5 +66,4 @@ class StudentSignUpForm(forms.ModelForm):
             'student_id': _('شماره دانشجویی'),
             'major': _('رشته تحصیلی'),
         }
-
 
