@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if error_message %}
+        <pre class="alert-danger" style="width: 400px;font:10pt yekan; ">{{ error_message }}</pre>{% endif %}
+    <div class="panel panel-primary" align="right" style="width: 400px">
+        <div class="panel-heading">
+            <div class="panel-title">فرم ورود</div>
+        </div>
+        <div class="panel-body">
+            <form action="{% block action %} {% endblock %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username"> نام کاربری </label>
+                    <input style="text-align: right" type="text" class="form-control" name="username" id="username"
+                           aria-describedby="usernameHelp" placeholder="نام کاربری را وارد کنید">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword"> رمز عبور </label>
+                    <input style="text-align: right" type="password" class="form-control" name="password" id="password"
+                           placeholder="رمز عبور">
+                </div>
+
+                <button type="submit" class="btn btn-primary">ورود</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
