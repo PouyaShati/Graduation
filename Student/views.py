@@ -37,13 +37,14 @@ def student_signup(request):
 
         return HttpResponseRedirect('/student/student_login')
     else:
+        signup_form = StudentSignUpForm(label_suffix='')
         return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
 
 
 
 def student_login(request):
     if request.method == 'GET':
-        return render(request, 'login.html')
+        return render(request, 'Student/student_login.html')
     else:
         username = request.POST['username']
         password = request.POST['password']
@@ -52,7 +53,7 @@ def student_login(request):
             login(request, user)
             return HttpResponseRedirect('/student/student_panel')
         else:
-            return render(request, 'login.html', status=403)
+            return render(request, 'Student/student_login.html', status=403)
 
 
 def student_logout(request):
@@ -81,4 +82,4 @@ def provider_panel(request, action=''):
     '''
 
     return render(request, 'Student/student_panel.html',
-                  {'student': request.user.student}) # , 'providerProvideRequestForm': provider_provide_request_form })
+                  {'student': request.user.student}) # , 'providerProvideRequestForm': provider_provide_request_form })44
