@@ -7,6 +7,7 @@ from django.utils import timezone
 class Question_Set(models.Model):
     name = models.CharField(max_length=60, null=True)
 
+
 class Answer_Set (models.Model):
     name = models.CharField(max_length=60, null=True)
 

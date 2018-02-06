@@ -18,15 +18,19 @@ class CreateProcessBlueprintForm(forms.ModelForm):
             'name': _('نام پروسه'),
         }
 
+        # TODO add preprocesses
+
+        '''
         for process_bp in Process_Blueprint.objects.all():
             key = 'preprocess_' + process_bp.name
             fields.append(key)
             widgets[key] = forms.NullBooleanSelect(attrs={'class': 'form-control'})
             labels[key] = _('Requires ' + process_bp.name)
+        '''
 
 
-
-class CreateQuestionSet(forms.ModelForm): # TODO add the ability to enter multiple questions
+class CreateQuestionSetForm(forms.ModelForm): # TODO add the ability to enter multiple questions
+    '''
     class Meta:
         model = Question_Set
         fields = ['question1', 'question2', 'question3', 'question1_type', 'question2_type', 'question3_type']
@@ -60,4 +64,13 @@ class CreateQuestionSet(forms.ModelForm): # TODO add the ability to enter multip
             'question1_type': _('نوع سوال اول'),
             'question2_type': _('نوع سوال دوم'),
             'question3_type': _('نوع سوال سوم'),
+        }
+    '''
+    class Meta:
+        model = Question_Set
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'نام مجموعه سوال',
+                                           'style': 'text-align:right'})
         }
