@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Process_Blueprint, Question_Set, Question
+from .models import Process_Blueprint, Question_Set, Employee_Task_Blueprint, Question
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -73,4 +73,50 @@ class CreateQuestionSetForm(forms.ModelForm): # TODO add the ability to enter mu
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'نام مجموعه سوال',
                                            'style': 'text-align:right'})
+        }
+
+
+class CreateEmployeeTaskBlueprintForm(forms.ModelForm): # TODO add fields default_of and question_set that return instances of classes Process_Blueprint and Question_Set
+
+    class Meta:
+        model = Employee_Task_Blueprint
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                           'placeholder': 'نام وظیفه کارمند',
+                                           'style': 'text-align:right'})
+        }
+
+
+class AddQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['text', 'type']
+        widgets = {
+            'text': forms.TextInput(attrs={'class': 'form-control',
+                                                   'placeholder': 'متن سوال',
+                                                   'style': 'text-align:right'}),
+            'type': forms.Select(attrs={'class': 'form-control',
+                                              'placeholder': 'نوع سوال',
+                                              'style': 'text-align:right'}),
+
+        }
+        labels = {
+            'text': _('متن سوال'),
+            'type': _('نوع سوال'),
+        }
+
+
+class AddPreprocessForm(forms.ModelForm): # TODO field name should be of type Process_Blueprint
+    class Meta:
+        model = Question
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                                   'placeholder': 'نام پروسه',
+                                                   'style': 'text-align:right'}),
+
+        }
+        labels = {
+            'name': _('نام پروسه'),
         }
