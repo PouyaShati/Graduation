@@ -19,7 +19,7 @@ def student_signup(request):
                           student_id=form['student_id'], major=form['major']) # Shouldn't we set the value of account_confirmed as well?
 
         student.user = user
-
+        '''
         for process_bp in Process_Blueprint.objects.all():
             process = Process(instance_of=process_bp, owner=student)
             for task_bp in process_bp.task_blueprint_set:
@@ -32,12 +32,11 @@ def student_signup(request):
 
                 task.save()
             process.save()
-
+        '''
         student.save()
 
         return HttpResponseRedirect('/student/student_login')
     else:
-        signup_form = StudentSignUpForm(label_suffix='')
         return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
 
 
@@ -61,7 +60,7 @@ def student_logout(request):
     return HttpResponseRedirect('/')
 
 
-def provider_panel(request, action=''):
+def student_panel(request, action=''):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/Student/student_login')
     if request.user.user_type != MyUser.STUDENTUSER:

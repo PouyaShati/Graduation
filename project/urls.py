@@ -20,5 +20,5 @@ from django.conf.urls import url
 urlpatterns = [
     url(r'^student/', include('Student.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^process/', include('Process.urls')),
+    #url(r'^process/', include('Process.urls')),
 ]
