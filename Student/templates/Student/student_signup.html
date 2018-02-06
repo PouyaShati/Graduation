@@ -1,65 +1,57 @@
-{% load bootstrap %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-    <title>Title</title>
-</head>
-<body>
-<div class="container">
+{% extends 'base/base.html' %}
 
-    <div class="row" id="pwd-container">
-        <div class="col-md-4"></div>
 
-        <div class="col-md-4">
-            <section class="login-form">
-                <form class="form-horizontal" method="post">{% csrf_token %}
-                    <fieldset>
-                        <legend>{{ title }}</legend>
-                        {% for field in signup_form %}
-                            {% if field.errors %}
-                                <div class="control-group error">
-                                    <div class="form-actions">
-                                        <label class="control-label">{{ field.label }}</label>
-                                    </div>
-                                    <div class="controls">{{ field }}
-                                        <span class="help-inline">
+{% block content %}
+    <div class="container">
+
+        <div class="row" id="pwd-container">
+            <div class="col-md-4"></div>
+
+            <div class="col-md-4">
+                <section class="login-form">
+                    <form class="form-horizontal" method="post">{% csrf_token %}
+                        <fieldset>
+                            <legend>{{ title }}</legend>
+                            {% for field in signup_form %}
+                                {% if field.errors %}
+                                    <div class="control-group error">
+                                        <div class="form-actions">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            <span class="help-inline">
                             {% for error in  field.errors %}{{ error }}{% endfor %}
                         </span>
+                                        </div>
                                     </div>
-                                </div>
-                            {% else %}
-                                <div class="control-group">
-                                    <div align="center">
-                                        <label class="control-label">{{ field.label }}</label>
+                                {% else %}
+                                    <div class="control-group">
+                                        <div align="center">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help-inline">
+                                                    <small>
+                                                        {{ field.help_text }}
+                                                    </small>
+                                                </p>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                    <div class="controls">{{ field }}
-                                        {% if field.help_text %}
-                                            <p align="center" class="help-inline">
-                                                <small>
-                                                    <div class="form-actions">{{ field.help_text }}</div>
-                                                </small>
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </fieldset>
-                    <div align="center">
-                        <div class="form-actions">
-                            <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
+                                {% endif %}
+                            {% endfor %}
+                        </fieldset>
+                        <div align="center">
+                            <div class="form-actions">
+                                <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </section>
+                    </form>
+                </section>
+            </div>
         </div>
-    </div>
 
-</div>
-</div>
-</body>
-</html>
+    </div>
+    </div>
+{% endblock %}
