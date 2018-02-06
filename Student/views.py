@@ -81,4 +81,4 @@ def student_panel(request, action=''):
     '''
 
     return render(request, 'Student/student_panel.html',
-                  {'student': request.user.student}) # , 'providerProvideRequestForm': provider_provide_request_form })44
+                  {'student': request.user.Student}) # , 'providerProvideRequestForm': provider_provide_request_form })44

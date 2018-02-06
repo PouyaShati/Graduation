@@ -20,9 +20,9 @@ class MyUser(AbstractUser):
     default=STUDENTUSER)
 
 
-
+'''
 class BaseUser(models.Model): # Should we tweak the max_length parameters according to a common standard?
-    user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name='BaseUser')
 
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -34,3 +34,4 @@ class BaseUser(models.Model): # Should we tweak the max_length parameters accord
     # password = models.IntegerField(default=0) Do we need this?
     # logged_in = models.BooleanField(default=False) Do we need this?
     account_confirmed = models.BooleanField(default=False) # What's this field's purpose?
+'''
