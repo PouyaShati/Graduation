@@ -4,9 +4,7 @@ from .models import Student
 from django.utils.translation import ugettext_lazy as _
 
 
-
 class StudentSignUpForm(forms.ModelForm):
-
     username = forms.RegexField(regex=r'^\w+$',
                                 widget=forms.TextInput(attrs={'class': 'form-control',
                                                               'required': 'True',
@@ -39,23 +37,23 @@ class StudentSignUpForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'phone_number', 'student_id', 'major']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': 'نام',
-                                           'style': 'text-align:right'}),
+                                                 'placeholder': 'نام',
+                                                 'style': 'text-align:right'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control',
-                                                       'placeholder': 'نام خانوادگی',
-                                                       'style': 'text-align:right'}),
+                                                'placeholder': 'نام خانوادگی',
+                                                'style': 'text-align:right'}),
             'email': forms.TextInput(attrs={'class': 'form-control',
-                                                      'placeholder': 'ایمیل',
-                                                      'style': 'text-align:left'}),
+                                            'placeholder': 'ایمیل',
+                                            'style': 'text-align:right'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control',
-                                            'placeholder': 'شماره تماس',
-                                            'style': 'text-align:left'}),
+                                                   'placeholder': 'شماره تماس',
+                                                   'style': 'text-align:right'}),
             'student_id': forms.TextInput(attrs={'class': 'form-control',
-                                                   'placeholder': 'شماره دانشجویی',
-                                                   'style': 'text-align:left'}),
+                                                 'placeholder': 'شماره دانشجویی',
+                                                 'style': 'text-align:right'}),
             'major': forms.TextInput(attrs={'class': 'form-control',
-                                              'placeholder': 'رشته تحصیلی',
-                                              'style': 'text-align:right'}),
+                                            'placeholder': 'رشته تحصیلی',
+                                            'style': 'text-align:right'}),
 
         }
         labels = {
@@ -66,4 +64,3 @@ class StudentSignUpForm(forms.ModelForm):
             'student_id': _('شماره دانشجویی'),
             'major': _('رشته تحصیلی'),
         }
-
