@@ -25,7 +25,7 @@ class CreateProcessBlueprintForm(forms.ModelForm):
             labels[key] = _('Requires ' + process_bp.name)
 
 
-
+'''
 class CreateQuestionSet(forms.ModelForm): # TODO add the ability to enter multiple questions
     class Meta:
         model = Question_Set
@@ -61,3 +61,4 @@ class CreateQuestionSet(forms.ModelForm): # TODO add the ability to enter multip
             'question2_type': _('نوع سوال دوم'),
             'question3_type': _('نوع سوال سوم'),
         }
+'''

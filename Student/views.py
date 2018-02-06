@@ -4,7 +4,7 @@ from MyUser.models import MyUser
 from .models import Student
 from Student.forms import StudentSignUpForm
 from django.contrib.auth import authenticate, login, logout
-from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment
+#from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment
 # Create your views here.
 
 
@@ -48,7 +48,7 @@ def student_login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        if (user is not None) and (user.user_type == MyUser.PROVIDER):
+        if (user is not None) and (user.user_type == MyUser.STUDENTUSER):
             login(request, user)
             return HttpResponseRedirect('/student/student_panel')
         else:
