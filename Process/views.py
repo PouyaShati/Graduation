@@ -23,6 +23,7 @@ def create_process_blueprint(request):
     else:
         return render(request, 'Process/create_process_blueprint.html', {'create_process_blueprint_form': CreateProcessBlueprintForm(label_suffix='')})
     '''
+
 '''
 def create_question_set(request):
     if request.method == 'POST':

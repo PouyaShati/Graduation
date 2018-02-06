@@ -3,9 +3,10 @@ from Student.models import Student
 from django.utils import timezone
 # Create your models here.
 
-'''
+
 class Question_Set(models.Model):
     name = models.CharField(max_length=60, null=True)
+
 
 class Answer_Set (models.Model):
     name = models.CharField(max_length=60, null=True)
@@ -81,4 +82,3 @@ class Form(Student_Task):
 class Payment(Student_Task):
     paid = models.IntegerField(default=0)
     instance_of = models.ForeignKey(Payment_Blueprint, on_delete=models.CASCADE, null=True)
-'''
