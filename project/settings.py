@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrapform',
     'graduate.apps.GraduateConfig',
     'Student.apps.StudentConfig',
     'MyUser.apps.MyuserConfig',
