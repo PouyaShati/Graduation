@@ -9,7 +9,7 @@
 
             <div class="col-md-4">
                 <section class="login-form">
-                    <form class="form-horizontal" method="post">{% csrf_token %}
+                    <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>
                             {% for field in signup_form %}
@@ -45,6 +45,7 @@
                         <div align="center">
                             <div class="form-actions">
                                 <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
+                                {{ signup_form.non_field_errors }}
                             </div>
                         </div>
                     </form>
