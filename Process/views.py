@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set
+# from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set
 from django.http.response import HttpResponseRedirect, HttpResponse
-from Process.forms import CreateProcessBlueprintForm
+# from Process.forms import CreateProcessBlueprintForm
 # Create your views here.
 
 

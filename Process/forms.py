@@ -1,9 +1,9 @@
 from django import forms
 
-from .models import Process_Blueprint, Question_Set, Question
+# from .models import Process_Blueprint, Question_Set, Question
 from django.utils.translation import ugettext_lazy as _
 
-
+'''
 class CreateProcessBlueprintForm(forms.ModelForm):
     class Meta:
         model = Process_Blueprint
@@ -24,7 +24,7 @@ class CreateProcessBlueprintForm(forms.ModelForm):
             widgets[key] = forms.NullBooleanSelect(attrs={'class': 'form-control'})
             labels[key] = _('Requires ' + process_bp.name)
 
-
+'''
 '''
 class CreateQuestionSet(forms.ModelForm): # TODO add the ability to enter multiple questions
     class Meta:
