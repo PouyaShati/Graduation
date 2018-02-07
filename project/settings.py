@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     #'bootstrapform',
     #'graduate.apps.GraduateConfig',
     'Student.apps.StudentConfig',
+    'Employee.apps.EmployeeConfig',
     'MyUser.apps.MyuserConfig',
     'Process.apps.ProcessConfig',
     'django.contrib.admin',

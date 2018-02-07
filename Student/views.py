@@ -33,9 +33,8 @@ def student_signup(request):
                         task = Form(process=process, instance_of=task_bp)
                     elif hasattr(task_bp, 'Payment_Blueprint'):
                         task = Payment(process=process, instance_of=task_bp)
-
-                task.save()
-            process.save()
+                    task.save()
+                process.save()
 
             student.save()
             return HttpResponseRedirect('/student/student_login')
