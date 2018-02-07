@@ -31,9 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'base',
-    'bootstrapform',
-    'graduate.apps.GraduateConfig',
+    #'base',
+    #'bootstrapform',
+    #'graduate.apps.GraduateConfig',
     'Student.apps.StudentConfig',
     'MyUser.apps.MyuserConfig',
     'Process.apps.ProcessConfig',
@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.redirects',
+    'django.contrib.sites',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
