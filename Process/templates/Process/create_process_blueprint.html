@@ -5,11 +5,36 @@
     <title>Title</title>
 </head>
 <body>
+        <form  action="add_preprocess" method="get">
+		  {% csrf_token %}
+            <input type="submit" value="add preprocess" />
+		</form>
+        <form  action="add_question" method="get">
+            {% csrf_token %}
+		  <input type="submit" value="add question" />
+		</form>
+        <form  action="create_employee_task_blueprint" method="get">
+		    {% csrf_token %}
+            <input type="submit" value="create employee task blueprint" />
+		</form>
+        <form  action="create_form_blueprint." method="get">
+            {% csrf_token %}
+		  <input type="submit" value="create form blueprint" />
+		</form>
+        <form  action="create_payment_blueprint.html" method="get">
+            {% csrf_token %}
+		  <input type="submit" value="create payment blueprint" />
+		</form>
+        <form  action="create_question_set.html" method="get">
+            {% csrf_token %}
+		  <input type="submit" value="create question set" />
+		</form>
 		<form  method="post">
 		  {% csrf_token %}
 		  {{ form }}
 		  <input type="submit" value="create process" />
 		</form>
+
 
 </body>
 </html>

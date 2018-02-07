@@ -11,7 +11,7 @@ def create_process_blueprint(request, action): # TODO handle actions
     question_set = Question_Set()
     if action == 'add_preprocess':
         if request.method == 'POST':
-            form = AddPreprocessForm(request.POST)
+            form = request.POST
             preprocess = Process_Blueprint.objects.get(name=form['name'])
             process_bp.preprocesses.add(preprocess)
             return HttpResponseRedirect('/process/create_process_blueprint')
@@ -20,7 +20,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/add_preprocess.html', {'form': form})
     elif action == 'create_employee_task_blueprint':
         if request.method == 'POST':
-            form = CreateEmployeeTaskBlueprintForm(request.POST)
+            form = request.POST
             employee_task_bp = Employee_Task_Blueprint(name=form['name'], question_set=Question_Set.objects.get(name=form['question_set']), default_of=process_bp)
             employee_task_bp.save()
             return HttpResponseRedirect('/process/create_process_blueprint')
@@ -28,7 +28,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/create_employee_task_blueprint.html', {'create_employee_task_blueprint_form': CreateEmployeeTaskBlueprintForm(label_suffix='')})
     elif action == 'create_form_blueprint':
         if request.method == 'POST':
-            form = CreateFormBlueprintForm(request.POST)
+            form = request.POST
             form_bp = Form_Blueprint(name=form['name'], question_set=Question_Set.objects.get(name=form['question_set']), default_of=process_bp,
                                      is_timed=form['is_timed'], max_time=form['max_time'])
             form_bp.save()
@@ -37,7 +37,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/create_form_blueprint.html', {'create_form_blueprint_form': CreateFormBlueprintForm(label_suffix='')})
     elif action == 'create_payment_blueprint':
         if request.method == 'POST':
-            form = CreatePaymentBlueprintForm(request.POST)
+            form = request.POST
             payment_bp = Payment_Blueprint(name=form['name'], receiver=form['receiver'], default_amount=form['default_amount'], default_of=process_bp,
                                      is_timed=form['is_timed'], max_time=form['max_time'])
             payment_bp.save()
@@ -46,7 +46,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/create_payment_blueprint.html', {'create_payment_blueprint_form': CreatePaymentBlueprintForm(label_suffix='')})
     elif action == 'create_question_set':
         if request.method == 'POST':
-            form = CreateQuestionSetForm(request.POST)
+            form = request.POST
             question_set = Question_Set(name=form['name'])
             question_set.save()
             return HttpResponseRedirect('/process/create_process_blueprint')
@@ -55,7 +55,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/create_question_set.html', {'form': form})
     elif action == 'add_question':
         if request.method == 'POST':
-            form = AddQuestionForm(request.POST)
+            form = request.POST
             question = Question(text=form['text'], type=form['type'], belongs_to=question_set)
             question.save()
             return HttpResponseRedirect('/process/create_process_blueprint')
@@ -64,7 +64,8 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/add_question.html', {'form': form})
     else:
         if request.method == 'POST':
-            form = CreateProcessBlueprintForm(request.POST)
+            # form = CreateProcessBlueprintForm(request.POST)
+            form = request.POST
             process_bp.name = form['name']
             process_bp.save()
             return HttpResponseRedirect('/')
