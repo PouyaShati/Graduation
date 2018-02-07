@@ -13,8 +13,8 @@ from Process.models import Process_Blueprint, Process, Task, Employee_Task_Bluep
 def student_signup(request):
     if request.method == 'POST':
         form = StudentSignUpForm(request.POST)
-        if form.is_valid(): # TODO what does this is_valid() condition mean?
-            user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], # TODO what does this cleaned_data property mean?
+        if form.is_valid(): # TODO what does this is_valid() condition mean? if the form is invalid we cant be able to signup
+            user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], # TODO what does this cleaned_data property mean? it returns form data
                                               user_type=MyUser.STUDENTUSER)
             user.save()
             student = Student(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
@@ -40,9 +40,9 @@ def student_signup(request):
             return HttpResponseRedirect('/student/student_login')
         else:
 
-            return render(request, 'Student/student_signup.html', {'signup_form': form})
+            return render(request, 'student/student_signup.html', {'signup_form': form})
     else:
-        return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
+        return render(request, 'student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
 
 
 def student_login(request):
@@ -56,7 +56,7 @@ def student_login(request):
             login(request, user)
             return HttpResponseRedirect('/student/student_panel')
         else:
-            return render(request, 'Student/student_login.html', status=403)
+            return render(request, 'student/student_login.html', status=403)
 
 
 def student_logout(request):
@@ -66,9 +66,9 @@ def student_logout(request):
 
 def student_panel(request): #, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Student/student_login')
+        return HttpResponseRedirect('/student/student_login')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/Student/student_login')
+        return HttpResponseRedirect('/student/student_login')
 
     ''' do we need all this?
     if action == 'provider_provide_request':

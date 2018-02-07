@@ -19,7 +19,7 @@ class CreateProcessBlueprintForm(forms.ModelForm):
         }
 
 
-class AddPreprocessForm(forms.ModelForm):
+class AddPreprocessForm(forms.Form):
     name = forms.RegexField(regex=r'^\w+$',
                                 widget=forms.TextInput(attrs={'class': 'form-control',
                                                               'required': 'True',
@@ -31,7 +31,6 @@ class AddPreprocessForm(forms.ModelForm):
                                 error_messages={
                                     'invalid': _("This value must contain only letters, numbers and underscores.")})
 
-
 class CreateEmployeeTaskBlueprintForm(forms.ModelForm):
     class Meta:
         model = Employee_Task_Blueprint
@@ -40,7 +39,7 @@ class CreateEmployeeTaskBlueprintForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'نام وظیفه کارمند',
                                            'style': 'text-align:right'}),
-            'question_set': forms.TextInput(attrs={'class': 'form-control',
+            'question_set':  forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'مجموعه سوال',
                                            'style': 'text-align:right'})
         }
