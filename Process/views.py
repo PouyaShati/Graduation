@@ -17,7 +17,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return HttpResponseRedirect('/process/create_process_blueprint')
         else:
             form = AddPreprocessForm(label_suffix='')
-            return render(request, 'Process/create_process_blueprint.html', {'form': form})
+            return render(request, 'Process/add_preprocess.html', {'form': form})
     elif action == 'create_employee_task_blueprint':
         if request.method == 'POST':
             form = request.POST
@@ -61,7 +61,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return HttpResponseRedirect('/process/create_process_blueprint')
         else:
             form = AddQuestionForm(label_suffix='')
-            return render(request, 'Process/create_process_blueprint.html', {'form': form})
+            return render(request, 'Process/add_question.html', {'form': form})
     else:
         if request.method == 'POST':
             form = request.POST

@@ -18,3 +18,13 @@ class Employee(models.Model):
     # password = models.IntegerField(default=0) Do we need this?
     # logged_in = models.BooleanField(default=False) Do we need this?
     account_confirmed = models.BooleanField(default=False) # What's this field's purpose?
+    works_in = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
+
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=30, default='')
+    department_id = models.IntegerField()
+    manager = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
+
+

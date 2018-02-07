@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Employee
+from .models import Employee, Department
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -95,3 +95,67 @@ class EmployeeSignUpForm(forms.ModelForm):
             raise forms.ValidationError('رمزعبور یکسان نیست')
         return cleaned_data
 
+
+
+
+class AddDepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ['name', 'department_id']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'نام پروسه',
+                                                'style': 'text-align:right'}),
+            'department_id': forms.NumberInput(attrs={'class': 'form-control',
+                                           #'placeholder': 'نام پروسه',
+                                           #'style': 'text-align:right'
+                                                      })
+        }
+
+        labels = {
+            'name': _('نام پروسه'),
+            'department_id': _('کد شرکت'),
+        }
+
+
+
+class EmployForm(forms.ModelForm):
+    employee_id = forms.RegexField(regex=r'^\d+$',
+                                widget=forms.TextInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'شماره کارمندی',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_("شماره کارمندی"),
+                                error_messages={
+                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                                    'required': _('لطفا شماره کارمندی را وارد کنید')})
+
+
+class FireForm(forms.ModelForm):
+    employee_id = forms.RegexField(regex=r'^\d+$',
+                                widget=forms.TextInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'شماره کارمندی',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_("شماره کارمندی"),
+                                error_messages={
+                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                                    'required': _('لطفا شماره کارمندی را وارد کنید')})
+
+
+class SetManagerForm(forms.ModelForm):
+    employee_id = forms.RegexField(regex=r'^\d+$',
+                                widget=forms.TextInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'شماره کارمندی',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_("شماره کارمندی"),
+                                error_messages={
+                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                                    'required': _('لطفا شماره کارمندی را وارد کنید')})
