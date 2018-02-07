@@ -4,23 +4,28 @@ from MyUser.models import MyUser
 from .models import Student
 from Student.forms import StudentSignUpForm
 from django.contrib.auth import authenticate, login, logout
-#from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment
+
+
+# from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment
 # Create your views here.
 
 
 def student_signup(request):
     if request.method == 'POST':
-        form = request.POST
-        user = MyUser.objects.create_user(username=form['username'], password=form['password1'], # why "password1" and not just "password" ?
-                                        user_type=MyUser.STUDENTUSER)
-        user.save()
-        student = Student(first_name=form['first_name'], last_name=form['last_name'],
-                          email=form['email'], phone_number=form['phone_number'],
-                          student_id=form['student_id'], major=form['major']) # Shouldn't we set the value of account_confirmed as well?
+        form = StudentSignUpForm(request.POST)
+        if form.is_valid():
+            user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'],
+                                              # why "password1" and not just "password" ?
+                                              user_type=MyUser.STUDENTUSER)
+            user.save()
+            student = Student(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
+                              email=form.cleaned_data['email'], phone_number=form.cleaned_data['phone_number'],
+                              student_id=form.cleaned_data['student_id'],
+                              major=form.cleaned_data['major'])  # Shouldn't we set the value of account_confirmed as well?
 
-        student.user = user
-        '''
-        for process_bp in Process_Blueprint.objects.all():
+            student.user = user
+            '''
+            for process_bp in Process_Blueprint.objects.all():
             process = Process(instance_of=process_bp, owner=student)
             for task_bp in process_bp.task_blueprint_set:
                 if hasattr(task_bp, 'Employee_Task_Blueprint'):
@@ -32,13 +37,14 @@ def student_signup(request):
 
                 task.save()
             process.save()
-        '''
-        student.save()
+            '''
+            student.save()
+            return HttpResponseRedirect('/student/student_login')
+        else:
 
-        return HttpResponseRedirect('/student/student_login')
+            return render(request, 'Student/student_signup.html', {'signup_form': form})
     else:
         return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
-
 
 
 def student_login(request):
@@ -81,4 +87,5 @@ def student_panel(request, action=''):
     '''
 
     return render(request, 'Student/student_panel.html',
-                  {'student': request.user.Student}) # , 'providerProvideRequestForm': provider_provide_request_form })44
+                  {
+                      'student': request.user.Student})  # , 'providerProvideRequestForm': provider_provide_request_form })44
