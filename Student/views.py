@@ -37,12 +37,12 @@ def student_signup(request):
                     task.save()
                 process.save()
 
-            return HttpResponseRedirect('/student/student_login')
+            return HttpResponseRedirect('/student/login')
         else:
 
-            return render(request, 'student/student_signup.html', {'signup_form': form})
+            return render(request, 'Student/student_signup.html', {'signup_form': form})
     else:
-        return render(request, 'student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
+        return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
 
 
 def student_login(request):
@@ -54,9 +54,10 @@ def student_login(request):
         user = authenticate(username=username, password=password)
         if (user is not None) and (user.user_type == MyUser.STUDENTUSER):
             login(request, user)
-            return HttpResponseRedirect('/student/student_panel')
+            return HttpResponseRedirect('/student/panel')
         else:
-            return render(request, 'student/student_login.html', status=403)
+            message = 'نام کاربری یا رمز عبور اشتباه است'
+            return render(request, 'Student/student_login.html', {'message': message},status=403)
 
 
 def student_logout(request):
@@ -66,9 +67,9 @@ def student_logout(request):
 
 def student_panel(request): #, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/student/student_login')
+        return HttpResponseRedirect('/student/login')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/student/student_login')
+        return HttpResponseRedirect('/student/login')
 
     ''' do we need all this?
     if action == 'provider_provide_request':
@@ -91,9 +92,9 @@ def student_panel(request): #, action):
 '''
 def fill_form(request, process_bp_name, form_bp_name):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Student/student_login')
+        return HttpResponseRedirect('/student/login')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/Student/student_login')
+        return HttpResponseRedirect('/student/login')
 
     if request.method == 'POST':
         form = StudentFillFormForm(request.POST)
@@ -121,7 +122,7 @@ def fill_form(request, process_bp_name, form_bp_name):
             process.save()
 
             student.save()
-            return HttpResponseRedirect('/student/student_login')
+            return HttpResponseRedirect('/student/login')
         else:
 
             return render(request, 'Student/student_signup.html', {'signup_form': form})
@@ -131,9 +132,9 @@ def fill_form(request, process_bp_name, form_bp_name):
 
 def perform_payment(request, process_bp_name, payment_bp_name):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Student/student_login')
+        return HttpResponseRedirect('/student/login')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/Student/student_login')
+        return HttpResponseRedirect('/student/login')
 
     if request.method == 'POST':
         form = StudentPerformPaymentForm(request.POST)
@@ -148,7 +149,7 @@ def perform_payment(request, process_bp_name, payment_bp_name):
             student_payment.paid = student_payment.paid + form['paid']
 
             student_payment.save()
-            return HttpResponseRedirect('/student/student_perform_payment')
+            return HttpResponseRedirect('/student/perform_payment')
         else:
 
             return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})

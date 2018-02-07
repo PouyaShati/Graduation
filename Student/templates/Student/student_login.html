@@ -12,6 +12,7 @@
                     <div class="panel-body">
                         <form action="{% block action %} {% endblock %}" method="post">
                             {% csrf_token %}
+                            {{ message }}  {# invalid username or password error #}
                             <div class="form-group">
                                 <label for="username"> نام کاربری </label>
                                 <input style="text-align: right" type="text" class="form-control" name="username" id="username"
