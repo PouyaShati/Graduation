@@ -50,7 +50,11 @@
                         <div align="center">
                             <div class="form-actions">
                                 <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
-                                {{ signup_form.non_field_errors }} {# passwords dont match #}
+                                <ul style="list-style-type:none">
+                                    {% for error in signup_form.non_field_errors %} {# passwords dont match #}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                         </div>
                     </form>
