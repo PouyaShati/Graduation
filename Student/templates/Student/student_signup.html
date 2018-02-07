@@ -15,12 +15,17 @@
                             {% for field in signup_form %}
                                 {% if field.errors %}
                                     <div class="control-group error">
-                                        <div class="form-actions">
+                                        <div align="center" class="form-actions">
                                             <label class="control-label">{{ field.label }}</label>
                                         </div>
                                         <div class="controls">{{ field }}
                                             <span class="help-inline">
-                            {% for error in  field.errors %}{{ error }}{% endfor %}
+                            {% for error in  field.errors %}
+                                <div align="center">
+                                <font color="red">
+                                    {{ error }}
+                                </font>
+                                </div> {% endfor %}
                         </span>
                                         </div>
                                     </div>
