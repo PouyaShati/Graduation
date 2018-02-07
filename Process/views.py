@@ -7,7 +7,7 @@ from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm
 
 
 def create_process_blueprint(request, action): # TODO handle actions
-    process_bp = Process_Blueprint()
+    process_bp = Process_Blueprint() #TODO every time this page gets reloaded, a new process_bp is created. is that logical?!
     question_set = Question_Set()
     if action == 'add_preprocess':
         if request.method == 'POST':
