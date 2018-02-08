@@ -62,7 +62,7 @@ def student_login(request):
 
 def student_logout(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/student/login')
 
 
 def student_panel(request): #, action):
