@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'^login/$', views.student_login, name='student_login'),
     url(r'^logout/$', views.student_logout, name='student_logout'),
     url(r'^panel/$', views.student_panel, name='student_panel'),
-    url(r'^perform_payment/(?P<process_bp_name>\w*/?)/(?P<payment_bp_name>\w*/?)$', views.perform_payment, name='perform payment'),
+    url(r'^perform_task/(?P<task_id>\d*/?)$', views.perform_task, name='perform task'),
 ]

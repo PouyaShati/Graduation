@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponseRedirect
 from MyUser.models import MyUser
 from .models import Student
-from Student.forms import StudentSignUpForm, StudentPerformPaymentForm
+from Student.forms import StudentSignUpForm, StudentPerformPaymentForm, StudentFillFormForm
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -130,28 +130,49 @@ def fill_form(request, process_bp_name, form_bp_name):
         return render(request, 'Student/student_signup.html', {'signup_form': StudentSignUpForm(label_suffix='')})
 '''
 
-def perform_payment(request, process_bp_name, payment_bp_name):
+def perform_task(request, task_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/student/login')
     if request.user.user_type != MyUser.STUDENTUSER:
         return HttpResponseRedirect('/student/login')
+    if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
+        return HttpResponseRedirect('/')
 
-    if request.method == 'POST':
-        form = StudentPerformPaymentForm(request.POST)
-        if form.is_valid(): # TODO what does this is_valid() condition mean?
+    if hasattr(Task.objects.get(task_id=task_id), 'Form'):
+        if request.method == 'POST':
+            form = StudentPerformPaymentForm(request.POST)
+            if form.is_valid(): # TODO what does this is_valid() condition mean?
 
-            process_bp = Process_Blueprint.objects.get(name=process_bp_name)
-            payment_bp = Payment_Blueprint.objects.get(name=payment_bp_name, default_of=process_bp)
+                #process_bp = Process_Blueprint.objects.get(name=process_bp_name)
+                #payment_bp = Payment_Blueprint.objects.get(name=payment_bp_name, default_of=process_bp)
 
-            process = Process.objects.get(owner=request.user.student, instance_of=process_bp)
-            student_payment = Payment.objects.get(instance_of=payment_bp, process=process)
+                #process = Process.objects.get(owner=request.user.student, instance_of=process_bp)
+                #student_payment = Payment.objects.get(instance_of=payment_bp, process=process)
 
-            student_payment.paid = student_payment.paid + form['paid']
+                student_payment = Payment.objects.get(task_id=task_id)
 
-            student_payment.save()
-            return HttpResponseRedirect('/student/perform_payment')
+                student_payment.paid = student_payment.paid + form['paid']
+
+                student_payment.save()
+                return HttpResponseRedirect('/student/perform_task')
+            else:
+                return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})
         else:
+            return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': StudentPerformPaymentForm(label_suffix='')})
 
-            return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})
-    else:
-        return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': StudentSignUpForm(label_suffix='')})
+    elif hasattr(Task.objects.get(task_id=task_id), 'Payment'):
+        if request.method == 'POST':
+            form = StudentFillFormForm(request.POST)
+            if form.is_valid():  # TODO what does this is_valid() condition mean?
+
+                student_form = Form.objects.get(task_id=task_id)
+
+                #student_payment.paid = student_payment.paid + form['paid'] # TODO find a way to retrieve a list of answers from a form
+
+                student_form.save()
+                return HttpResponseRedirect('/student/perform_task')
+            else:
+                return render(request, 'Student/student_fill_form.html', {'fill_form_form': form})
+        else:
+            return render(request, 'Student/student_fill_form.html',
+                          {'fill_form_form': StudentFillFormForm(label_suffix='')})

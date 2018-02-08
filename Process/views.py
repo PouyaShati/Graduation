@@ -11,7 +11,7 @@ def create_process_blueprint(request, action): # TODO handle actions
         if request.method == 'POST':
             form = request.POST
             preprocess = Process_Blueprint.objects.get(name=form['name'])
-            request.session.get('preprocesses').append(preprocess)
+            request.session['preprocesses'].append(preprocess)
             #process_bp.preprocesses.add(preprocess)
             return HttpResponseRedirect('/process/create_process_blueprint')
         else:

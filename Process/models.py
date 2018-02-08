@@ -67,6 +67,7 @@ class Process(models.Model):
 class Task(models.Model):
     done = models.BooleanField(default=False)
     process = models.ForeignKey(Process, on_delete=models.CASCADE, null=True)
+    task_id = models.AutoField(primary_key=True)
 
 class Student_Task(Task):
     start_time = models.DateTimeField(default=timezone.ZERO)

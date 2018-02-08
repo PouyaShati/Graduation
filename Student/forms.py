@@ -114,3 +114,17 @@ class StudentPerformPaymentForm(forms.ModelForm):
                                 label=_("paid"),
                                 #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
                                 )
+
+
+class StudentFillFormForm(forms.ModelForm):
+    paid = forms.IntegerField (#regex=r'^\w+$',
+                                widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              #'placeholder': 'preprocess name',
+                                                              #'style': 'text-align:right'
+                                                                }
+                                                       ),
+                                label=_("paid"),
+                                #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
+                                )
