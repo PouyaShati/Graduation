@@ -159,3 +159,43 @@ class SetManagerForm(forms.ModelForm):
                                 error_messages={
                                     'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
                                     'required': _('لطفا شماره کارمندی را وارد کنید')})
+
+
+class EmployeePerformTaskForm(forms.ModelForm): # TODO change it in order to be able to retrieve all the answers
+    paid = forms.IntegerField (#regex=r'^\w+$',
+                                widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              #'placeholder': 'preprocess name',
+                                                              #'style': 'text-align:right'
+                                                                }
+                                                       ),
+                                label=_("paid"),
+                                #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
+                                )
+
+
+
+class AddTaskForm(forms.ModelForm):
+    process_bp = forms.RegexField(regex=r'^\d+$',
+                                widget=forms.TextInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'نام پروسه',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_("نام پروسه"),
+                                error_messages={
+                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                                    'required': _('لطفا نام پروسه را وارد کنید')})
+    student_id = forms.IntegerField (#regex=r'^\w+$',
+                                widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              #'placeholder': 'preprocess name',
+                                                              #'style': 'text-align:right'
+                                                                }
+                                                       ),
+                                label=_("student_id"),
+                                #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
+                                )

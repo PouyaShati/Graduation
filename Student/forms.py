@@ -116,7 +116,7 @@ class StudentPerformPaymentForm(forms.ModelForm):
                                 )
 
 
-class StudentFillFormForm(forms.ModelForm):
+class StudentFillFormForm(forms.ModelForm): # TODO change it in order to be able to retrieve all the answers
     paid = forms.IntegerField (#regex=r'^\w+$',
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',

@@ -3,7 +3,10 @@ from django.http.response import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from MyUser.models import MyUser
 from .models import Employee, Department
-from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm
+from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm, EmployeePerformTaskForm, AddTaskForm
+from Process.models import Task, Employee_Task, Employee_Task_Blueprint, Form_Blueprint
+from Process.models import Payment_Blueprint, Form, Payment, Task_Blueprint, Process_Blueprint, Process
+from Student.models import Student
 
 # Create your views here.
 def employee_signup(request):
@@ -109,3 +112,58 @@ def department_panel(request, department_id, action):
             return HttpResponseRedirect('/')
         else:
             return render(request, 'Process/department_panel.html', {'department': department})
+
+
+
+
+def perform_task(request, task_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/student/login')
+    if request.user.user_type != MyUser.STUDENTUSER:
+        return HttpResponseRedirect('/student/login')
+    if hasattr(Task.objects.get(task_id=task_id), 'Form'):
+        return HttpResponseRedirect('/')
+    if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
+        return HttpResponseRedirect('/')
+
+    if hasattr(Task.objects.get(task_id=task_id), 'Form'):
+        if request.method == 'POST':
+            form = EmployeePerformTaskForm(request.POST)
+            if form.is_valid(): # TODO what does this is_valid() condition mean?
+
+                employee_task = Employee_Task.objects.get(task_id=task_id)
+
+                # employee_task.paid = employee_task.paid + form['paid'] # TODO find a way to retrieve all the answers from form
+
+                employee_task.save()
+                return HttpResponseRedirect('/employee/perform_task')
+            else:
+                return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form': form})
+        else:
+            return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form': EmployeePerformTaskForm(label_suffix='')})
+
+
+
+
+def add_task(request, task_bp_name):
+    if request.method == 'GET':
+        return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})
+    else:
+        form = AddTaskForm(request.POST)
+        task_bp = Task_Blueprint.objects.get(name=task_bp_name)
+        process_bp = Process_Blueprint.objects.get(name=form['process_bp'])
+        student = Student.objects.get(student_id=form['student_id'])
+        process = Process.objects.get(instance_of=process_bp, owner=student)
+
+        if hasattr(task_bp, 'Employee_Task_Blueprint'):
+            child_bp = Employee_Task_Blueprint.objects.get(name=task_bp_name)
+            task = Employee_Task(instance_of=child_bp, process=process)
+        elif hasattr(task_bp, 'Form_Blueprint'):
+            child_bp = Form_Blueprint.objects.get(name=task_bp_name)
+            task = Form(instance_of=child_bp, process=process)
+        elif hasattr(task_bp, 'Payment_Blueprint'):
+            child_bp = Payment_Blueprint.objects.get(name=task_bp_name)
+            task = Payment(instance_of=child_bp, process=process)
+
+        task.save()
+        return HttpResponseRedirect('/add_task/'+ task_bp_name)

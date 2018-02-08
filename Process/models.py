@@ -1,5 +1,6 @@
 from django.db import models
 from Student.models import Student
+from Employee.models import Department
 from django.utils import timezone
 # Create your models here.
 
@@ -35,6 +36,7 @@ class Process_Blueprint(models.Model):
     name = models.CharField(max_length=60)
     # TODO add department
     preprocesses = models.ManyToManyField('self')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     # TODO Add processes that get invalidate after failing to validate this one
 
 class Task_Blueprint(models.Model):

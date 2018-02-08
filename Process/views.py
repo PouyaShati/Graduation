@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint
+from Employee.models import Department
 from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
 from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm
@@ -80,9 +81,9 @@ def create_process_blueprint(request, action): # TODO handle actions
             form = CreateProcessBlueprintForm(label_suffix='')
             return render(request, 'Process/create_process_blueprint.html', {'form': form})
         else:
-            # form = CreateProcessBlueprintForm(request.POST)
             form = request.POST
-            process_bp = Process_Blueprint(name=form['name'])
+            department = Department.objects.all(name=form['department'])
+            process_bp = Process_Blueprint(name=form['name'], department=department)
             for preprocess in request.session.get('preprocesses'):
                 process_bp.preprocesses.add(preprocess)
             process_bp.save()
