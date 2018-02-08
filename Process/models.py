@@ -2,6 +2,8 @@ from django.db import models
 from Student.models import Student
 from Employee.models import Department
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
+
 # Create your models here.
 
 
@@ -45,7 +47,7 @@ class Task_Blueprint(models.Model):
 
 class Student_Task_Blueprint(Task_Blueprint):
     is_timed = models.BooleanField(default=False)
-    max_time = models.DateTimeField(default=timezone.ZERO)
+    max_time = models.DateTimeField(default=timezone.ZERO, blank=True)
 
 class Employee_Task_Blueprint(Task_Blueprint):
     question_set = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)

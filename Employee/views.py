@@ -82,6 +82,7 @@ def add_department(request):
             return render(request, 'Employee/add_department.html', {'add_department_form': form})
 
 
+
 def department_panel(request, department_id, action):
     try:
         department = Department.objects.get(department_id=department_id)

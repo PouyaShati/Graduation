@@ -3,6 +3,8 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 from MyUser.models import MyUser
+from django.utils.translation import ugettext_lazy as _
+
 # Create your models here.
 
 class Employee(models.Model):
@@ -23,7 +25,7 @@ class Employee(models.Model):
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=30, default='', unique=True, error_messages={'unique': 'نام دپارتمان تکراری است'})
+    name = models.CharField(max_length=30, default='', unique=True, error_messages={'unique': _('نام دپارتمان تکراری است')})
     department_id = models.IntegerField()
     manager = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
 
