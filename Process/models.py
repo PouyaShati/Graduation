@@ -19,11 +19,11 @@ class Question(models.Model):
         ('Real','Real'),
         ('Document','Document'),
         ('Multiple Choice','Multiple Choice'),])
-    belongs_to = models.ForeignKey(Question_Set, on_delete=models.CASCADE, default='')
+    belongs_to = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
 
 class Answer(models.Model):
     text = models.CharField(max_length=1000)
-    belongs_to = models.ForeignKey(Answer_Set, on_delete=models.CASCADE, default='')
+    belongs_to = models.ForeignKey(Answer_Set, on_delete=models.CASCADE, null=True)
 
 
 
