@@ -3,22 +3,28 @@ from django.http.response import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from MyUser.models import MyUser
 from .models import Employee, Department
-from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm, EmployeePerformTaskForm, AddTaskForm
+from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm, EmployeePerformTaskForm, \
+    AddTaskForm
 from Process.models import Task, Employee_Task, Employee_Task_Blueprint, Form_Blueprint
 from Process.models import Payment_Blueprint, Form, Payment, Task_Blueprint, Process_Blueprint, Process
 from Student.models import Student
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # Create your views here.
 def employee_signup(request):
     if request.method == 'POST':
         form = EmployeeSignUpForm(request.POST)
-        if form.is_valid(): # TODO what does this is_valid() condition mean?
-            user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], # TODO what does this cleaned_data property mean?
+        if form.is_valid():  # TODO what does this is_valid() condition mean?
+            user = MyUser.objects.create_user(username=form.cleaned_data['username'],
+                                              password=form.cleaned_data['password1'],
+                                              # TODO what does this cleaned_data property mean?
                                               user_type=MyUser.EMPLOYEEUSER)
             user.save()
             employee = Employee(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
-                              email=form.cleaned_data['email'], phone_number=form.cleaned_data['phone_number'],
-                              employee_id=form.cleaned_data['employee_id'])  # Shouldn't we set the value of account_confirmed as well?
+                                email=form.cleaned_data['email'], phone_number=form.cleaned_data['phone_number'],
+                                employee_id=form.cleaned_data[
+                                    'employee_id'])  # Shouldn't we set the value of account_confirmed as well?
 
             employee.user = user
 
@@ -43,7 +49,7 @@ def employee_login(request):
             return HttpResponseRedirect('/employee/panel')
         else:
             message = 'نام کاربری یا رمز عبور اشتباه است'
-            return render(request, 'Employee/employee_login.html', {'message':message}, status=403)
+            return render(request, 'Employee/employee_login.html', {'message': message}, status=403)
 
 
 def employee_logout(request):
@@ -51,7 +57,7 @@ def employee_logout(request):
     return HttpResponseRedirect('/employee/login')
 
 
-def employee_panel(request): #, action):
+def employee_panel(request):  # , action):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/Employee/employee_login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
@@ -64,7 +70,8 @@ def employee_panel(request): #, action):
 
 def add_department(request):
     if request.method == 'GET':
-        return render(request, 'Employee/add_department.html', {'add_department_form': AddDepartmentForm(label_suffix='')})
+        return render(request, 'Employee/add_department.html',
+                      {'add_department_form': AddDepartmentForm(label_suffix='')})
     else:
         form = AddDepartmentForm(request.POST)
         if form.is_valid():
@@ -76,59 +83,76 @@ def add_department(request):
 
 
 def department_panel(request, department_id, action):
-    department = Department.objects.get(department_id=department_id)
-    if action == 'employ':
-        if request.method == 'POST':
-            form = EmployForm(request.POST)
-            if form.is_valid():
-                employee = Employee.objects.get(employee_id=form.cleaned_data['employee_id']) #TODO check if employee exists
-                employee.works_in = department
-                employee.save()
-                return HttpResponseRedirect('/employee/department_panel/' + department_id)
+    try:
+        department = Department.objects.get(department_id=department_id)
+        if action == 'employ':
+            if request.method == 'POST':
+                form = EmployForm(request.POST)
+                if form.is_valid():
+                    try:
+                        employee = Employee.objects.get(
+                            employee_id=form.cleaned_data['employee_id'])
+                        employee.works_in = department
+                        employee.save()
+                        return HttpResponseRedirect('/employee/department_panel/' + department_id)
+                    except ObjectDoesNotExist:
+                        message = 'چنین کارمندی وجود ندارد'
+                        return render(request, 'Employee/employ.html', {'form': form, 'message': message})
+                else:
+                    return render(request, 'Employee/employ.html', {'form': form})
             else:
-                return render(request, 'Employee/add_department.html', {'add_department_form': form})
-        else:
-            form = EmployForm(label_suffix='')
-            return render(request, 'Employee/employ.html', {'form': form})
+                form = EmployForm(label_suffix='')
+                return render(request, 'Employee/employ.html', {'form': form})
 
-    elif action == 'fire':
-        if request.method == 'POST':
-            form = FireForm(request.POST)
-            if form.is_valid():
-                employee = Employee.objects.get(employee_id=form.cleaned_data['employee_id'])  #TODO check if employee exists
-                employee.works_in = None
-                employee.save()
-                return HttpResponseRedirect('/employee/department_panel/' + department_id)
+        elif action == 'fire':
+            if request.method == 'POST':
+                form = FireForm(request.POST)
+                if form.is_valid():
+                    try:
+                        employee = Employee.objects.get(
+                            employee_id=form.cleaned_data['employee_id'])
+                        employee.works_in = None
+                        employee.save()
+                        return HttpResponseRedirect('/employee/department_panel/' + department_id)
+                    except ObjectDoesNotExist:
+                        message = 'چنین کارمندی وجود ندارد'
+                        return render(request, 'Employee/fire.html', {'form': form, 'message': message})
+                else:
+                    return render(request, 'Employee/fire.html', {'form': form})
             else:
-                return render(request, 'Employee/add_department.html', {'add_department_form': form})
-        else:
-            form = FireForm(label_suffix='')
-            return render(request, 'Employee/fire.html', {'form': form})
+                form = FireForm(label_suffix='')
+                return render(request, 'Employee/fire.html', {'form': form})
 
-    elif action == 'set_manager':
-        if request.method == 'POST':
-            form = SetManagerForm(request.POST)
-            if form.is_valid():
-                employee = Employee.objects.get(employee_id=form.cleaned_data['employee_id'])   #TODO check if employee exists
-                department.manager = employee
-                department.save()
-                return HttpResponseRedirect('/employee/department_panel/' + department_id)
+        elif action == 'set_manager':
+            if request.method == 'POST':
+                form = SetManagerForm(request.POST)
+                if form.is_valid():
+                    try:
+                        employee = Employee.objects.get(
+                            employee_id=form.cleaned_data['employee_id'])
+                        department.manager = employee
+                        department.save()
+                        return HttpResponseRedirect('/employee/department_panel/' + department_id)
+                    except ObjectDoesNotExist:
+                        message = 'چنین کارمندی وجود ندارد'
+                        return render(request, 'Employee/set_manager.html', {'form': form, 'message': message})
+                else:
+                    return render(request, 'Employee/set_manager.html', {'form': form})
             else:
-                return render(request, 'Employee/add_department.html', {'add_department_form': form})
+                form = SetManagerForm(label_suffix='')
+                return render(request, 'Employee/set_manager.html', {'form': form})
+
         else:
-            form = SetManagerForm(label_suffix='')
-            return render(request, 'Employee/set_manager.html', {'form': form})
-
-    else:
-        if request.method == 'POST':
-            return HttpResponseRedirect('/')
-        else:
-            return render(request, 'Employee/department_panel.html', {'department': department})
+            if request.method == 'POST':
+                return HttpResponseRedirect('/')
+            else:
+                return render(request, 'Employee/department_panel.html', {'department': department})
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/') #TODO change this
 
 
 
-
-def perform_task(request, task_id):
+def perform_task(request, task_id):  # TODO explain this view so i can build templates
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/student/login')
     if request.user.user_type != MyUser.STUDENTUSER:
@@ -141,7 +165,7 @@ def perform_task(request, task_id):
     if hasattr(Task.objects.get(task_id=task_id), 'Form'):
         if request.method == 'POST':
             form = EmployeePerformTaskForm(request.POST)
-            if form.is_valid(): # TODO what does this is_valid() condition mean?
+            if form.is_valid():  # TODO what does this is_valid() condition mean?
 
                 employee_task = Employee_Task.objects.get(task_id=task_id)
 
@@ -152,12 +176,11 @@ def perform_task(request, task_id):
             else:
                 return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form': form})
         else:
-            return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form': EmployeePerformTaskForm(label_suffix='')})
+            return render(request, 'Employee/employee_perform_task.html',
+                          {'perform_employee_task_form': EmployeePerformTaskForm(label_suffix='')})
 
 
-
-
-def add_task(request, task_bp_name):
+def add_task(request, task_bp_name):  # TODO explain this view so i can build template
     if request.method == 'GET':
         return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})
     else:
@@ -178,4 +201,4 @@ def add_task(request, task_bp_name):
             task = Payment(instance_of=child_bp, process=process)
 
         task.save()
-        return HttpResponseRedirect('/add_task/'+ task_bp_name)
+        return HttpResponseRedirect('/add_task/' + task_bp_name)
