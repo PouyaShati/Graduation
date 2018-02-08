@@ -3,42 +3,40 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="footer.css">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {#    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">#}
+    {#    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">#}
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>#}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>Title</title>
 </head>
 <body>
-{#<div id="footer">shit</div>#}
-{#<nav class="navbar navbar-default navbar-fixed-bottom">#}
-{#  <div class="container">#}
-{#    By group name#}
-{#  </div>#}
-{#</nav>#}
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <ul class="nav navbar-nav navbar-right">
-            <div class="dropdown">
-{#                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"#}
-{#                        aria-haspopup="true" aria-expanded="true">#}
-{#                    Dropdown#}
-{#                    <span class="caret"></span>#}
-{#                </button>#}
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">کاربر<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-{#                    <li>Action</li>#}
-{#                    <li>Another action</li>#}
-                    <li>{% comment %}<a href="#">{% endcomment %}Something else
-                        here{% comment %}</a>{% endcomment %}</li>
-                    <li role="separator" class="divider"></li>
-                    <li>خروج</li>
-                </ul>
-            </div>
-        </ul>
+
+{#NAVBAR#}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header navbar-right">
+      <a class="navbar-brand" href="#">سامانه ی فارغ التحصیلی</a>
     </div>
+
+    <ul class="nav navbar-nav">
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">تماس با ما</a></li>
+          <li><a href="#">خروج</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </nav>
+
+
 {% block content %}
 {% endblock %}
 </body>
