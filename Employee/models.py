@@ -23,7 +23,7 @@ class Employee(models.Model):
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=30, default='')
+    name = models.CharField(max_length=30, default='', unique=True, error_messages={'unique': 'نام دپارتمان تکراری است'})
     department_id = models.IntegerField()
     manager = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
 

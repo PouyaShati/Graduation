@@ -23,7 +23,7 @@ def employee_signup(request):
             employee.user = user
 
             employee.save()
-            return HttpResponseRedirect('/employee/employee_login')
+            return HttpResponseRedirect('/employee/login')
         else:
 
             return render(request, 'Employee/employee_signup.html', {'signup_form': form})
@@ -40,9 +40,10 @@ def employee_login(request):
         user = authenticate(username=username, password=password)
         if (user is not None) and (user.user_type == MyUser.EMPLOYEEUSER):
             login(request, user)
-            return HttpResponseRedirect('/employee/employee_panel')
+            return HttpResponseRedirect('/employee/panel')
         else:
-            return render(request, 'Employee/employee_login.html', status=403)
+            message = 'نام کاربری یا رمز عبور اشتباه است'
+            return render(request, 'Employee/employee_login.html', {'message':message}, status=403)
 
 
 def employee_logout(request):
@@ -66,10 +67,12 @@ def add_department(request):
         return render(request, 'Employee/add_department.html', {'add_department_form': AddDepartmentForm(label_suffix='')})
     else:
         form = AddDepartmentForm(request.POST)
-        department = Department(name=form['name'], department_id=form['department_id'])
-        department.save()
-        return HttpResponseRedirect('/department_panel/' + department.department_id)
-
+        if form.is_valid():
+            department = Department(name=form.cleaned_data['name'], department_id=form.cleaned_data['department_id'])
+            department.save()
+            return HttpResponseRedirect('/employee/department_panel/' + str(department.department_id))
+        else:
+            return render(request, 'Employee/add_department.html', {'add_department_form': form})
 
 
 def department_panel(request, department_id, action):
@@ -111,7 +114,7 @@ def department_panel(request, department_id, action):
         if request.method == 'POST':
             return HttpResponseRedirect('/')
         else:
-            return render(request, 'Process/department_panel.html', {'department': department})
+            return render(request, 'Employee/department_panel.html', {'department': department})
 
 
 

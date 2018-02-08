@@ -82,7 +82,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             return render(request, 'Process/create_process_blueprint.html', {'form': form})
         else:
             form = request.POST
-            department = Department.objects.all(name=form['department'])
+            department = Department.objects.get(name=form['department'])
             process_bp = Process_Blueprint(name=form['name'], department=department)
             for preprocess in request.session.get('preprocesses'):
                 process_bp.preprocesses.add(preprocess)

@@ -104,17 +104,25 @@ class AddDepartmentForm(forms.ModelForm):
         fields = ['name', 'department_id']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'نام پروسه',
+                                                'placeholder': 'نام دپارتمان',
                                                 'style': 'text-align:right'}),
             'department_id': forms.NumberInput(attrs={'class': 'form-control',
-                                           #'placeholder': 'نام پروسه',
-                                           #'style': 'text-align:right'
+                                           'placeholder': 'کد دپارتمان',
+                                           'style': 'text-align:right'
                                                       })
         }
 
         labels = {
-            'name': _('نام پروسه'),
-            'department_id': _('کد شرکت'),
+            'name': _('نام دپارتمان'),
+            'department_id': _('کد دپارتمان'),
+        }
+        error_messages = {
+            'name': {
+                'required': _('نام دپارتمان را وارد کنید'),
+            },
+            'department_id': {
+                'required': _('شماره دپارتمان را وارد کنید')
+            }
         }
 
 

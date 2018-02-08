@@ -7,15 +7,19 @@ from django.utils.translation import ugettext_lazy as _
 class CreateProcessBlueprintForm(forms.ModelForm):
     class Meta:
         model = Process_Blueprint
-        fields = ['name']
+        fields = ['name', 'department']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                                 'placeholder': 'نام پروسه',
-                                                'style': 'text-align:right'})
+                                                'style': 'text-align:right'}),
+            'department' : forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'نام دپارتمان',
+                                                'style': 'text-align:right'}),
         }
 
         labels = {
             'name': _('نام پروسه'),
+            'department': _('نام دپارتمان'),
         }
 
 
