@@ -128,46 +128,72 @@ class AddDepartmentForm(forms.ModelForm):
 
 
 class EmployForm(forms.ModelForm):
-    employee_id = forms.RegexField(regex=r'^\d+$',
-                                widget=forms.TextInput(attrs={'class': 'form-control',
-                                                              'required': 'True',
-                                                              'max_length': 30,
-                                                              'placeholder': 'شماره کارمندی',
-                                                              'style': 'text-align:right'}
-                                                       ),
-                                label=_("شماره کارمندی"),
-                                error_messages={
-                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
-                                    'required': _('لطفا شماره کارمندی را وارد کنید')})
-
+    # employee_id = forms.RegexField(regex=r'^\d+$',
+    #                             widget=forms.TextInput(attrs={'class': 'form-control',
+    #                                                           'required': 'True',
+    #                                                           'max_length': 30,
+    #                                                           'placeholder': 'شماره کارمندی',
+    #                                                           'style': 'text-align:right'}
+    #                                                    ),
+    #                             label=_("شماره کارمندی"),
+    #                             error_messages={
+    #                                 'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+    #                                 'required': _('لطفا شماره کارمندی را وارد کنید')})
+    class Meta:
+        model = Employee
+        fields = ['employee_id']
+        widgets = {
+            'employee_id': forms.TextInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'شماره کارمندی',
+                                                 'style': 'text-align:right'})
+        }
+        label = {
+            'employee_id': _('شماره کارمندی')
+        }
+        error_messages = {
+            'employee_id': {
+                'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                'required': _('لطفا شماره کارمندی را وارد کنید')
+            }
+        }
 
 class FireForm(forms.ModelForm):
-    employee_id = forms.RegexField(regex=r'^\d+$',
-                                widget=forms.TextInput(attrs={'class': 'form-control',
-                                                              'required': 'True',
-                                                              'max_length': 30,
-                                                              'placeholder': 'شماره کارمندی',
-                                                              'style': 'text-align:right'}
-                                                       ),
-                                label=_("شماره کارمندی"),
-                                error_messages={
-                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
-                                    'required': _('لطفا شماره کارمندی را وارد کنید')})
-
+    class Meta:
+        model = Employee
+        fields = ['employee_id']
+        widgets = {
+            'employee_id': forms.TextInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'شماره کارمندی',
+                                                 'style': 'text-align:right'})
+        }
+        label = {
+            'employee_id': _('شماره کارمندی')
+        }
+        error_messages = {
+            'employee_id': {
+                'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                'required': _('لطفا شماره کارمندی را وارد کنید')
+            }
+        }
 
 class SetManagerForm(forms.ModelForm):
-    employee_id = forms.RegexField(regex=r'^\d+$',
-                                widget=forms.TextInput(attrs={'class': 'form-control',
-                                                              'required': 'True',
-                                                              'max_length': 30,
-                                                              'placeholder': 'شماره کارمندی',
-                                                              'style': 'text-align:right'}
-                                                       ),
-                                label=_("شماره کارمندی"),
-                                error_messages={
-                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
-                                    'required': _('لطفا شماره کارمندی را وارد کنید')})
-
+    class Meta:
+        model = Employee
+        fields = ['employee_id']
+        widgets = {
+            'employee_id': forms.TextInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'شماره کارمندی',
+                                                 'style': 'text-align:right'})
+        }
+        label = {
+            'employee_id': _('شماره کارمندی')
+        }
+        error_messages = {
+            'employee_id': {
+                'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
+                'required': _('لطفا شماره کارمندی را وارد کنید')
+            }
+        }
 
 class EmployeePerformTaskForm(forms.ModelForm): # TODO change it in order to be able to retrieve all the answers
     paid = forms.IntegerField (#regex=r'^\w+$',

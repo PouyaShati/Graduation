@@ -48,7 +48,7 @@ def employee_login(request):
 
 def employee_logout(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/employee/login')
 
 
 def employee_panel(request): #, action):
@@ -79,33 +79,42 @@ def department_panel(request, department_id, action):
     department = Department.objects.get(department_id=department_id)
     if action == 'employ':
         if request.method == 'POST':
-            form = request.POST
-            employee = Employee.objects.get(employee_id=form['employee_id'])
-            employee.works_in = department
-            employee.save()
-            return HttpResponseRedirect('/employee/department_panel/' + department_id)
+            form = EmployForm(request.POST)
+            if form.is_valid():
+                employee = Employee.objects.get(employee_id=form.cleaned_data['employee_id']) #TODO check if employee exists
+                employee.works_in = department
+                employee.save()
+                return HttpResponseRedirect('/employee/department_panel/' + department_id)
+            else:
+                return render(request, 'Employee/add_department.html', {'add_department_form': form})
         else:
             form = EmployForm(label_suffix='')
             return render(request, 'Employee/employ.html', {'form': form})
 
     elif action == 'fire':
         if request.method == 'POST':
-            form = request.POST
-            employee = Employee.objects.get(employee_id=form['employee_id'])
-            employee.works_in = None
-            employee.save()
-            return HttpResponseRedirect('/employee/department_panel/' + department_id)
+            form = FireForm(request.POST)
+            if form.is_valid():
+                employee = Employee.objects.get(employee_id=form.cleaned_data['employee_id'])  #TODO check if employee exists
+                employee.works_in = None
+                employee.save()
+                return HttpResponseRedirect('/employee/department_panel/' + department_id)
+            else:
+                return render(request, 'Employee/add_department.html', {'add_department_form': form})
         else:
             form = FireForm(label_suffix='')
             return render(request, 'Employee/fire.html', {'form': form})
 
     elif action == 'set_manager':
         if request.method == 'POST':
-            form = request.POST
-            employee = Employee.objects.get(employee_id=form['employee_id'])
-            department.manager = employee
-            department.save()
-            return HttpResponseRedirect('/employee/department_panel/' + department_id)
+            form = SetManagerForm(request.POST)
+            if form.is_valid():
+                employee = Employee.objects.get(employee_id=form.cleaned_data['employee_id'])   #TODO check if employee exists
+                department.manager = employee
+                department.save()
+                return HttpResponseRedirect('/employee/department_panel/' + department_id)
+            else:
+                return render(request, 'Employee/add_department.html', {'add_department_form': form})
         else:
             form = SetManagerForm(label_suffix='')
             return render(request, 'Employee/set_manager.html', {'form': form})

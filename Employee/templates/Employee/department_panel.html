@@ -1,62 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-
-#Btn {
-    background-color: #008CBA; /* Blue */
-    border: none;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    width: 100%;
-
-}
-#Btn:hover {
-    background-color: #008CEE; /* Blue */
-    color: white;
-}
-table {
-  width: 50%;
-}
-tr {
-  font-size: 30px;
-  font-family: Arial;
-}
-
-ul {
-  list-style-type:  none;
-}
-li {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 40px;
-    color: blue;
-}
-</style>
-</head>
-<body>
-  {% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
-
-<table>
-  <tr><th>Name:</th><td>  {{department.name}}</td></tr>
-  <tr><th>ID:</th><td>  {{department.department_id}}</td></tr>
-  <tr><th>Manager:</th><td> {{department.manager}}</td></tr>
-</table>
+{% extends 'base/base.html' %}
 
 
-</body>
-</html>
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="container">
+
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td class="text-right"> {{ department.name }}</td>
+                <th class="text-right"> نام دپارتمان</th>
+            </tr>
+            <tr>
+                <td class="text-right">{{ department.department_id }}</td>
+                <th class="text-right">شماره دپارتمان</th>
+            </tr>
+            </tbody>
+
+        </table>
+        <form class="form-horizontal" novalidate method="get" action="employ">
+            <button type="submit" value="ثبت نام" class="btn btn-primary">استخدام</button>
+        </form>
+        <form class="form-horizontal" novalidate method="get" action="fire">
+            <button type="submit" value="ثبت نام" class="btn btn-primary">اخراج</button>
+        </form>
+        <form class="form-horizontal" novalidate method="get" action="set_manager">
+            <button type="submit" value="ثبت نام" class="btn btn-primary">انتخاب مدیر</button>
+        </form>
+    </div>
+{% endblock %}

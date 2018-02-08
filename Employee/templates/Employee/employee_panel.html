@@ -1,64 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-
-#Btn {
-    background-color: #008CBA; /* Blue */
-    border: none;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    width: 100%;
-
-}
-#Btn:hover {
-    background-color: #008CEE; /* Blue */
-    color: white;
-}
-table {
-  width: 50%;
-}
-tr {
-  font-size: 30px;
-  font-family: Arial;
-}
-
-ul {
-  list-style-type:  none;
-}
-li {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 40px;
-    color: blue;
-}
-</style>
-</head>
-<body>
-  {% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
-
-<table>
-  <tr><th>First Name:</th><td>  {{employee.first_name}}</td></tr>
-  <tr><th>Last Name:</th><td>  {{employee.last_name}}</td></tr>
-  <tr><th>EMAIL:</th><td> {{employee.email}}</td></tr>
-  <tr><th>phone number:</th><td>   {{employee.phone_number}}</td></tr>
-    <tr><th>student id:</th><td>  {{employee.employee_id}}</td></tr>
-</table>
+{% extends 'base/base.html' %}
 
 
-</body>
-</html>
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="container">
+
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td class="text-right"> {{ employee.first_name }}</td>
+                <th class="text-right">نام</th>
+            </tr>
+            <tr>
+                <td class="text-right"> {{ employee.last_name }}</td>
+                <th class="text-right">نام خانوادگی</th>
+
+
+            </tr>
+            <tr>
+                <td class="text-right"> {{ employee.email }}</td>
+                <th class="text-right">رایانامه</th>
+
+            </tr>
+            <tr>
+                <td class="text-right"> {{ employee.phone_number }}</td>
+                <th class="text-right">شماره تلفن</th>
+
+            </tr>
+            <tr>
+                <td class="text-right">{{ employee.employee_id }}</td>
+                <th class="text-right">شماره‌ی کارمندی</th>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+     <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
+    </div>
+{% endblock %}
