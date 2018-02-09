@@ -195,8 +195,8 @@ class SetManagerForm(forms.ModelForm):
             }
         }
 
-class EmployeePerformTaskForm(forms.ModelForm): # TODO change it in order to be able to retrieve all the answers
-    paid = forms.IntegerField (#regex=r'^\w+$',
+class EmployeePerformTaskForm(forms.Form): # TODO change it in order to be able to retrieve all the answers
+    answer = forms.CharField (#regex=r'^\w+$',
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
@@ -210,7 +210,7 @@ class EmployeePerformTaskForm(forms.ModelForm): # TODO change it in order to be 
 
 
 
-class AddTaskForm(forms.ModelForm):
+class AddTaskForm(forms.Form):
     process_bp = forms.RegexField(regex=r'^\d+$',
                                 widget=forms.TextInput(attrs={'class': 'form-control',
                                                               'required': 'True',

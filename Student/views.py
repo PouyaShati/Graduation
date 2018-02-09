@@ -4,9 +4,10 @@ from MyUser.models import MyUser
 from .models import Student
 from Student.forms import StudentSignUpForm, StudentPerformPaymentForm, StudentFillFormForm
 from django.contrib.auth import authenticate, login, logout
+from django.forms import formset_factory
 
 
-from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment, Answer_Set
+from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment, Answer_Set, Answer
 # Create your views here.
 
 
@@ -138,16 +139,10 @@ def perform_task(request, task_id):
     if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
         return HttpResponseRedirect('/')
 
-    if hasattr(Task.objects.get(task_id=task_id), 'Form'):
+    if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
         if request.method == 'POST':
             form = StudentPerformPaymentForm(request.POST)
             if form.is_valid(): # TODO what does this is_valid() condition mean?
-
-                #process_bp = Process_Blueprint.objects.get(name=process_bp_name)
-                #payment_bp = Payment_Blueprint.objects.get(name=payment_bp_name, default_of=process_bp)
-
-                #process = Process.objects.get(owner=request.user.student, instance_of=process_bp)
-                #student_payment = Payment.objects.get(instance_of=payment_bp, process=process)
 
                 student_payment = Payment.objects.get(task_id=task_id)
 
@@ -160,19 +155,26 @@ def perform_task(request, task_id):
         else:
             return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': StudentPerformPaymentForm(label_suffix='')})
 
-    elif hasattr(Task.objects.get(task_id=task_id), 'Payment'):
+    elif hasattr(Task.objects.get(task_id=task_id), 'Form'):
+        FormSet = formset_factory(StudentFillFormForm)
         if request.method == 'POST':
-            form = StudentFillFormForm(request.POST)
-            if form.is_valid():  # TODO what does this is_valid() condition mean?
+            form_set = FormSet(request.POST)
+            if form_set.is_valid():  # TODO what does this is_valid() condition mean?
 
                 student_form = Form.objects.get(task_id=task_id)
 
-                #student_payment.paid = student_payment.paid + form['paid'] # TODO find a way to retrieve a list of answers from a form
+                answer_set = Answer_Set()
+                student_form.answer_set = answer_set
+                n = int(form_set['form-TOTAL_FORMS'])
+                for i in range(0, n):
+                    answer = Answer(text=form_set['form-' + str(i) + '-answer'], belongs_to=answer_set)
+                    answer.save()
+                answer_set.save()
 
                 student_form.save()
                 return HttpResponseRedirect('/student/perform_task')
             else:
-                return render(request, 'Student/student_fill_form.html', {'fill_form_form': form})
+                return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': form_set})
         else:
             return render(request, 'Student/student_fill_form.html',
-                          {'fill_form_form': StudentFillFormForm(label_suffix='')})
+                          {'fill_form_form_set': FormSet(label_suffix='')})

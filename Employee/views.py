@@ -5,11 +5,11 @@ from MyUser.models import MyUser
 from .models import Employee, Department
 from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm, EmployeePerformTaskForm, \
     AddTaskForm
-from Process.models import Task, Employee_Task, Employee_Task_Blueprint, Form_Blueprint
+from Process.models import Task, Employee_Task, Employee_Task_Blueprint, Form_Blueprint, Answer, Answer_Set
 from Process.models import Payment_Blueprint, Form, Payment, Task_Blueprint, Process_Blueprint, Process
 from Student.models import Student
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.forms import formset_factory
 
 # Create your views here.
 def employee_signup(request):
@@ -155,30 +155,37 @@ def department_panel(request, department_id, action):
 
 def perform_task(request, task_id):  # TODO explain this view so i can build templates
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/student/login')
-    if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/student/login')
+        return HttpResponseRedirect('/employee/login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/employee/login')
     if hasattr(Task.objects.get(task_id=task_id), 'Form'):
         return HttpResponseRedirect('/')
     if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
         return HttpResponseRedirect('/')
 
-    if hasattr(Task.objects.get(task_id=task_id), 'Form'):
+    if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
+        FormSet = formset_factory(EmployeePerformTaskForm)
         if request.method == 'POST':
-            form = EmployeePerformTaskForm(request.POST)
-            if form.is_valid():  # TODO what does this is_valid() condition mean?
+            form_set = FormSet(request.POST)
+            if form_set.is_valid():  # TODO what does this is_valid() condition mean?
 
                 employee_task = Employee_Task.objects.get(task_id=task_id)
 
-                # employee_task.paid = employee_task.paid + form['paid'] # TODO find a way to retrieve all the answers from form
+                answer_set = Answer_Set()
+                employee_task.answer_set = answer_set
+                n = int(form_set['form-TOTAL_FORMS'])
+                for i in range(0, n):
+                    answer = Answer(text=form_set['form-' + str(i) + '-answer'], belongs_to=answer_set)
+                    answer.save()
+                answer_set.save()
 
                 employee_task.save()
                 return HttpResponseRedirect('/employee/perform_task')
             else:
-                return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form': form})
+                return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form_set': form_set})
         else:
             return render(request, 'Employee/employee_perform_task.html',
-                          {'perform_employee_task_form': EmployeePerformTaskForm(label_suffix='')})
+                          {'perform_employee_task_form_set': FormSet(label_suffix='')})
 
 
 def add_task(request, task_bp_name):  # TODO explain this view so i can build template

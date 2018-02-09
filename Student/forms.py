@@ -117,7 +117,7 @@ class StudentPerformPaymentForm(forms.ModelForm):
 
 
 class StudentFillFormForm(forms.ModelForm): # TODO change it in order to be able to retrieve all the answers
-    paid = forms.IntegerField (#regex=r'^\w+$',
+    answer = forms.CharField (#regex=r'^\w+$',
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
@@ -125,6 +125,6 @@ class StudentFillFormForm(forms.ModelForm): # TODO change it in order to be able
                                                               #'style': 'text-align:right'
                                                                 }
                                                        ),
-                                label=_("paid"),
+                                label=_("answer"),
                                 #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
                                 )
