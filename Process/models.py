@@ -40,6 +40,8 @@ class Process_Blueprint(models.Model):
     preprocesses = models.ManyToManyField('self')
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     # TODO Add processes that get invalidate after failing to validate this one
+    def __str__(self):
+        return str(self.name)
 
 class Task_Blueprint(models.Model):
     name = models.CharField(max_length=60)

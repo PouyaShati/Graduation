@@ -28,5 +28,7 @@ class Department(models.Model):
     name = models.CharField(max_length=30, default='', unique=True, error_messages={'unique': _('نام دپارتمان تکراری است')})
     department_id = models.IntegerField()
     manager = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return str(self.name)
 
 

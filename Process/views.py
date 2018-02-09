@@ -11,29 +11,30 @@ from django.forms import formset_factory
 
 def create_process_blueprint(request, action): # TODO handle actions
     if action == 'add_preprocess':
-        FormSet = formset_factory(AddPreprocessForm)
         if request.method == 'POST':
-            form_set = FormSet(request.POST)
-            if form_set.is_valid():
+            form = AddPreprocessForm(request.POST)
+            if form.is_valid():
                 try:
-                    request.session['preprocesses'] = []
+                    # request.session['preprocesses'] = []
 
-                    n = int(form_set['form-TOTAL_FORMS'])
-                    for i in range(0, n):
-                        request.session['preprocesses'].append(form_set['form-' + str(i) + '-name'])
+                    # n = int(form_set['form-TOTAL_FORMS'])
+                    # for i in range(0, n):
+                    #     request.session['preprocesses'].append(form_set['form-' + str(i) + '-name'])
 
-                    #preprocess = Process_Blueprint.objects.get(name=form.cleaned_data['name'])
-                    #request.session['preprocesses'].append(preprocess)
+                        new_preprocess = form.cleaned_data['name']
+                        request.session['preprocesses'].append(new_preprocess)
 
-                    return HttpResponseRedirect('/process/create_process_blueprint')
+                        # ret   urn HttpResponseRedirect('/process/create_process_blueprint')
+                        successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + new_preprocess.name+ ' فرایند '
+                        return render(request, 'Process/add_preprocess.html', {'form': form, 'successfully_added':successfully_added})
                 except ObjectDoesNotExist:
                     message = 'چنین فرایندی وجود ندارد'
-                    return render(request, 'Process/add_preprocess.html', {'form_set': form_set, 'message':message})
+                    return render(request, 'Process/add_preprocess.html', {'form': form, 'message': message})
             else:
-                return render(request, 'Process/add_preprocess.html', {'form_set': form_set})
+                return render(request, 'Process/add_preprocess.html', {'form': form})
         else:
-            form_set = FormSet(label_suffix='')
-            return render(request, 'Process/add_preprocess.html', {'form_set': form_set})
+            form = AddPreprocessForm(label_suffix='')
+            return render(request, 'Process/add_preprocess.html', {'form': form})
     else:
         if request.method == 'GET':
 
@@ -43,12 +44,14 @@ def create_process_blueprint(request, action): # TODO handle actions
             form = CreateProcessBlueprintForm(request.POST)
             if form.is_valid():
                 try:
-                    department = Department.objects.get(name=form.cleaned_data['department'])
+                    department = form.cleaned_data['department']
                     process_bp = Process_Blueprint(name=form.cleaned_data['name'], department=department)
                     for preprocess_name in request.session['preprocesses']:
                         preprocess = Process_Blueprint.objects.get(name=preprocess_name)
                         process_bp.preprocesses.add(preprocess)
                     process_bp.save()
+                    request.session['preprocesses'] = []
+
                     return HttpResponseRedirect('/')
                 except ObjectDoesNotExist:
                     return render(request, 'Process/create_process_blueprint.html', {'form': form})
@@ -102,7 +105,7 @@ def create_payment_blueprint(request):
         else:
             return render(request, 'Process/create_payment_blueprint.html', {'form': form})
     else:
-        form = CreateFormBlueprintForm(label_suffix='')
+        form = CreatePaymentBlueprintForm(label_suffix='')
         return render(request, 'Process/create_payment_blueprint.html', {'form': form})
 
 
@@ -130,7 +133,7 @@ def create_question_set(request, action):
                 return render(request, 'Process/set_questions.html', {'form_set': form_set})
         else:
             # request.session['questions'] = []
-            form_set = FormSet(label_suffix='')
+            form_set = FormSet()
             return render(request, 'Process/set_questions.html', {'form_set': form_set})
     else:
         if request.method == 'POST':

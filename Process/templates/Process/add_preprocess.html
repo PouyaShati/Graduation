@@ -9,6 +9,7 @@
 
             <div class="col-md-4">
                 <section class="login-form">
+                    {{ successfully_added }}
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>
@@ -58,6 +59,9 @@
                                 </ul>
                             </div>
                         </div>
+                    </form>
+                    <form class="form-horizontal" novalidate method="get" action="/process/create_process_blueprint">
+                        <button type="submit" value="اتمام" class="btn btn-primary">اتمام</button>
                     </form>
                 </section>
             </div>
