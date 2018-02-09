@@ -1,9 +1,10 @@
 {% load bootstrap %}
 {% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="utf-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {#    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">#}
     {#    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">#}
@@ -24,21 +25,29 @@
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <div class="navbar-header navbar-right">
-            {% load static %}
-            <a class="navbar-brand" href="#"><img alt="Brand" src={% static "pics/shariff.png" %} width="21" height="21"/>سامانه ی فارغ التحصیلی</a>
+        <div class="col-sm-4" align="center">
+            <ul class="nav navbar-nav">
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span
+                        class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Page 1-1</a></li>
+                        <li><a href="#">تماس با ما</a></li>
+                        <li><a href="/student/logout">خروج</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-        <a href="#" class="navbar-right"></a>
-        <ul class="nav navbar-nav">
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span
-                    class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Page 1-1</a></li>
-                    <li><a href="#">تماس با ما</a></li>
-                    <li><a href="/student/logout">خروج</a></li>
-                </ul>
-            </li>
-        </ul>
+        <div class="col-sm-4" align="center"><img alt="Brand"
+                                                src={% static "pics/shariffff.png" %} {% comment %}style="height:6%;display:inline-block;"{% endcomment %}/></div>
+        <div class="col-sm-4" align="center">
+            <div class="navbar-header navbar-right">
+                <div class="row1">
+
+                    <h3 id="university-brand" class="pull-right">سامانه‌ی فارغ‌التحصیلی</h3></div>
+            </div>
+        </div>
+        {#        <a href="#" class="navbar-right"></a>#}
+
     </div>
 </nav>
 

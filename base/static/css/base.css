@@ -1,4 +1,21 @@
 * {
-    color: #FCA205;
-    font-family: 'Lateef', 'Arial';
+    /*color: #555200;*/
+    font-family:'XB Niloofar', 'Arial';
+}
+
+p {
+    color:#1AAA;
+}
+
+#university-brand {
+    color:seagreen;
+}
+
+body {
+    background-image: url("/base/static/pics/bg3.png")
+}
+
+#table-header {
+    font-family: "XB Zar";
+    color: green;
 }
