@@ -3,8 +3,8 @@
 
 {% block content %}
     <div class="container">
-
-        <div class="row" id="pwd-container">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id = "fill_out_form">
             <div class="col-md-4"></div>
 
             <div class="col-md-4">
@@ -48,7 +48,7 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
+                            <div id = "button_submit" class="form-actions">
                                 <button type="submit" value="ساخت الگوی پرداخت" class="btn btn-primary">ساخت الگوی پرداخت</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}

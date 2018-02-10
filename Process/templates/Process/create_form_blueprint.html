@@ -1,13 +1,13 @@
-{% extends 'base/base.html' %}
+{% extends 'base/emp_base.html' %}
 
 
 {% block content %}
     <div class="container">
 
-        <div class="row" id="pwd-container">
+        <div class="row" >
             <div class="col-md-4"></div>
 
-            <div class="col-md-4">
+            <div class="col-md-4" id = "fill_out_form">
                 <section class="login-form">
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
@@ -48,8 +48,8 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
-                                <button type="submit" value="ساخت الگوی فرم" class="btn btn-primary">ساخت الگوی فرم</button>
+                            <div id="button_submit" class="form-actions">
+                                <button  type="submit" value="ساخت الگوی فرم" class="btn btn-primary">ساخت الگوی فرم</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
                                     <li>{{ error }}</li>

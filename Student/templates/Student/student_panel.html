@@ -1,7 +1,7 @@
-
-
 <head><title>صفحه‌ی کاربر</title></head>
 {% extends 'base/base.html' %}
+
+
 
 
 {% block content %}
@@ -12,10 +12,9 @@
             {% endfor %}
         </ul>
     {% endif %}
-
-    <div class="container">
-
-        <table class="table table-bordered">
+    <div class="col-md-2"></div>
+    <div class="container col-md-8">
+        <table class="table table-bordered" style="background-color: aqua;">
             <tbody>
             <tr>
                 <td class="text-right"> {{ student.first_name }}</td>
@@ -50,7 +49,9 @@
             </tbody>
 
         </table>
-        
-     <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
+
+        <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
     </div>
+    <div class="col-md-2"></div>
 {% endblock %}
+
