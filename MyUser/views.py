@@ -26,12 +26,5 @@ def login(request):
 
 
 def logout(request):
-    if request.user.user_type == MyUser.STUDENTUSER:
-        logout(request)
-        return HttpResponseRedirect('/student/login')
-    elif request.user.user_type == MyUser.EMPLOYEEUSER:
-        logout(request)
-        return HttpResponseRedirect('/employee/login')
-    elif request.user.user_type == MyUser.ADMINUSER:
-        logout(request)
-        return HttpResponseRedirect('/admin/login')
+    logout(request)
+    return HttpResponseRedirect('/user/login')
