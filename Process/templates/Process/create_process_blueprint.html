@@ -9,27 +9,12 @@
             {% endfor %}
         </ul>
     {% endif %}
-
     <div class="container">
-
-        <form class="form-horizontal" novalidate method="get" action="add_preprocess">
+        <form novalidate method="get" action="add_preprocess">
             <button type="submit" value="add preprocess" class="btn btn-primary">add preprocess</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="add_question">
-            <button type="submit" value="add question" class="btn btn-primary">add question</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="create_employee_task_blueprint">
-            <button type="submit" value="create employee task blueprint" class="btn btn-primary">create employee task blueprint</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="create_form_blueprint">
-            <button type="submit" value="create form blueprint" class="btn btn-primary">create form blueprint</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="create_payment_blueprint">
-            <button type="submit" value="create payment blueprint" class="btn btn-primary">create payment blueprint</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="create_question_set">
-            <button type="submit" value="create question set" class="btn btn-primary">create question set</button>
-        </form>
+		</form>
+    </div>
+    <div class="container">
         <form  novalidate method="post">
 		  {% csrf_token %}
 		  {{ form.as_p }}
@@ -37,3 +22,5 @@
 		</form>
     </div>
 {% endblock %}
+
+

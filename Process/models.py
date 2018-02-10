@@ -9,7 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class Question_Set(models.Model):
     name = models.CharField(max_length=60, null=True)
-
+    def __str__(self):
+        return str(self.name)
 
 class Answer_Set (models.Model):
     name = models.CharField(max_length=60, null=True)
@@ -45,11 +46,11 @@ class Process_Blueprint(models.Model):
 
 class Task_Blueprint(models.Model):
     name = models.CharField(max_length=60)
-    default_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE)
+    default_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True, blank=True) #TODO what is default of? null=True ro man gozashtam
 
 class Student_Task_Blueprint(Task_Blueprint):
     is_timed = models.BooleanField(default=False)
-    max_time = models.DateTimeField(default=timezone.ZERO, blank=True)
+    max_time = models.DateTimeField(default=timezone.ZERO, null=True, blank=True)
 
 class Employee_Task_Blueprint(Task_Blueprint):
     question_set = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
@@ -58,7 +59,7 @@ class Form_Blueprint(Student_Task_Blueprint):
     question_set = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
 
 class Payment_Blueprint(Student_Task_Blueprint):
-    receiver = models.IntegerField(default=0)
+    receiver = models.IntegerField(default=0) #TODO add this to form
     default_amount = models.IntegerField(null=True)
 
 

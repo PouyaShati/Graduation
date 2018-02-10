@@ -11,11 +11,26 @@ p {
     color:seagreen;
 }
 
-body {
-    background-image: url("/base/static/pics/bg3.png")
-}
+/*body {*/
+    /*background-image: url("/base/static/pics/bg3.png")*/
+/*}*/
 
 #table-header {
     font-family: "XB Zar";
     color: green;
+}
+
+
+#error {
+    color: red;
+}
+
+#button_submit {
+     padding-top: 20px;
+}
+
+#fill_out_form {
+    box-shadow: 3px 3px #3333;
+    background-color: #fff;
+    border-radius: 30px;"
 }

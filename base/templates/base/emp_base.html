@@ -27,23 +27,17 @@
     <div class="container-fluid">
         <div class="col-sm-4" align="center">
             <ul class="nav navbar-nav">
-                <li class="dropdown"><a id="dropdown" class="dropdown-toggle" disabled= "true" data-toggle="dropdown" href="#">SHOULD CHANGE
-                    <span
-                            class="caret"></span></a>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span
+                        class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">pox</a></li>
+                        <li><a id = "title" href="#">SHOULD CHANGE</a></li>
                         <li><a href="#">تماس با ما</a></li>
                         <li><a href="/student/logout">خروج</a></li>
                     </ul>
                 </li>
-                <script>
-                    {% comment %}if (student.first_name != null) {{% endcomment %}
-                        document.getElementById("dropdown").innerHTML = "{{ student.first_name }}";
-                {% comment %}     }else {
-                        document.getElementById("dropdown").disable = true;
-                    }{% endcomment %}
-                </script>
-
+                <li><a href="#">افزودن فرایند</a></li>
+                <li><a href="#">افزودن الگو</a></li>
+                <li><a href="#">جست‌و‌جو دانشجو</a></li>
             </ul>
         </div>
         <div class="col-sm-4" align="center"><img alt="Brand"

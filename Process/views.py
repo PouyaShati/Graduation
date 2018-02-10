@@ -46,6 +46,7 @@ def create_process_blueprint(request, action): # TODO handle actions
                 return render(request, 'Process/add_preprocess.html', {'form': form})
         else:
             form = AddPreprocessForm(label_suffix='')
+            request.session['preprocesses'] = []
             return render(request, 'Process/add_preprocess.html', {'form': form})
     else:
         if request.method == 'GET':
@@ -58,11 +59,12 @@ def create_process_blueprint(request, action): # TODO handle actions
                 try:
                     #department = form.cleaned_data['department']
                     process_bp = Process_Blueprint(name=form.cleaned_data['name'], department=department)
-                    for preprocess_name in request.session['preprocesses']:
-                        preprocess = Process_Blueprint.objects.get(name=preprocess_name)
-                        process_bp.preprocesses.add(preprocess)
+                    if 'preprocesses' in request.session.keys():
+                        for preprocess_name in request.session['preprocesses']:
+                            preprocess = Process_Blueprint.objects.get(name=preprocess_name)
+                            process_bp.preprocesses.add(preprocess)
+                            del request.session['preprocesses']
                     process_bp.save()
-                    request.session['preprocesses'] = []
 
                     return HttpResponseRedirect('/')
                 except ObjectDoesNotExist:
@@ -83,7 +85,7 @@ def create_employee_task_blueprint(request):
         form = CreateEmployeeTaskBlueprintForm(request.POST)
         if form.is_valid():
             employee_task_bp = Employee_Task_Blueprint(name=form.cleaned_data['name'],
-                                                       question_set=Question_Set.objects.get(name=form.cleaned_data['question_set']))
+                                                       question_set=form.cleaned_data['question_set'])
             employee_task_bp.save()
             return HttpResponseRedirect('/process/create_employee_task_blueprint')
         else:
@@ -148,38 +150,44 @@ def create_question_set(request, action):
         return HttpResponseRedirect('/Employee/employee_login')
 
     if action == 'set_questions':
-        FormSet = formset_factory(AddQuestionForm)
         if request.method == 'POST':
-            form_set = FormSet(request.POST)
-            if form_set.is_valid():
+            form = AddQuestionForm(request.POST)
+            if form.is_valid():
                 # question_set = Question_Set(name=form.cleaned_data['name'])
                 # for q in request.session.get('questions'):
                 #    q.belongs_to = question_set
 
-                request.session['question_texts'] = []
-                request.session['question_types'] = []
-
-                n = int(form_set['form-TOTAL_FORMS'])
-                for i in range(0, n):
-                    request.session['question_texts'].append(form_set['form-' + str(i) + '-text'])
-                    request.session['question_types'].append(form_set['form-' + str(i) + '-type'])
-
-                return HttpResponseRedirect('/process/create_question_set')
+                # request.session['question_texts'] = []
+                # request.session['question_types'] = []
+                #
+                # n = int(form_set['form-TOTAL_FORMS'])
+                # for i in range(0, n):
+                #     request.session['question_texts'].append(form_set['form-' + str(i) + '-text'])
+                #     request.session['question_types'].append(form_set['form-' + str(i) + '-type'])
+                new_question_text = form.cleaned_data['text']
+                new_question_tpye = form.cleaned_data['type']
+                request.session['question_texts'].append(new_question_text)
+                request.session['question_types'].append(new_question_tpye)
+                successfully_added = new_question_text + 'با موفقیت اضافه شد'
+                # return HttpResponseRedirect('/process/create_question_set')
+                return render(request, 'Process/set_questions.html', {'form': form, 'successfully_added':successfully_added})
             else:
-                return render(request, 'Process/set_questions.html', {'form_set': form_set})
+                return render(request, 'Process/set_questions.html', {'form': form})
         else:
-            # request.session['questions'] = []
-            form_set = FormSet()
-            return render(request, 'Process/set_questions.html', {'form_set': form_set})
+            request.session['question_texts'] = []
+            request.session['question_types'] = []
+            form = AddQuestionForm(label_suffix='')
+            return render(request, 'Process/set_questions.html', {'form': form})
     else:
         if request.method == 'POST':
             form = CreateQuestionSetForm(request.POST)
             if form.is_valid():
                 question_set = Question_Set(name=form['name'])
-                for i in range(0, len(request.session['question_texts'])):
-                    question = Question(text = request.session['question_texts'][i], type = request.session['question_types'][i],
-                                        belongs_to=question_set)
-                    question.save()
+                if 'question_texts' in request.session.keys():
+                    for i in range(0, len(request.session['question_texts'])):
+                        question = Question(text = request.session['question_texts'][i], type = request.session['question_types'][i],
+                                            belongs_to=question_set)
+                        question.save()
 
                 question_set.save()
                 return HttpResponseRedirect('/process/create_question_set')

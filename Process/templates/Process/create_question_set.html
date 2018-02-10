@@ -2,66 +2,25 @@
 
 
 {% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <div class="container">
-
-        <div class="row" id="pwd-container">
-            <div class="col-md-4"></div>
-
-            <div class="col-md-4">
-                <section class="login-form">
-                    <form class="form-horizontal" novalidate method="post">{% csrf_token %}
-                        <fieldset>
-                            <legend>{{ title }}</legend>
-                            {% for field in form %}
-                                {% if field.errors %}
-                                    <div class="control-group error">
-                                        <div align="center" class="form-actions">
-                                            <label class="control-label">{{ field.label }}</label>
-                                        </div>
-                                        <div class="controls">{{ field }}
-                                            <span class="help-inline">
-                            {% for error in  field.errors %}
-                                <div align="center">
-                                <font color="red">
-                                    {{ error }}
-                                </font>
-                                </div> {% endfor %}
-                        </span>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <div class="control-group">
-                                        <div align="center">
-                                            <label class="control-label">{{ field.label }}</label>
-                                        </div>
-                                        <div class="controls">{{ field }}
-                                            {% if field.help_text %}
-                                                <p class="help-inline">
-                                                    <small>
-                                                        {{ field.help_text }}
-                                                    </small>
-                                                </p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </fieldset>
-                        <div align="center">
-                            <div class="form-actions">
-                                <button type="submit" value="ساخت مجموعه سوال" class="btn btn-primary">ساخت مجموعه سوال</button>
-                                <ul style="list-style-type:none">
-                                    {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </form>
-                </section>
-            </div>
-        </div>
-
+        <form novalidate method="get" action="set_questions">
+            <button type="submit" value="add question" class="btn btn-primary">add question</button>
+		</form>
     </div>
+    <div class="container">
+        <form  novalidate method="post">
+		  {% csrf_token %}
+		  {{ form.as_p }}
+            <button type="submit" value="create question set" class="btn btn-primary">create question set</button>
+		</form>
     </div>
 {% endblock %}
+
+
