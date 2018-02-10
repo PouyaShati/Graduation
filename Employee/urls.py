@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^department_panel/(?P<department_id>\d*/?)/(?P<action>\w*/?)$', views.department_panel, name='department_panel'),
     url(r'^perform_task/(?P<task_id>\d*/?)$', views.perform_task, name='perform task'),
     url(r'^add_task/(?P<task_bp_name>\w*/?)$', views.add_task, name='add task'),
+    url(r'employees_list/$', views.employees_list, name='employees_list'),
+    url(r'departments_list/', views.departments_list , name='departments_list'),
 ]

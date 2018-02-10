@@ -178,3 +178,7 @@ def perform_task(request, task_id):
         else:
             return render(request, 'Student/student_fill_form.html',
                           {'fill_form_form_set': FormSet(label_suffix='')})
+
+def students_list(request):
+    students = Student.objects.all()
+    return render(request, 'Student/students_list.html', {'students': students})

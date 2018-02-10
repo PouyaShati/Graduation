@@ -238,3 +238,11 @@ def add_task(request, task_bp_name):  # TODO explain this view so i can build te
 
             task.save()
             return HttpResponseRedirect('/add_task/' + task_bp_name)
+
+def employees_list(request):
+    employees = Employee.objects.all()
+    return render(request, 'Employee/employees_list.html', {'employees': employees})
+
+def departments_list(request):
+    departments = Department.objects.all()
+    return render(request, 'Employee/departments_list.html', {'departments': departments})
