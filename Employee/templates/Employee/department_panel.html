@@ -1,3 +1,5 @@
+<head><title>ساختمان</title></head>
+
 {% extends 'base/base.html' %}
 
 
@@ -29,7 +31,7 @@
             </tbody>
 
         </table>
-        <table class="table table-bordered" style="background-color: aqua;">
+        <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
                 <th class="text-right">نام خانوادگی کارمند</th>
@@ -38,12 +40,12 @@
 
             </tr>
             {% for employee in employees %}
-            <tr>
-                <td class="text-right"> {{ employee.last_name}}</td>
-                <td class="text-right"> {{ employee.first_name}}</td>
-                <td class="text-right"> {{ employee.employee_id}}</td>
+                <tr>
+                    <td class="text-right"> {{ employee.last_name }}</td>
+                    <td class="text-right"> {{ employee.first_name }}</td>
+                    <td class="text-right"> {{ employee.employee_id }}</td>
 
-            </tr>
+                </tr>
             {% endfor %}
             </tbody>
 
