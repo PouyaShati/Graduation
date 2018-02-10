@@ -1,0 +1,39 @@
+<head><title>لیست دانشجویان</title></head>
+{% extends 'base/base.html' %}
+
+
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="col-md-2"></div>
+    <div class="container col-md-8">
+        <table class="table table-bordered" style="background-color: aqua;">
+            <tbody>
+            <tr>
+                <th class="text-right">نام خانوادگی</th>
+                <th class="text-right">نام</th>
+                <th class="text-right">شماره دانشجویی</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td class="text-right"> {{ student.last_name }}</td>
+                <td class="text-right"> {{ student.first_name }}</td>
+                <td class="text-right">{{ student.student_id }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+        <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
+    </div>
+    <div class="col-md-2"></div>
+{% endblock %}
+
