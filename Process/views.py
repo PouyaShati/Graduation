@@ -6,7 +6,7 @@ from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, Add
 from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
-from MyUser.forms import MyUser
+from MyUser.models import MyUser
 # Create your views here.
 
 
