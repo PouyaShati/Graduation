@@ -4,10 +4,10 @@ from .models import Process_Blueprint, Question_Set, Employee_Task_Blueprint, Qu
 from django.utils.translation import ugettext_lazy as _
 from Employee.models import Department
 
-class CreateProcessBlueprintForm(forms.Form):
-    # class Meta:
-    #     model = Process_Blueprint
-    #     fields = ['name', 'department']
+class CreateProcessBlueprintForm(forms.ModelForm):
+    class Meta:
+        model = Process_Blueprint
+        fields = ['name', 'department']
     #     widgets = {
     #         'name': forms.TextInput(attrs={'class': 'form-control',
     #                                             'placeholder': 'نام پروسه',
@@ -54,10 +54,10 @@ class AddPreprocessForm(forms.Form):
                                     'required': _('نام فرایند پیشنیاز را وارد کنید'),
                                     'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
 
-class CreateEmployeeTaskBlueprintForm(forms.Form):
-    # class Meta:
-    #     model = Employee_Task_Blueprint
-    #     fields = ['name', 'question_set']
+class CreateEmployeeTaskBlueprintForm(forms.ModelForm):
+    class Meta:
+        model = Employee_Task_Blueprint
+        fields = ['name', 'question_set']
     #     widgets = {
     #         'name': forms.TextInput(attrs={'class': 'form-control',
     #                                        'placeholder': 'نام وظیفه کارمند',
@@ -84,10 +84,10 @@ class CreateEmployeeTaskBlueprintForm(forms.Form):
                                           label=_('مجموعه سوال'),
                                           error_messages={'required': _('مجموعه سوال را انتحاب کنید')})
 
-class CreateFormBlueprintForm(forms.Form):
-    # class Meta:
-    #     model = Form_Blueprint
-    #     fields = ['name', 'question_set', 'is_timed', 'max_time'] #TODO what is name?
+class CreateFormBlueprintForm(forms.ModelForm):
+    class Meta:
+        model = Form_Blueprint
+        fields = ['name', 'question_set', 'is_timed', 'max_time'] #TODO what is name?
     #     widgets = {
     #         'name': forms.TextInput(attrs={'class': 'form-control',
     #                                        'placeholder': 'نام وظیفه کارمند',
@@ -120,11 +120,11 @@ class CreateFormBlueprintForm(forms.Form):
                                                             'style': 'text-align:right'}),
                                           label=_('مجموعه سوال'),
                                           error_messages={'required': _('مجموعه سوال را انتحاب کنید')})
-    is_timed = forms.BooleanField(widget=forms.RadioSelect(attrs={'class': 'form-control',
+    is_timed = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control',
                                                                   'placeholer': 'زمانی',
                                                                   'style': 'text-align:right'}),
                                   label= _('زمانی'), required=False)
-    max_timed = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholer': 'حداکثر زمان',
+    max_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholer': 'حداکثر زمان',
                                                                       'style': 'text-align:right'}),
                                     label= _('حداکثر زمان'), required=False)
         #TODO if is_timed is check, max_time should be mandatory
@@ -134,10 +134,10 @@ class CreateFormBlueprintForm(forms.Form):
 class CreatePaymentBlueprintForm(forms.ModelForm):
     class Meta:
         model = Payment_Blueprint
-        fields = ['name', 'default_amount', 'is_timed', 'max_time'] #TODO what is name?
+        fields = ['name', 'default_amount', 'is_timed', 'max_time', 'receiver'] #TODO what is name?
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': 'نام وظیفه کارمند',
+                                           'placeholder': 'نام الگوی پرداخت',
                                            'style': 'text-align:right'}),
             'default_amount': forms.NumberInput(attrs={'class': 'form-control',
                                            'placeholder': 'مقدار پیشفرض',
@@ -150,13 +150,19 @@ class CreatePaymentBlueprintForm(forms.ModelForm):
             'max_time': forms.NumberInput(attrs={'class': 'form-control',
                                                    'placeholder': 'حداکثر زمان',
                                                    'style': 'text-align:right'
-                                                })
+                                                }),
+            'receiver': forms.NumberInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'شماره حساب مقصد',
+                                          'style': 'text-align:right'})
         }
-        labels = {'name': _('نام وظیفه کارمند'), 'default_amount': _('مقدار پیشفرض'),
-                  'is_timed': _('زمانی'), 'max_time': _('حداکثر زمان')}
+        labels = {'name': _('نام الگوی پرداخت'), 'default_amount': _('مقدار پیشفرض'),
+                  'is_timed': _('زمانی'), 'max_time': _('حداکثر زمان'),
+                  'receiver': _('شماره حساب مقصد')}
         error_messages = {'name': {'required': _('نام وظیفه کارمند را وارد کنید')},
-                          'default_amount': {'required': _('مجموعه سوال را وارد کنید'),
-                                           'invalid_choice': _('چنین مجموعه سوالی وجود ندارد')}}
+                          'default_amount': {'required': _('مقدار پیشفرض را وارد کنید'),
+                                           'invalid_choice': _('چنین مجموعه سوالی وجود ندارد')},
+                          'receiver': {'required': _('شماره حساب مقصد را وارد کنید'),
+                                       'invalid': _('شماره حساب معتبر نیست')}}
         #TODO if is_timed is check, max_time should be mandatory
         #TODO shouldnt we have receiver?
 
