@@ -22,6 +22,29 @@
                 <td class="text-right">{{ department.department_id }}</td>
                 <th class="text-right">شماره دپارتمان</th>
             </tr>
+            <tr>
+                <td class="text-right"> {{ department.manager.employee_id }}</td>
+                <th class="text-right"> شماره کارمندی مدیر</th>
+            </tr>
+            </tbody>
+
+        </table>
+        <table class="table table-bordered" style="background-color: aqua;">
+            <tbody>
+            <tr>
+                <th class="text-right">نام خانوادگی کارمند</th>
+                <th class="text-right">نام کارمند</th>
+                <th class="text-right">شماره کارمندی</th>
+
+            </tr>
+            {% for employee in employees %}
+            <tr>
+                <td class="text-right"> {{ employee.last_name}}</td>
+                <td class="text-right"> {{ employee.first_name}}</td>
+                <td class="text-right"> {{ employee.employee_id}}</td>
+
+            </tr>
+            {% endfor %}
             </tbody>
 
         </table>

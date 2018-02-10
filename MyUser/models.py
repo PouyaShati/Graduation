@@ -13,7 +13,7 @@ class MyUser(AbstractUser):
     user_type = models.CharField(max_length=2, choices=(
         (STUDENTUSER, 'Student'),
         (EMPLOYEEUSER, 'Employee'),
-        (ADMINUSER, 'Admin'),
+        (ADMINUSER, 'Operator'),
         # (ADMIN, 'Admin'),
         # (SYSTEM, 'System'),
     ),

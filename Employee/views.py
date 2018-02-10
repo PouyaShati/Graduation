@@ -69,9 +69,9 @@ def employee_panel(request):  # , action):
 
 def add_department(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Admin/admin_login')
+        return HttpResponseRedirect('/operator/login')
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/Admin/admin_login')
+        return HttpResponseRedirect('/operator/login')
 
     if request.method == 'GET':
         return render(request, 'Employee/add_department.html',
@@ -89,15 +89,15 @@ def add_department(request):
 
 def department_panel(request, department_id, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Admin/admin_login')
+        return HttpResponseRedirect('/operator/login')
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Admin/admin_login')
+        return HttpResponseRedirect('/operator/login')
 
     try:
         department = Department.objects.get(department_id=department_id)
 
         if request.user.user_type != MyUser.ADMINUSER and Employee.objects.get(user=request.user) != department.manager:
-            return HttpResponseRedirect('/Admin/admin_login')
+            return HttpResponseRedirect('/operator/login')
 
         if action == 'employ':
             if request.method == 'POST':
@@ -160,7 +160,8 @@ def department_panel(request, department_id, action):
             if request.method == 'POST':
                 return HttpResponseRedirect('/')
             else:
-                return render(request, 'Employee/department_panel.html', {'department': department})
+                employees = Employee.objects.filter(works_in=department)
+                return render(request, 'Employee/department_panel.html', {'department': department, 'employees': employees })
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/') #TODO change this
 
@@ -238,3 +239,31 @@ def add_task(request, task_bp_name):  # TODO explain this view so i can build te
 
             task.save()
             return HttpResponseRedirect('/add_task/' + task_bp_name)
+
+def all_employees_list(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/not_logged_in')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/not_eligible')
+    employees = Employee.objects.all()
+    return render(request, 'Employee/all_employees_list.html', {'employees': employees})
+
+def all_departments_list(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/not_logged_in')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/not_eligible')
+    departments = Department.objects.all()
+    return render(request, 'Employee/all_departments_list.html', {'departments': departments})
+
+def my_employees(request):
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/not_logged_in')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/not_eligible')
+
+    this_department = request.user.Employee.works_in
+    employees = Employee.objects.filter(works_in=this_department)
+    # return render(request, 'Employee/all_employees_list.html', {'employees': employees})
+    return render(request, this_department.name)
