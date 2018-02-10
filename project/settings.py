@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     #'graduate.apps.GraduateConfig',
     'Student.apps.StudentConfig',
     'Employee.apps.EmployeeConfig',
+    'Admin.apps.AdminConfig',
     'MyUser.apps.MyuserConfig',
     'Process.apps.ProcessConfig',
     'django.contrib.admin',

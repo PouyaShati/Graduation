@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import RegexValidator
+from MyUser.models import MyUser
 
 # Create your models here.
 
