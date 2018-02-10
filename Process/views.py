@@ -5,6 +5,7 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
 from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm
 from django.core.exceptions import ObjectDoesNotExist
+from MyUser.models import MyUser
 # Create your views here.
 
 
