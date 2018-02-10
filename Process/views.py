@@ -1,15 +1,27 @@
 from django.shortcuts import render
 from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint
-from Employee.models import Department
+from Employee.models import Department, Employee
 from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
 from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
+from MyUser.forms import MyUser
 # Create your views here.
 
 
 def create_process_blueprint(request, action): # TODO handle actions
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Employee/employee_login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Employee/employee_login')
+
+    employee = Employee.objects.get(user= request.user)
+    department = Department.objects.get(manager= employee)
+    if department == None:
+        return HttpResponseRedirect('/Employee/employee_login')
+
     if action == 'add_preprocess':
         if request.method == 'POST':
             form = AddPreprocessForm(request.POST)
@@ -44,7 +56,7 @@ def create_process_blueprint(request, action): # TODO handle actions
             form = CreateProcessBlueprintForm(request.POST)
             if form.is_valid():
                 try:
-                    department = form.cleaned_data['department']
+                    #department = form.cleaned_data['department']
                     process_bp = Process_Blueprint(name=form.cleaned_data['name'], department=department)
                     for preprocess_name in request.session['preprocesses']:
                         preprocess = Process_Blueprint.objects.get(name=preprocess_name)
@@ -61,6 +73,12 @@ def create_process_blueprint(request, action): # TODO handle actions
 
 
 def create_employee_task_blueprint(request):
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Employee/employee_login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Employee/employee_login')
+
     if request.method == 'POST':
         form = CreateEmployeeTaskBlueprintForm(request.POST)
         if form.is_valid():
@@ -77,6 +95,12 @@ def create_employee_task_blueprint(request):
 
 
 def create_form_blueprint(request):
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Employee/employee_login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Employee/employee_login')
+
     if request.method == 'POST':
         form = CreateFormBlueprintForm(request.POST)
         if form.is_valid():
@@ -92,6 +116,12 @@ def create_form_blueprint(request):
 
 
 def create_payment_blueprint(request):
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Employee/employee_login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Employee/employee_login')
+
     if request.method == 'POST':
         form = CreatePaymentBlueprintForm(request.POST)
         if form.is_valid():
@@ -111,6 +141,12 @@ def create_payment_blueprint(request):
 
 
 def create_question_set(request, action):
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Employee/employee_login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Employee/employee_login')
+
     if action == 'set_questions':
         FormSet = formset_factory(AddQuestionForm)
         if request.method == 'POST':
