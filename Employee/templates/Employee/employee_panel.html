@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'base/emp_base.html' %}
 
 
 {% block content %}
@@ -9,10 +9,10 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <div class="col-md-2"></div>
+    <div class="container col-md-8" >
 
-    <div class="container">
-
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="background-color: #999999">
             <tbody>
             <tr>
                 <td class="text-right"> {{ employee.first_name }}</td>

@@ -27,17 +27,32 @@
     <div class="container-fluid">
         <div class="col-sm-4" align="center">
             <ul class="nav navbar-nav">
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span
+                <li class="dropdown"><a id="acc_dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#">SHOULD CHANGE<span
                         class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a id = "title" href="#">SHOULD CHANGE</a></li>
+                        <li><a id="title" href="#">SHOULD CHANGE</a></li>
                         <li><a href="#">تماس با ما</a></li>
-                        <li><a href="/student/logout">خروج</a></li>
+                        <li><a href="/employee/logout">خروج</a></li>
                     </ul>
                 </li>
-                <li><a href="#">افزودن فرایند</a></li>
-                <li><a href="#">افزودن الگو</a></li>
-                <li><a href="#">جست‌و‌جو دانشجو</a></li>
+                <script>
+                    document.getElementById("acc_dropdown").innerHTML = "{{ employee.first_name }}";
+                </script>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
+                        class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="####">افزودن فرایند</a></li>
+                        <li><a href="/process/create_employee_task_blueprint">افزودن الگو</a></li>
+                        <li><a href="/employee/employ">استخدام کارمند</a></li>
+                        <li><a href="/employee/fire">اخراج کارمند</a></li>
+                        <li><a href="/employee/set_manager">تعیین رئیس ساختمان</a></li>
+                        <li><a href="####">جست‌و‌جو دانشجو</a></li>
+                        <li><a href="####">فهرست ساختمان‌ها</a></li>
+                        <li><a href="####">فهرست دانشجویان</a></li>
+                        <li><a href="/employee/add_department">اضافه کردن دانشکده</a></li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
         <div class="col-sm-4" align="center"><img alt="Brand"

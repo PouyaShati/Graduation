@@ -27,21 +27,21 @@
     <div class="container-fluid">
         <div class="col-sm-4" align="center">
             <ul class="nav navbar-nav">
-                <li class="dropdown"><a id="dropdown" class="dropdown-toggle" disabled= "true" data-toggle="dropdown" href="#">SHOULD CHANGE
-                    <span
-                            class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">pox</a></li>
-                        <li><a href="#">تماس با ما</a></li>
-                        <li><a href="/student/logout">خروج</a></li>
-                    </ul>
-                </li>
+                {% if student.first_name %}
+                    <li class="dropdown"><a id="dropdown" class="dropdown-toggle" disabled="true"
+                                            data-toggle="dropdown"
+                                            href="#">SHOULD CHANGE
+                        <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">pox</a></li>
+                            <li><a href="#">تماس با ما</a></li>
+                            <li><a href="/student/logout">خروج</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
                 <script>
-                    {% comment %}if (student.first_name != null) {{% endcomment %}
-                        document.getElementById("dropdown").innerHTML = "{{ student.first_name }}";
-                {% comment %}     }else {
-                        document.getElementById("dropdown").disable = true;
-                    }{% endcomment %}
+                    document.getElementById("dropdown").innerHTML = "{{ student.first_name }}";
                 </script>
 
             </ul>
