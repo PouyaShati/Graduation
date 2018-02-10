@@ -3,6 +3,7 @@ from django.http.response import HttpResponseRedirect
 from MyUser.models import MyUser
 from django.contrib.auth import authenticate, login, logout
 from .forms import AdminSignUpForm
+from .models import Admin
 # Create your views here.
 
 
