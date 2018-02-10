@@ -18,6 +18,7 @@ from django.conf.urls import include
 from django.conf.urls import url
 
 urlpatterns = [
+    url(r'^user/', include('MyUser.urls')),
     url(r'^student/', include('Student.urls')),
     url(r'^admin/', include('Admin.urls')),
     url(r'^employee/', include('Employee.urls')),
