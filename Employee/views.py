@@ -64,11 +64,15 @@ def employee_panel(request):  # , action):
         return HttpResponseRedirect('/Employee/employee_login')
 
     return render(request, 'Employee/employee_panel.html',
-                  {
-                      'employee': request.user.Employee})
+                  {'employee': request.user.Employee})
 
 
 def add_department(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Admin/admin_login')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/Admin/admin_login')
+
     if request.method == 'GET':
         return render(request, 'Employee/add_department.html',
                       {'add_department_form': AddDepartmentForm(label_suffix='')})
@@ -84,8 +88,17 @@ def add_department(request):
 
 
 def department_panel(request, department_id, action):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Admin/admin_login')
+    if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Admin/admin_login')
+
     try:
         department = Department.objects.get(department_id=department_id)
+
+        if request.user.user_type != MyUser.ADMINUSER and Employee.objects.get(user=request.user) != department.manager:
+            return HttpResponseRedirect('/Admin/admin_login')
+
         if action == 'employ':
             if request.method == 'POST':
                 form = EmployForm(request.POST)
@@ -154,14 +167,21 @@ def department_panel(request, department_id, action):
 
 
 def perform_task(request, task_id):  # TODO explain this view so i can build templates
+
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/employee/login')
+        return HttpResponseRedirect('/Employee/employee_login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/employee/login')
-    if hasattr(Task.objects.get(task_id=task_id), 'Form'):
+        return HttpResponseRedirect('/Employee/employee_login')
+
+    task = Task.objects.get(task_id=task_id)
+
+    if hasattr(task, 'Form'):
         return HttpResponseRedirect('/')
-    if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
+    if hasattr(task, 'Payment'):
         return HttpResponseRedirect('/')
+
+    if task.process.instance_of.department != Employee.objects.get(user= request.user).works_in:
+        return HttpResponseRedirect('/Employee/employee_login')
 
     if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
         FormSet = formset_factory(EmployeePerformTaskForm)
@@ -189,24 +209,32 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
 
 
 def add_task(request, task_bp_name):  # TODO explain this view so i can build template
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/Employee/employee_login')
+    if request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/Employee/employee_login')
+
     if request.method == 'GET':
         return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})
     else:
         form = AddTaskForm(request.POST)
-        task_bp = Task_Blueprint.objects.get(name=task_bp_name)
         process_bp = Process_Blueprint.objects.get(name=form['process_bp'])
-        student = Student.objects.get(student_id=form['student_id'])
-        process = Process.objects.get(instance_of=process_bp, owner=student)
+        if process_bp.department != Employee.objects.get(user= request.user).works_in:
+            return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix=''), 'message':"you don't work in that company"})
+        else:
+            task_bp = Task_Blueprint.objects.get(name=task_bp_name)
+            student = Student.objects.get(student_id=form['student_id'])
+            process = Process.objects.get(instance_of=process_bp, owner=student)
 
-        if hasattr(task_bp, 'Employee_Task_Blueprint'):
-            child_bp = Employee_Task_Blueprint.objects.get(name=task_bp_name)
-            task = Employee_Task(instance_of=child_bp, process=process)
-        elif hasattr(task_bp, 'Form_Blueprint'):
-            child_bp = Form_Blueprint.objects.get(name=task_bp_name)
-            task = Form(instance_of=child_bp, process=process)
-        elif hasattr(task_bp, 'Payment_Blueprint'):
-            child_bp = Payment_Blueprint.objects.get(name=task_bp_name)
-            task = Payment(instance_of=child_bp, process=process)
+            if hasattr(task_bp, 'Employee_Task_Blueprint'):
+                child_bp = Employee_Task_Blueprint.objects.get(name=task_bp_name)
+                task = Employee_Task(instance_of=child_bp, process=process)
+            elif hasattr(task_bp, 'Form_Blueprint'):
+                child_bp = Form_Blueprint.objects.get(name=task_bp_name)
+                task = Form(instance_of=child_bp, process=process)
+            elif hasattr(task_bp, 'Payment_Blueprint'):
+                child_bp = Payment_Blueprint.objects.get(name=task_bp_name)
+                task = Payment(instance_of=child_bp, process=process)
 
-        task.save()
-        return HttpResponseRedirect('/add_task/' + task_bp_name)
+            task.save()
+            return HttpResponseRedirect('/add_task/' + task_bp_name)

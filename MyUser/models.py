@@ -6,14 +6,14 @@ from django.core.validators import RegexValidator
 class MyUser(AbstractUser):
     STUDENTUSER = 'ST'
     EMPLOYEEUSER = 'EM'
-    OPERATORUSER = 'OP'
+    ADMINUSER = 'OP'
     # ADMIN = 'AD'
     # SYSTEM = 'SY' What's the purpose of these two?
 
     user_type = models.CharField(max_length=2, choices=(
         (STUDENTUSER, 'Student'),
         (EMPLOYEEUSER, 'Employee'),
-        (OPERATORUSER, 'Operator'),
+        (ADMINUSER, 'Admin'),
         # (ADMIN, 'Admin'),
         # (SYSTEM, 'System'),
     ),
