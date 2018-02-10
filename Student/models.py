@@ -25,7 +25,4 @@ class Student(models.Model):
     phone_number = models.CharField(max_length=20, validators=[
         RegexValidator(regex=r'^((\+|00)\d{11,12})|(09\d{9})$',
         message="Invalid Phone Number")])
-    user_name = models.CharField(max_length=30) # Do we need this?
-    # password = models.IntegerField(default=0) Do we need this?
-    # logged_in = models.BooleanField(default=False) Do we need this?
-    account_confirmed = models.BooleanField(default=False) # What's this field's purpose?
+    user_name = models.CharField(max_length=30)
