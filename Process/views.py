@@ -19,7 +19,7 @@ def create_process_blueprint(request, action): # TODO handle actions
 
     employee = Employee.objects.get(user= request.user)
     department = Department.objects.get(manager= employee)
-    if department == None:
+    if department is None:
         return HttpResponseRedirect('/Employee/employee_login')
 
     if action == 'add_preprocess':

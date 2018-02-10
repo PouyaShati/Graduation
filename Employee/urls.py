@@ -13,5 +13,4 @@ urlpatterns = [
     url(r'^add_task/(?P<task_bp_name>\w*/?)$', views.add_task, name='add task'),
     url(r'all_employees_list/$', views.all_employees_list, name='all_employees_list'),
     url(r'all_departments_list/$', views.all_departments_list , name='all_departments_list'),
-    url(r'my_employees/$', views.my_employees, name='my_employees')
 ]

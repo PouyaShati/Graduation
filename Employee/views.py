@@ -255,15 +255,3 @@ def all_departments_list(request):
         return HttpResponseRedirect('/not_eligible')
     departments = Department.objects.all()
     return render(request, 'Employee/all_departments_list.html', {'departments': departments})
-
-def my_employees(request):
-
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect('/not_logged_in')
-    if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/not_eligible')
-
-    this_department = request.user.Employee.works_in
-    employees = Employee.objects.filter(works_in=this_department)
-    # return render(request, 'Employee/all_employees_list.html', {'employees': employees})
-    return render(request, this_department.name)
