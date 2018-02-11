@@ -147,7 +147,7 @@ class EmployForm(forms.ModelForm):
                                                  'placeholder': 'شماره کارمندی',
                                                  'style': 'text-align:right'})
         }
-        label = {
+        labels = {
             'employee_id': _('شماره کارمندی')
         }
         error_messages = {
@@ -166,7 +166,7 @@ class FireForm(forms.ModelForm):
                                                  'placeholder': 'شماره کارمندی',
                                                  'style': 'text-align:right'})
         }
-        label = {
+        labels = {
             'employee_id': _('شماره کارمندی')
         }
         error_messages = {
@@ -185,7 +185,7 @@ class SetManagerForm(forms.ModelForm):
                                                  'placeholder': 'شماره کارمندی',
                                                  'style': 'text-align:right'})
         }
-        label = {
+        labels = {
             'employee_id': _('شماره کارمندی')
         }
         error_messages = {

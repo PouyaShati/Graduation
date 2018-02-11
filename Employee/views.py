@@ -262,4 +262,4 @@ def all_departments_list(request):
 
 
 def employee_404(request):
-    return render(request, 'Employee/404.html')
+    return render(request, 'Employee/404.html', status=404)

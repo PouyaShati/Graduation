@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^employee/', include('Employee.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^process/', include('Process.urls')),
+    # url(r'.*', include('MyUser.urls')),
 ]

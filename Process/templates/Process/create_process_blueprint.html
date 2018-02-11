@@ -11,18 +11,71 @@
         </ul>
     {% endif %}
     <div class="container">
-        {{ success_message }} {# process blueprint added successfuly #}
         <form novalidate method="get" action="add_preprocess">
-            <button type="submit" value="add preprocess" class="btn btn-primary">add preprocess</button>
+            <button type="submit" value="افزودن وظیفه پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز</button>
 		</form>
     </div>
     <div class="container">
-        <form  novalidate method="post">
-		  {% csrf_token %}
-		  {{ form.as_p }}
-            <button type="submit" value="create process" class="btn btn-primary">create process</button>
+        <form novalidate method="get" action="add_default_task">
+            <button type="submit" value="افزودن وظیفه پیشفرض" class="btn btn-primary">افزودن وظیفه پیشفرض</button>
 		</form>
     </div>
+    <div class="container">
+        <form class="form-horizontal" novalidate method="post">{% csrf_token %}
+                        <fieldset>
+                            <legend>{{ title }}</legend>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <div class="control-group error">
+                                        <div align="center" class="form-actions">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            <span class="help-inline">
+                            {% for error in  field.errors %}
+                                <div align="center">
+                                <font color="red">
+                                    {{ error }}
+                                </font>
+                                </div> {% endfor %}
+                        </span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="control-group">
+                                        <div align="center">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help-inline">
+                                                    <small>
+                                                        {{ field.help_text }}
+                                                    </small>
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </fieldset>
+                        <div align="center">
+                            <div class="form-actions">
+                                <button type="submit" value="ساخت فرایند" class="btn btn-primary">ساخت فرایند</button>
+                                <ul style="list-style-type:none">
+                                    {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div>
+                                {{ success_message }} {# process blueprint added successfuly #}
+                            </div>
+                        </div>
+                    </form>
+    </div>
 {% endblock %}
+
+
 
 

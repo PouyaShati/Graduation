@@ -3,7 +3,7 @@ from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_
 from Employee.models import Department, Employee
 from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
-from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm
+from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm, AddDefaultTaskForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
 from MyUser.models import MyUser
@@ -82,8 +82,8 @@ def create_process_blueprint(request, action): # TODO handle actions
                     #department = form.cleaned_data['department']
                     process_bp = Process_Blueprint(name=form.cleaned_data['name'], department=department)
                     if 'preprocesses' in request.session.keys():
-                        for preprocess_name in request.session['preprocesses']:
-                            preprocess = Process_Blueprint.objects.get(name=preprocess_name)
+                        for preprocess in request.session['preprocesses']:
+                            # preprocess = Process_Blueprint.objects.get(name=preprocess_name)
                             process_bp.preprocesses.add(preprocess)
                             del request.session['preprocesses']
 
@@ -211,7 +211,7 @@ def create_question_set(request, action):
         if request.method == 'POST':
             form = CreateQuestionSetForm(request.POST)
             if form.is_valid():
-                question_set = Question_Set(name=form['name'])
+                question_set = Question_Set(name=form.cleaned_data['name'])
                 if 'question_texts' in request.session.keys():
                     for i in range(0, len(request.session['question_texts'])):
                         question = Question(text = request.session['question_texts'][i], type = request.session['question_types'][i],

@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^login/$', views.operator_login, name='operator_login'),
     url(r'^logout/$', views.operator_logout, name='operator_logout'),
     url(r'^panel/$', views.operator_panel, name='operator_panel'),
+    # url(r'^.*/$', views.operator_404, name='operator_404')
 ]

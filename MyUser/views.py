@@ -28,3 +28,6 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/user/login')
+
+def handle404(request):
+    return render(request, 'MyUser/404.html', status=404)

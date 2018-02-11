@@ -1,7 +1,6 @@
-<head><title>ساخت الگوی وظیفه کارمند</title></head>
+<head><title>افزودن فرایند پیشنیاز</title></head>
 
-{% extends 'base/emp_base.html' %}
-
+{% extends 'base/base.html' %}
 
 {% block content %}
     <div class="container">
@@ -9,8 +8,9 @@
         <div class="row" id="pwd-container">
             <div class="col-md-4"></div>
 
-            <div class="col-md-4" id="fill_out_form">
+            <div class="col-md-4">
                 <section class="login-form">
+                    {{ successfully_added }}
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>
@@ -50,15 +50,19 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div id="button_submit" class="form-actions">
-                                <button type="submit" value="ساخت الگوی وظیفه کارمند" class="btn btn-primary">ساخت الگوی وظیفه کارمند</button>
+                            <div class="form-actions">
+                                <button type="submit" value="افزودن وظیفه پیشفرض" class="btn btn-primary">افزودن وظیفه پیشفرض</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
                                     <li>{{ error }}</li>
                                     {% endfor %}
+                                    {{ message }} {# preprocess doesnt exist #}
                                 </ul>
                             </div>
                         </div>
+                    </form>
+                    <form class="form-horizontal" novalidate method="get" action="/process/create_process_blueprint">
+                        <button type="submit" value="اتمام" class="btn btn-primary">اتمام</button>
                     </form>
                 </section>
             </div>

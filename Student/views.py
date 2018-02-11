@@ -5,6 +5,7 @@ from .models import Student
 from Student.forms import StudentSignUpForm, StudentPerformPaymentForm, StudentFillFormForm
 from django.contrib.auth import authenticate, login, logout
 from django.forms import formset_factory
+from django.core.exceptions import ObjectDoesNotExist
 
 
 from Process.models import Process_Blueprint, Process, Task, Employee_Task_Blueprint, Form_Blueprint, Payment_Blueprint, Employee_Task, Form, Payment, Answer_Set, Answer
@@ -71,9 +72,9 @@ def student_panel(request): #, action):
         return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.STUDENTUSER:
         return HttpResponseRedirect('/user/login')
-
+    processes = Process.objects.filter(owner=request.user.Student)
     return render(request, 'Student/student_panel.html',
-                  {'student': request.user.Student})  # , 'providerProvideRequestForm': provider_provide_request_form })44
+                  {'student': request.user.Student, 'processes':processes})  # , 'providerProvideRequestForm': provider_provide_request_form })44
 
 def perform_task(request, task_id):
     if not request.user.is_authenticated():
@@ -125,11 +126,29 @@ def perform_task(request, task_id):
 
 def students_list(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/not_logged_in')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         return HttpResponseRedirect('/not_eligible')
     students = Student.objects.all()
     return render(request, 'Student/all_students_list.html', {'students': students})
 
 def student_404(request):
-    return render(request, 'Student/404.html')
+    return render(request, 'Student/404.html', status=404)
+
+def perform_process(request, process_blueprint_name): #TODO kar nemikone in
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.STUDENTUSER:
+        return HttpResponseRedirect('/not_eligible')
+    try:
+        process_bp = Process_Blueprint.objects.get(name=process_blueprint_name)
+        process = Process.objects.filter(owner = request.user.Student, instance_of=process_bp)
+        tasks = Process.objects.values_list('defaults', flat=True)
+
+
+        payment_tasks = Payment.objects.filter(instance_of__default_of=process_bp)
+    except ObjectDoesNotExist:
+        pass
+    return render(request, '/Process/process_status.html', {'process': process,
+                                                                'form_tasks':form_tasks,
+                                                                'payment_tasks': payment_tasks}) #TODO this process doesnt exist

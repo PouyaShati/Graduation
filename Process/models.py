@@ -34,6 +34,10 @@ class Answer(models.Model):
 
 
 
+class Task_Blueprint(models.Model):
+    name = models.CharField(max_length=60)
+    # default_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True, blank=True) #TODO what is default of? null=True ro man gozashtam
+
 
 class Process_Blueprint(models.Model):
     name = models.CharField(max_length=60)
@@ -43,10 +47,6 @@ class Process_Blueprint(models.Model):
     # TODO Add processes that get invalidate after failing to validate this one
     def __str__(self):
         return str(self.name)
-
-class Task_Blueprint(models.Model):
-    name = models.CharField(max_length=60)
-    # default_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True, blank=True) #TODO what is default of? null=True ro man gozashtam
 
 class Student_Task_Blueprint(Task_Blueprint):
     is_timed = models.BooleanField(default=False)
