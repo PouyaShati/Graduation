@@ -10,7 +10,7 @@ class EmployeeSignUpForm(forms.ModelForm):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام کاربری',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:left'}
                                                        ),
                                 label=_("نام کاربری"),
                                 error_messages={
@@ -21,7 +21,7 @@ class EmployeeSignUpForm(forms.ModelForm):
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
                                                                   'placeholder': 'رمز عبور',
-                                                                  'style': 'text-align:right'}
+                                                                  'style': 'text-align:left'}
                                                            ),
                                 label=_("رمز عبور"),
                                 error_messages={
@@ -32,7 +32,7 @@ class EmployeeSignUpForm(forms.ModelForm):
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
                                                                   'placeholder': 'تکرار رمز عبور',
-                                                                  'style': 'text-align:right'}
+                                                                  'style': 'text-align:left'}
                                                            ),
                                 label=_("تکرار رمز عبور"),
                                 error_messages={
@@ -45,19 +45,21 @@ class EmployeeSignUpForm(forms.ModelForm):
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'نام',
-                                                 'style': 'text-align:right'}),
+                                                 'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control',
                                                 'placeholder': 'نام خانوادگی',
-                                                'style': 'text-align:right'}),
+                                                'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
             'email': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'ایمیل',
-                                            'style': 'text-align:right'}),
+                                            'style': 'text-align:left'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'شماره تماس',
-                                                   'style': 'text-align:right'}),
+                                                   'style': 'text-align:left'}),
             'employee_id': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'شماره کارمندی',
-                                                 'style': 'text-align:right'})
+                                                 'style': 'text-align:left'})
         }
         labels = {
             'first_name': _('نام'),
@@ -105,10 +107,11 @@ class AddDepartmentForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                                 'placeholder': 'نام دپارتمان',
-                                                'style': 'text-align:right'}),
+                                                'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
             'department_id': forms.NumberInput(attrs={'class': 'form-control',
                                            'placeholder': 'کد دپارتمان',
-                                           'style': 'text-align:right'
+                                           'style': 'text-align:left'
                                                       })
         }
 
@@ -145,7 +148,7 @@ class EmployForm(forms.ModelForm):
         widgets = {
             'employee_id': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'شماره کارمندی',
-                                                 'style': 'text-align:right'})
+                                                 'style': 'text-align:left'})
         }
         labels = {
             'employee_id': _('شماره کارمندی')
@@ -164,7 +167,7 @@ class FireForm(forms.ModelForm):
         widgets = {
             'employee_id': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'شماره کارمندی',
-                                                 'style': 'text-align:right'})
+                                                 'style': 'text-align:left'})
         }
         labels = {
             'employee_id': _('شماره کارمندی')
@@ -183,7 +186,7 @@ class SetManagerForm(forms.ModelForm):
         widgets = {
             'employee_id': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'شماره کارمندی',
-                                                 'style': 'text-align:right'})
+                                                 'style': 'text-align:left'})
         }
         labels = {
             'employee_id': _('شماره کارمندی')
@@ -201,7 +204,8 @@ class EmployeePerformTaskForm(forms.Form): # TODO change it in order to be able 
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               #'placeholder': 'preprocess name',
-                                                              #'style': 'text-align:right'
+                                                              'style': 'text-align:right',
+                                                              'direction': 'rtl'
                                                                 }
                                                        ),
                                 label=_("paid"),
@@ -216,7 +220,8 @@ class AddTaskForm(forms.Form):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام پروسه',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:left',
+                                                              'direction': 'rtl'}
                                                        ),
                                 label=_("نام پروسه"),
                                 error_messages={
@@ -226,8 +231,8 @@ class AddTaskForm(forms.Form):
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
-                                                              #'placeholder': 'preprocess name',
-                                                              #'style': 'text-align:right'
+                                                              'placeholder': 'شماره دانشجویی',
+                                                              'style': 'text-align:left'
                                                                 }
                                                        ),
                                 label=_("student_id"),

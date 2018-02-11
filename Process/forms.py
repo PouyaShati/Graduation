@@ -7,7 +7,7 @@ from Employee.models import Department
 class CreateProcessBlueprintForm(forms.ModelForm):
     class Meta:
         model = Process_Blueprint
-        fields = ['name', 'department']
+        fields = ['name']#, 'department']
     #     widgets = {
     #         'name': forms.TextInput(attrs={'class': 'form-control',
     #                                             'placeholder': 'نام پروسه',
@@ -34,6 +34,7 @@ class CreateProcessBlueprintForm(forms.ModelForm):
                         label=_('نام پروسه'),
                                           error_messages={'required': _('نام پروسه را انتحاب کنید')})
 
+    '''
     department = forms.ModelChoiceField(queryset=Department.objects.all(), widget=forms.Select(
                                                      attrs={'class': 'form-control',
                                                             'placeholder': 'نام دپارتمان',
@@ -41,6 +42,7 @@ class CreateProcessBlueprintForm(forms.ModelForm):
                                                             'direction': 'rtl'}),
                                         label=_('نام دپارتمان'),
                                           error_messages={'required': _('نام دپارتمان را انتخاب کنید')})
+    '''
 
 
 class AddPreprocessForm(forms.Form):

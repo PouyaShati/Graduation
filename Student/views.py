@@ -91,11 +91,14 @@ def perform_task(request, task_id):
     if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
         if request.method == 'POST':
             form = StudentPerformPaymentForm(request.POST)
-            if form.is_valid(): # TODO what does this is_valid() condition mean?
+            if form.is_valid():
 
                 student_payment = Payment.objects.get(task_id=task_id)
 
                 student_payment.paid = student_payment.paid + form['paid']
+
+                if student_payment.paid >= student_payment.instance_of.default_amount:
+                    student_payment.done = True
 
                 student_payment.save()
                 return HttpResponseRedirect('/student/perform_task')
@@ -108,7 +111,7 @@ def perform_task(request, task_id):
         FormSet = formset_factory(StudentFillFormForm)
         if request.method == 'POST':
             form_set = FormSet(request.POST)
-            if form_set.is_valid():  # TODO what does this is_valid() condition mean?
+            if form_set.is_valid():
 
                 student_form = Form.objects.get(task_id=task_id)
 
@@ -119,6 +122,8 @@ def perform_task(request, task_id):
                     answer = Answer(text=form_set['form-' + str(i) + '-answer'], belongs_to=answer_set)
                     answer.save()
                 answer_set.save()
+
+                # TODO add setting the done value
 
                 student_form.save()
                 return HttpResponseRedirect('/student/perform_task')
