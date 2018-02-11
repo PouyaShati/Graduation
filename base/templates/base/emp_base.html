@@ -41,11 +41,14 @@
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
                         class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="####">افزودن فرایند</a></li>
-                        <li><a href="/process/create_employee_task_blueprint">افزودن الگو</a></li>
-                        <li><a href="/employee/employ">استخدام کارمند</a></li>
-                        <li><a href="/employee/fire">اخراج کارمند</a></li>
-                        <li><a href="/employee/set_manager">تعیین رئیس ساختمان</a></li>
+                        {% if department_url %}
+                            <li><a href={{ department_url }}>پنل دپارتمان</a></li>
+                            <li><a href="/process/create_process_blueprint">ساخت الگوی فرایند</a></li>
+                        {% endif %}
+                        <li><a href="/process/create_employee_task_blueprint">ساخت الگوی وظیفه کارمند</a></li>
+                        <li><a href="/process/create_form_blueprint">ساخت الگوی فرم</a></li>
+                        <li><a href="/process/create_payment_blueprint">ساخت الگوی پرداخت</a></li>
+                        <li><a href="/process/create_question_set">ساخت مجموعه سوال</a></li>
                         <li><a href="####">جست‌و‌جو دانشجو</a></li>
                         <li><a href="####">فهرست ساختمان‌ها</a></li>
                         <li><a href="####">فهرست دانشجویان</a></li>

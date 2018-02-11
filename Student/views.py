@@ -38,7 +38,7 @@ def student_signup(request):
                     task.save()
                 process.save()
 
-            return HttpResponseRedirect('/student/login')
+            return HttpResponseRedirect('/user/login')
         else:
 
             return render(request, 'Student/student_signup.html', {'signup_form': form})
@@ -63,23 +63,23 @@ def student_login(request):
 
 def student_logout(request):
     logout(request)
-    return HttpResponseRedirect('/student/login')
+    return HttpResponseRedirect('/user/login')
 
 
 def student_panel(request): #, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/student/login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/student/login')
+        return HttpResponseRedirect('/user/login')
 
     return render(request, 'Student/student_panel.html',
                   {'student': request.user.Student})  # , 'providerProvideRequestForm': provider_provide_request_form })44
 
 def perform_task(request, task_id):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/student/login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/student/login')
+        return HttpResponseRedirect('/user/login')
     if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
         return HttpResponseRedirect('/')
 

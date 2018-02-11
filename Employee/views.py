@@ -29,7 +29,7 @@ def employee_signup(request):
             employee.user = user
 
             employee.save()
-            return HttpResponseRedirect('/employee/login')
+            return HttpResponseRedirect('/user/login')
         else:
 
             return render(request, 'Employee/employee_signup.html', {'signup_form': form})
@@ -54,24 +54,28 @@ def employee_login(request):
 
 def employee_logout(request):
     logout(request)
-    return HttpResponseRedirect('/employee/login')
+    return HttpResponseRedirect('/user/login')
 
 
 def employee_panel(request):  # , action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
-
+        return HttpResponseRedirect('/user/login')
+    try:
+        department = Department.objects.get(manager=request.user.Employee)
+        department_url = '/employee/department_panel/'+str(department.department_id)
+    except ObjectDoesNotExist:
+        department_url = None
     return render(request, 'Employee/employee_panel.html',
-                  {'employee': request.user.Employee})
+                  {'employee': request.user.Employee, 'department_url': department_url})
 
 
 def add_department(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/operator/login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/operator/login')
+        return HttpResponseRedirect('/user/login')
 
     if request.method == 'GET':
         return render(request, 'Employee/add_department.html',
@@ -89,15 +93,15 @@ def add_department(request):
 
 def department_panel(request, department_id, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/operator/login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/operator/login')
+        return HttpResponseRedirect('/user/login')
 
     try:
         department = Department.objects.get(department_id=department_id)
 
         if request.user.user_type != MyUser.ADMINUSER and Employee.objects.get(user=request.user) != department.manager:
-            return HttpResponseRedirect('/operator/login')
+            return HttpResponseRedirect('/user/login')
 
         if action == 'employ':
             if request.method == 'POST':
@@ -170,9 +174,9 @@ def department_panel(request, department_id, action):
 def perform_task(request, task_id):  # TODO explain this view so i can build templates
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     task = Task.objects.get(task_id=task_id)
 
@@ -182,7 +186,7 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
         return HttpResponseRedirect('/')
 
     if task.process.instance_of.department != Employee.objects.get(user= request.user).works_in:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
         FormSet = formset_factory(EmployeePerformTaskForm)
@@ -211,9 +215,9 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
 
 def add_task(request, task_bp_name):  # TODO explain this view so i can build template
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     if request.method == 'GET':
         return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})

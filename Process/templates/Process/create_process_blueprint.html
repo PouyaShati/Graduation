@@ -1,4 +1,4 @@
-<head><title>اضافه کردن ساختمان</title></head>
+<head><title>ساخت الگوی فرایند</title></head>
 {% extends 'base/base.html' %}
 
 
@@ -11,6 +11,7 @@
         </ul>
     {% endif %}
     <div class="container">
+        {{ success_message }} {# process blueprint added successfuly #}
         <form novalidate method="get" action="add_preprocess">
             <button type="submit" value="add preprocess" class="btn btn-primary">add preprocess</button>
 		</form>

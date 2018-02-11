@@ -13,14 +13,17 @@ from MyUser.models import MyUser
 def create_process_blueprint(request, action): # TODO handle actions
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     employee = Employee.objects.get(user= request.user)
-    department = Department.objects.get(manager= employee)
-    if department is None:
-        return HttpResponseRedirect('/Employee/employee_login')
+    try:
+        department = Department.objects.get(manager= employee)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/user/login')
+    # if department is None:
+    #     return HttpResponseRedirect('/employee/login')
 
     if action == 'add_preprocess':
         if request.method == 'POST':
@@ -65,8 +68,8 @@ def create_process_blueprint(request, action): # TODO handle actions
                             process_bp.preprocesses.add(preprocess)
                             del request.session['preprocesses']
                     process_bp.save()
-
-                    return HttpResponseRedirect('/')
+                    success_message = 'الگوی فرم با موفقیت ساخته شد'
+                    return render(request, 'Process/create_process_blueprint.html', {'form': form, 'success_message':success_message})
                 except ObjectDoesNotExist:
                     return render(request, 'Process/create_process_blueprint.html', {'form': form})
             else:
@@ -77,9 +80,9 @@ def create_process_blueprint(request, action): # TODO handle actions
 def create_employee_task_blueprint(request):
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     if request.method == 'POST':
         form = CreateEmployeeTaskBlueprintForm(request.POST)
@@ -99,9 +102,9 @@ def create_employee_task_blueprint(request):
 def create_form_blueprint(request):
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     if request.method == 'POST':
         form = CreateFormBlueprintForm(request.POST)
@@ -120,9 +123,9 @@ def create_form_blueprint(request):
 def create_payment_blueprint(request):
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     if request.method == 'POST':
         form = CreatePaymentBlueprintForm(request.POST)
@@ -145,9 +148,9 @@ def create_payment_blueprint(request):
 def create_question_set(request, action):
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/Employee/employee_login')
+        return HttpResponseRedirect('/user/login')
 
     if action == 'set_questions':
         if request.method == 'POST':
