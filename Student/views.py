@@ -140,15 +140,24 @@ def perform_process(request, process_blueprint_name): #TODO kar nemikone in
         return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.STUDENTUSER:
         return HttpResponseRedirect('/not_eligible')
+
     try:
         process_bp = Process_Blueprint.objects.get(name=process_blueprint_name)
-        process = Process.objects.filter(owner = request.user.Student, instance_of=process_bp)
-        tasks = Process.objects.values_list('defaults', flat=True)
+        process = Process.objects.filter(owner=request.user.Student, instance_of=process_bp)
+        form_tasks = []
+        payment_tasks = []
+        for task in process.task_set:
+            if hasattr(task, 'Form'):
+                form_tasks.append(task)
+            elif hasattr(task, 'Payment'):
+                payment_tasks.append(task)
 
 
-        payment_tasks = Payment.objects.filter(instance_of__default_of=process_bp)
+        #tasks = Process.objects.values_list('defaults', flat=True)
+        #payment_tasks = Payment.objects.filter(instance_of__default_of=process_bp)
     except ObjectDoesNotExist:
-        pass
-    return render(request, '/Process/process_status.html', {'process': process,
+        message = 'چنین فرایندی وجود ندارد'
+        return render(request, 'Process/process_status.html', {'message': message})
+    return render(request, 'Process/process_status.html', {'process': process,
                                                                 'form_tasks':form_tasks,
                                                                 'payment_tasks': payment_tasks}) #TODO this process doesnt exist
