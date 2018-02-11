@@ -1,6 +1,6 @@
 <head><title>افزودن فرایند پیشنیاز</title></head>
 
-{% extends 'base/base.html' %}
+{% extends base_html %}
 
 {% block content %}
     <div class="container">
@@ -10,7 +10,7 @@
 
             <div class="col-md-4">
                 <section class="login-form">
-                    {{ successfully_added }}
+                    <div align="center">{{ successfully_added }}</div>
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>

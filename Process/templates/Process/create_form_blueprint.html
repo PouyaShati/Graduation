@@ -1,6 +1,6 @@
 <head><title>ساخت الگوی فرم</title></head>
 
-{% extends 'base/emp_base.html' %}
+{% extends base_html %}
 
 {% block content %}
     <div class="container">
@@ -56,6 +56,9 @@
                                     <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
+                            </div>
+                            <div align="center">
+                            {{ success }}
                             </div>
                         </div>
                     </form>

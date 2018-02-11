@@ -31,14 +31,14 @@ class Question(models.Model):
     belongs_to = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.text)
 
 class Answer(models.Model):
     text = models.CharField(max_length=1000)
     belongs_to = models.ForeignKey(Answer_Set, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.text)
 
 
 

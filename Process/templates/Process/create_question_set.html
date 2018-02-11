@@ -1,5 +1,5 @@
 <head><title>ساخت مجموعه سوال</title></head>
-{% extends 'base/emp_base.html' %}
+{% extends base_html %}
 
 
 {% block content %}
@@ -57,10 +57,19 @@
                             <button type="submit" value="ساخت مجموعه سوال" class="btn btn-primary">ساخت مجموعه سوال
                             </button>
                         </div>
-
                     </div>
+                        <div align="center">
+                            {{ success_message }}
+                        </div>
                 </div>
             </form>
+                    {% if name %}
+                    <div align="center">
+                        <form class="form-horizontal" novalidate method="get" action="/process/question_set_page/{{ name }}">
+                            <button type="submit" value="صفحه مجموعه سوال" class="btn btn-primary">صفخه مجموعه سوال</button>
+                        </form>
+                    </div>
+                    {% endif %}
         </div>
 {% endblock %}
 
