@@ -7,13 +7,13 @@ from MyUser.models import MyUser
 
 class Student(models.Model):
     majors = [
-        ('Computer Engineering', 'Computer Engineering'),
-        ('Electrical Engineering', 'Electrical Engineering'),
-        ('Civil Engineering', 'Civil Engineering'),
-        ('Mechanical Engineering', 'Mechanical Engineering'),
-        ('Mathematics', 'Mathematics'),
-        ('Physics', 'Physics'),
-        ('Chemistry', 'Chemistry')
+        ('مهندسی کامپیوتر', 'مهندسی کامپیوتر'),
+        ('مهندسی برق', 'مهندسی برق'),
+        ('مهندسی عمران', 'مهندسی عمران'),
+        ('مهندسی مکانیک', 'مهندسی مکانیک'),
+        ('ریاضیات', 'ریاضیات'),
+        ('فیزیک', 'فیزیک'),
+        ('شیمی', 'شیمی')
                               ]
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name='Student')
     student_id = models.IntegerField()
