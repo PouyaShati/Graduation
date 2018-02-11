@@ -2,6 +2,7 @@ from django.db import models
 from Student.models import Student
 from Employee.models import Department
 from django.utils import timezone
+from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
@@ -50,11 +51,6 @@ class Task_Blueprint(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Process_Blueprint(models.Model):
-    name = models.CharField(max_length=60)
-    preprocesses = models.ManyToManyField('self')
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
-    defaults = models.ManyToManyField(Task_Blueprint)
     # TODO Add processes that get invalidate after failing to validate this one
     def __str__(self):
         return str(self.name)
@@ -74,6 +70,13 @@ class Payment_Blueprint(Student_Task_Blueprint):
     default_amount = models.IntegerField(null=True)
 
 
+class Process_Blueprint(models.Model):
+    name = models.CharField(max_length=60)
+    preprocesses = models.ManyToManyField('self')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
+    employee_task_bp_defaults = models.ManyToManyField(Employee_Task_Blueprint)
+    form_bp_defaults = models.ManyToManyField(Form_Blueprint)
+    payment_bp_defaults = models.ManyToManyField(Payment_Blueprint)
 
 
 
@@ -88,7 +91,7 @@ class Task(models.Model):
     task_id = models.AutoField(primary_key=True)
 
 class Student_Task(Task):
-    start_time = models.DateTimeField(default=timezone.ZERO)
+    start_time = models.DateTimeField(default=datetime.now(), null=True)
 
 class Employee_Task(Task):
     answer_set = models.OneToOneField(Answer_Set, on_delete=models.CASCADE, null=True)

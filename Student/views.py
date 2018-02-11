@@ -29,15 +29,19 @@ def student_signup(request):
             student.save()
             for process_bp in Process_Blueprint.objects.all():
                 process = Process(instance_of=process_bp, owner=student)
-                for task_bp in process_bp.defaults.all():
-                    if hasattr(task_bp, 'Employee_Task_Blueprint'):
-                        task = Employee_Task(process=process, instance_of=task_bp)
-                    elif hasattr(task_bp, 'Form_Blueprint'):
-                        task = Form(process=process, instance_of=task_bp)
-                    elif hasattr(task_bp, 'Payment_Blueprint'):
-                        task = Payment(process=process, instance_of=task_bp)
-                    task.save()
                 process.save()
+                for task_bp in process_bp.employee_task_bp_defaults.all():
+                    task = Employee_Task(process=process, instance_of=task_bp)
+                    task.save()
+                for task_bp in process_bp.form_bp_defaults.all():
+                    task = Form(process=process, instance_of=task_bp)
+                    task.save()
+                for task_bp in process_bp.payment_bp_defaults.all():
+                    task = Payment(process=process, instance_of=task_bp)
+                    task.save()
+
+                    # task.save()
+                # process.save()
 
             return HttpResponseRedirect('/user/login')
         else:
@@ -143,14 +147,14 @@ def perform_process(request, process_blueprint_name): #TODO kar nemikone in
 
     try:
         process_bp = Process_Blueprint.objects.get(name=process_blueprint_name)
-        process = Process.objects.filter(owner=request.user.Student, instance_of=process_bp)
-        form_tasks = []
-        payment_tasks = []
-        for task in process.task_set:
-            if hasattr(task, 'Form'):
-                form_tasks.append(task)
-            elif hasattr(task, 'Payment'):
-                payment_tasks.append(task)
+        process = Process.objects.get(owner=request.user.Student, instance_of=process_bp)
+        form_tasks = Form.objects.filter(process= process)
+        payment_tasks = Payment.objects.filter(process=process)
+        # for task in process.form_task_set.all():
+        #     if hasattr(task, 'Form'):
+        #         form_tasks.append(task)
+        #     elif hasattr(task, 'Payment'):
+        #         payment_tasks.append(task)
 
 
         #tasks = Process.objects.values_list('defaults', flat=True)

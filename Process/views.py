@@ -3,7 +3,7 @@ from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_
 from Employee.models import Department, Employee
 from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
-from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm, AddDefaultTaskForm
+from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm, AddDefaultEmployeeTaskForm, AddDefaultFormBlueprintTaskForm, AddDefaultPaymentBlueprintTaskForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
 from MyUser.models import MyUser
@@ -151,14 +151,14 @@ def process_blueprint_page(request, name, action=''):
         else:
             form = AddPreprocessForm(label_suffix='')
             return render(request, 'Process/add_preprocess.html', {'form': form, 'return_link': return_link})
-    elif action == 'add_default_task':
+    elif action == 'add_default_employee_task':
         if request.method == 'POST':
-            form = AddDefaultTaskForm(request.POST)
+            form = AddDefaultEmployeeTaskForm(request.POST)
             if form.is_valid():
                 try:
-                    default_task = form.cleaned_data['name']
+                    default_task = form.cleaned_data['employee_task_bp_name']
                     # request.session['default_tasks'].append(default_task)
-                    process_pb.defaults.add(default_task)
+                    process_pb.employee_task_bp_defaults.add(default_task)
                     process_pb.save()
                     successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
                     return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added
@@ -169,7 +169,47 @@ def process_blueprint_page(request, name, action=''):
             else:
                 return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link})
         else:
-            form = AddDefaultTaskForm(label_suffix='')
+            form = AddDefaultEmployeeTaskForm(label_suffix='')
+            return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link})
+    elif action == 'add_default_form_task':
+        if request.method == 'POST':
+            form = AddDefaultFormBlueprintTaskForm(request.POST)
+            if form.is_valid():
+                try:
+                    default_task = form.cleaned_data['form_bp_name']
+                    # request.session['default_tasks'].append(default_task)
+                    process_pb.form_bp_defaults.add(default_task)
+                    process_pb.save()
+                    successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
+                    return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added
+                                                                             ,'return_link': return_link})
+                except ObjectDoesNotExist:
+                    message = 'چنین وظیفه‌ای وجود ندارد'
+                    return render(request, 'Process/add_default_task.html', {'form': form, 'message': message, 'return_link': return_link})
+            else:
+                return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link})
+        else:
+            form = AddDefaultFormBlueprintTaskForm(label_suffix='')
+            return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link})
+    elif action == 'add_default_payment_task':
+        if request.method == 'POST':
+            form = AddDefaultPaymentBlueprintTaskForm(request.POST)
+            if form.is_valid():
+                try:
+                    default_task = form.cleaned_data['payment_bp_name']
+                    # request.session['default_tasks'].append(default_task)
+                    process_pb.payment_bp_defaults.add(default_task)
+                    process_pb.save()
+                    successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
+                    return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added
+                                                                             ,'return_link': return_link})
+                except ObjectDoesNotExist:
+                    message = 'چنین وظیفه‌ای وجود ندارد'
+                    return render(request, 'Process/add_default_task.html', {'form': form, 'message': message, 'return_link': return_link})
+            else:
+                return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link})
+        else:
+            form = AddDefaultPaymentBlueprintTaskForm(label_suffix='')
             return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link})
     else:
         return render(request, 'Process/process_blueprint_page.html', {'process_pb': process_pb})

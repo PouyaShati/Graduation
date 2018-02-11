@@ -20,34 +20,7 @@
                 <td class="text-right"> {{ process.instance_of.name }}</td>
                 <th class="text-right">نام فرایند</th>
             </tr>
-            <tr>
-                <td class="text-right"> {{ process.}}</td>
-                <th class="text-right">نام خانوادگی</th>
-
-
-            </tr>
-            <tr>
-                <td class="text-right"> {{ student.email }}</td>
-                <th class="text-right">رایانامه</th>
-
-            </tr>
-            <tr>
-                <td class="text-right"> {{ student.phone_number }}</td>
-                <th class="text-right">شماره تلفن</th>
-
-            </tr>
-            <tr>
-                <td class="text-right">{{ student.student_id }}</td>
-                <th class="text-right">شماره‌ی دانشجویی</th>
-
-            </tr>
-            <tr>
-                <td class="text-right">{{ student.major }}</td>
-                <th class="text-right">رشته</th>
-
-            </tr>
             </tbody>
-
         </table>
 
         <table class="table table-bordered" style="background-color: #999999;">
@@ -56,10 +29,11 @@
                 <th class="text-right">نوع فرایند</th>
                 <th class="text-right">وضعیت</th>
             </tr>
-            {% for process in processes %}
+            {% for form_task in form_tasks%}
             <tr>
-                <td class="text-right"> {{ process.instance_of.name }}</td>
-                <td class="text-right"> {% if process.validated %} کامل {% else %} ناقض {% endif %}</td>
+                <td class="text-right"> {{ form_task.process.name}}</td>
+                <td class="text-right"> نام فرایند مربوطه</td>
+                <td class="text-right"> {{  form_task.task_id}}</td>
             </tr>
             {% endfor %}
             </tbody>

@@ -58,16 +58,43 @@ class AddPreprocessForm(forms.Form):
                                     'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
 
 
-class AddDefaultTaskForm(forms.Form):
-    name = forms.ModelChoiceField(queryset=Task_Blueprint.objects.all(),
+class AddDefaultEmployeeTaskForm(forms.Form):
+    employee_task_bp_name = forms.ModelChoiceField(queryset=Employee_Task_Blueprint.objects.all(),
                                 widget=forms.Select(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
+                                                              'placeholder': 'نام الگوی وظیفه کارمند پیشفرض',
+                                                              'style': 'text-align:right'}
                                                               'placeholder': 'نام وظیفه پیشفرض',
                                                               'style': 'text-align:right',
                                                            'direction': 'rtl'}
                                                        ),
-                                label=_("نام وظیفه پیشفرض"),
+                                label=_('نام الگوی وظیفه کارمند پیشفرض'),
+                                error_messages={
+                                    'required': _('نام وظیفه پیشفرض را وارد کنید'),
+                                    'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
+class AddDefaultFormBlueprintTaskForm(forms.Form):
+    form_bp_name = forms.ModelChoiceField(queryset=Form_Blueprint.objects.all(),
+                                widget=forms.Select(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'نام الگوی فرم پیشفرض',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_('نام الگوی فرم پیشفرض'),
+                                error_messages={
+                                    'required': _('نام وظیفه پیشفرض را وارد کنید'),
+                                    'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
+
+class AddDefaultPaymentBlueprintTaskForm(forms.Form):
+    payment_bp_name = forms.ModelChoiceField(queryset=Payment_Blueprint.objects.all(),
+                                widget=forms.Select(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'نام الگوی پرداخت پیشفرض',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_('نام الگوی پرداخت پیشفرض'),
                                 error_messages={
                                     'required': _('نام وظیفه پیشفرض را وارد کنید'),
                                     'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
