@@ -29,14 +29,16 @@ class CreateProcessBlueprintForm(forms.ModelForm):
     #     }
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                 'placeholder': 'نام پروسه',
-                                                'style': 'text-align:right'}),
+                                                'style': 'text-align:right',
+                                                         'direction': 'rtl'}),
                         label=_('نام پروسه'),
                                           error_messages={'required': _('نام پروسه را انتحاب کنید')})
 
     department = forms.ModelChoiceField(queryset=Department.objects.all(), widget=forms.Select(
                                                      attrs={'class': 'form-control',
                                                             'placeholder': 'نام دپارتمان',
-                                                            'style': 'text-align:right'}),
+                                                            'style': 'text-align:right',
+                                                            'direction': 'rtl'}),
                                         label=_('نام دپارتمان'),
                                           error_messages={'required': _('نام دپارتمان را انتخاب کنید')})
 
@@ -47,7 +49,8 @@ class AddPreprocessForm(forms.Form):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام فرایند پیشنیاز',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:right',
+                                                           'direction': 'rtl'}
                                                        ),
                                 label=_("نام فرایند پیشنیاز"),
                                 error_messages={
@@ -61,7 +64,8 @@ class AddDefaultTaskForm(forms.Form):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام وظیفه پیشفرض',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:right',
+                                                           'direction': 'rtl'}
                                                        ),
                                 label=_("نام وظیفه پیشفرض"),
                                 error_messages={
@@ -89,13 +93,15 @@ class CreateEmployeeTaskBlueprintForm(forms.ModelForm):
     #     }
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                             'placeholder': 'نام الگوی وظیفه کارمند',
-                                                            'style': 'text-align:right'}),
+                                                            'style': 'text-align:right',
+                                                         'direction': 'rtl'}),
                            label = _('نام الگوی وظیفه کارمند'),
                            error_messages={'required': _('نام الگوی وظیفه کارمند')})
     question_set = forms.ModelChoiceField(queryset=Question_Set.objects.all(), widget=forms.Select(
                                                      attrs={'class': 'form-control',
                                                             'placeholder': 'مجموعه سوال',
-                                                            'style': 'text-align:right'}),
+                                                            'style': 'text-align:right',
+                                                            'direction': 'rtl'}),
                                           label=_('مجموعه سوال'),
                                           error_messages={'required': _('مجموعه سوال را انتحاب کنید')})
 
@@ -126,21 +132,23 @@ class CreateFormBlueprintForm(forms.ModelForm):
     #                                        'invalid_choice': _('چنین مجموعه سوالی وجود ندارد')}}
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                             'placeholder': 'نام الگوی فرم',
-                                                            'style': 'text-align:right'}),
+                                                            'style': 'text-align:right',
+                                                         'direction': 'rtl'}),
                            label = _('نام الگوی فرم'),
                            error_messages={'required': _('نام الگوی فرم را وارد کنید')})
     question_set = forms.ModelChoiceField(queryset=Question_Set.objects.all(), widget=forms.Select(
                                                      attrs={'class': 'form-control',
                                                             'placeholder': 'مجموعه سوال',
-                                                            'style': 'text-align:right'}),
+                                                            'style': 'text-align:right',
+                                                            'direction': 'rtl'}),
                                           label=_('مجموعه سوال'),
                                           error_messages={'required': _('مجموعه سوال را انتحاب کنید')})
     is_timed = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control',
-                                                                  'placeholer': 'زمانی',
-                                                                  'style': 'text-align:right'}),
+                                                                  'placeholer': 'زمانی',}),
+                                                                  #'style': 'text-align:right'
                                   label= _('زمانی'), required=False)
-    max_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholer': 'حداکثر زمان',
-                                                                      'style': 'text-align:right'}),
+    max_time = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class': 'form-control', 'placeholer': 'حداکثر زمان'}),
+                                                                      #'style': 'text-align:right'
                                     label= _('حداکثر زمان'), required=False)
         #TODO if is_timed is check, max_time should be mandatory
 
@@ -153,22 +161,20 @@ class CreatePaymentBlueprintForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'نام الگوی پرداخت',
-                                           'style': 'text-align:right'}),
+                                           'style': 'text-align:right',
+                                           'direction': 'rtl'}),
             'default_amount': forms.NumberInput(attrs={'class': 'form-control',
-                                           'placeholder': 'مقدار پیشفرض',
-                                           'style': 'text-align:right'
-                                                       }),
+                                           'placeholder': 'مقدار پیشفرض'}),
+                                           #'style': 'text-align:right'
             'is_timed': forms.CheckboxInput(attrs={'class': 'form-control',
-                                                   'placeholder': 'زمانی',
-                                                   'style': 'text-align:right'
-                                                  }),
+                                                   'placeholder': 'زمانی'}),
+                                                   #'style': 'text-align:right'
             'max_time': forms.NumberInput(attrs={'class': 'form-control',
-                                                   'placeholder': 'حداکثر زمان',
-                                                   'style': 'text-align:right'
-                                                }),
+                                                   'placeholder': 'حداکثر زمان'}),
+                                                   #'style': 'text-align:right'
             'receiver': forms.NumberInput(attrs={'class': 'form-control',
-                                                 'placeholder': 'شماره حساب مقصد',
-                                          'style': 'text-align:right'})
+                                                 'placeholder': 'شماره حساب مقصد'})
+                                          #'style': 'text-align:right'
         }
         labels = {'name': _('نام الگوی پرداخت'), 'default_amount': _('مقدار پیشفرض'),
                   'is_timed': _('زمانی'), 'max_time': _('حداکثر زمان'),
@@ -202,10 +208,12 @@ class AddQuestionForm(forms.ModelForm):
         widgets = {
             'text': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'متن سوال',
-                                                   'style': 'text-align:right'}),
+                                                   'style': 'text-align:right',
+                                                'direction': 'rtl'}),
             'type': forms.Select(attrs={'class': 'form-control',
                                               'placeholder': 'نوع سوال',
-                                              'style': 'text-align:right'}),
+                                              'style': 'text-align:right',
+                                                'direction': 'rtl'}),
 
         }
         labels = {

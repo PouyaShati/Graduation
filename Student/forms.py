@@ -10,7 +10,7 @@ class StudentSignUpForm(forms.ModelForm):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام کاربری',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:left'}
                                                        ),
                                 label=_("نام کاربری"),
                                 error_messages={
@@ -21,7 +21,7 @@ class StudentSignUpForm(forms.ModelForm):
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
                                                                   'placeholder': 'رمز عبور',
-                                                                  'style': 'text-align:right'}
+                                                                  'style': 'text-align:left'}
                                                            ),
                                 label=_("رمز عبور"),
                                 error_messages={
@@ -32,7 +32,7 @@ class StudentSignUpForm(forms.ModelForm):
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
                                                                   'placeholder': 'تکرار رمز عبور',
-                                                                  'style': 'text-align:right'}
+                                                                  'style': 'text-align:left'}
                                                            ),
                                 label=_("تکرار رمز عبور"),
                                 error_messages={
@@ -45,21 +45,23 @@ class StudentSignUpForm(forms.ModelForm):
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'نام',
-                                                 'style': 'text-align:right'}),
+                                                 'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control',
                                                 'placeholder': 'نام خانوادگی',
-                                                'style': 'text-align:right'}),
+                                                'style': 'text-align:right',
+                                                'direction': 'rtl'}),
             'email': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'ایمیل',
-                                            'style': 'text-align:right'}),
+                                            'style': 'text-align:left'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'شماره تماس',
-                                                   'style': 'text-align:right'}),
+                                                   'style': 'text-align:left'}),
             'student_id': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'شماره دانشجویی',
-                                                 'style': 'text-align:right'}),
-            'major': forms.Select(choices=Student.majors, attrs={'class': 'form-control',
-                                                                 'style': 'text-align:right'})
+                                                 'style': 'text-align:left'}),
+            'major': forms.Select(choices=Student.majors, attrs={'class': 'form-control'})
+                                                                 #'style': 'text-align:right'
         }
         labels = {
             'first_name': _('نام'),
@@ -107,8 +109,8 @@ class StudentPerformPaymentForm(forms.ModelForm):
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
-                                                              #'placeholder': 'preprocess name',
-                                                              #'style': 'text-align:right'
+                                                              'placeholder': 'میزان پرداختی',
+                                                              'style': 'text-align:left'
                                                                 }
                                                        ),
                                 label=_("paid"),
@@ -121,8 +123,9 @@ class StudentFillFormForm(forms.ModelForm): # TODO change it in order to be able
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
-                                                              #'placeholder': 'preprocess name',
-                                                              #'style': 'text-align:right'
+                                                              'placeholder': 'پاسخ به سوال',
+                                                                'style': 'text-align:right',
+                                                                'direction': 'rtl'
                                                                 }
                                                        ),
                                 label=_("answer"),

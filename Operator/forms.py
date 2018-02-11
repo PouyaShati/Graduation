@@ -10,7 +10,7 @@ class OperatorSignUpForm(forms.ModelForm):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام کاربری',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:left'}
                                                        ),
                                 label=_("نام کاربری"),
                                 error_messages={
@@ -21,7 +21,7 @@ class OperatorSignUpForm(forms.ModelForm):
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
                                                                   'placeholder': 'رمز عبور',
-                                                                  'style': 'text-align:right'}
+                                                                  'style': 'text-align:leftt'}
                                                            ),
                                 label=_("رمز عبور"),
                                 error_messages={
@@ -32,7 +32,7 @@ class OperatorSignUpForm(forms.ModelForm):
                                                                   'max_length': 30,
                                                                   'render_value': 'False',
                                                                   'placeholder': 'تکرار رمز عبور',
-                                                                  'style': 'text-align:right'}
+                                                                  'style': 'text-align:leftt'}
                                                            ),
                                 label=_("تکرار رمز عبور"),
                                 error_messages={
@@ -45,16 +45,18 @@ class OperatorSignUpForm(forms.ModelForm):
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'نام',
-                                                 'style': 'text-align:right'}),
+                                                 'style': 'text-align:right',
+                                                 'direction': 'rtl'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control',
                                                 'placeholder': 'نام خانوادگی',
-                                                'style': 'text-align:right'}),
+                                                'style': 'text-align:right',
+                                                'direction': 'rtl'}),
             'email': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'ایمیل',
-                                            'style': 'text-align:right'}),
+                                            'style': 'text-align:left'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'شماره تماس',
-                                                   'style': 'text-align:right'}),
+                                                   'style': 'text-align:left'}),
         }
         labels = {
             'first_name': _('نام'),
