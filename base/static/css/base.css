@@ -1,18 +1,18 @@
 * {
     /*color: #555200;*/
-    font-family:'Lateef', 'Arial';
+    font-family: 'Lateef', 'Arial';
 }
 
 p {
-    color:#1AAA;
+    color: #1AAA;
 }
 
 #university-brand {
-    color:seagreen;
+    color: seagreen;
 }
 
 /*body {*/
-    /*background-image: url("/base/static/pics/bg3.png")*/
+/*background-image: url("/base/static/pics/bg3.png")*/
 /*}*/
 
 #table-header {
@@ -20,17 +20,25 @@ p {
     color: green;
 }
 
-
 #error {
     color: red;
 }
 
 #button_submit {
-     padding-top: 20px;
+    padding-top: 20px;
 }
 
 #fill_out_form {
     box-shadow: 3px 3px #3333;
     background-color: #fff;
-    border-radius: 30px;"
+    border-radius: 30px;
+"
+}
+
+#fourerror {
+    font-family: 'IranianSansRegular';
+    font-size: 40px;
+    font-weight: normal;
+    font-style: normal;
+    color: darkred;
 }

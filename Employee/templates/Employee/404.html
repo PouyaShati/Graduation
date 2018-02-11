@@ -1,5 +1,5 @@
 <head><title>صفحه خطا</title></head>
-{% extends 'base/base.html' %}
+{% extends 'base/emp_base.html' %}
 
 
 
@@ -12,13 +12,14 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="col-md-2"></div>
-    <div class="container col-md-8">
-        چنین صفحه ای وجود ندارد
-    <form novalidate method="get" action="/employee/panel">
+    <div class="col-md-4"></div>
+    <div id="fourerror" class="container col-md-4" align="center">
+        !!چنین صفحه‌ای وجود ندارد :**
+        <form id="button_submit" novalidate method="get" action="/student/panel">
             <button type="submit" value="بازگشت" class="btn btn-primary">بازگشت</button>
-		</form>
+        </form>
+
     </div>
-    <div class="col-md-2"></div>
+    <div class="col-md-4"></div>
 {% endblock %}
 
