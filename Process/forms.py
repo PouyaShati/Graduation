@@ -64,7 +64,7 @@ class AddDefaultEmployeeTaskForm(forms.Form):
                                                               'required': 'True',
                                                               'max_length': 30,
                                                               'placeholder': 'نام الگوی وظیفه کارمند پیشفرض',
-                                                              'style': 'text-align:right'}
+                                                              'style': 'text-align:right',
                                                               'placeholder': 'نام وظیفه پیشفرض',
                                                               'style': 'text-align:right',
                                                            'direction': 'rtl'}
