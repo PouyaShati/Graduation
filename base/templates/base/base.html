@@ -29,9 +29,9 @@
         <div class="col-sm-4" align="center">
             <ul class="nav navbar-nav">
                 {% if student.first_name %}
-                    <li class="dropdown"><a id="dropdown" class="dropdown-toggle" disabled="true"
+                    <li class="dropdown"><a class="dropdown-toggle" disabled="true"
                                             data-toggle="dropdown"
-                                            href="#">SHOULD CHANGE
+                                            href="#">پنل کاربر
                         <span
                                 class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -40,12 +40,18 @@
                             <li><a href="/student/logout">خروج</a></li>
                         </ul>
                     </li>
-                    <li><a href="/student/panel">بازگشت</a></li>
+                    <li><a href="/student/panel">خانه</a></li>
+                    <li><a href="#" onclick="goBack()">بازگشت</a></li>
+                    <script>
+                        function goBack() {
+                            window.history.back();
+                        }
+                    </script>
 
                 {% endif %}
-                <script>
-                    document.getElementById("dropdown").innerHTML = "{{ student.first_name }}";
-                </script>
+                {#                <script>#}
+                {#                    document.getElementById("dropdown").innerHTML = "{{ student.first_name }}";#}
+                {#                </script>#}
 
             </ul>
         </div>
@@ -76,7 +82,6 @@
 {#    background-color: red;#}
 {#    color: white;#}
 {#    text-align: center;#}
-{#}#}
 {#</style>#}
 {##}
 {#<div class="footer">#}

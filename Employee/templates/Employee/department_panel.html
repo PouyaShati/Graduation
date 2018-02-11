@@ -1,6 +1,6 @@
 <head><title>ساختمان</title></head>
 
-{% extends 'base/base.html' %}
+{% extends 'base/emp_base.html' %}
 
 
 {% block content %}
@@ -12,21 +12,22 @@
         </ul>
     {% endif %}
 
-    <div class="container">
+    <div class="col-md-2"></div>
+    <div class="container col-md-8">
 
         <table class="table table-bordered">
             <tbody>
             <tr>
-                <td class="text-right"> {{ department.name }}</td>
-                <th class="text-right"> نام دپارتمان</th>
+                <td class="text-center"> {{ department.name }}</td>
+                <th class="text-center"> نام دپارتمان</th>
             </tr>
             <tr>
-                <td class="text-right">{{ department.department_id }}</td>
-                <th class="text-right">شماره دپارتمان</th>
+                <td class="text-center">{{ department.department_id }}</td>
+                <th class="text-center">شماره دپارتمان</th>
             </tr>
             <tr>
-                <td class="text-right"> {{ department.manager.employee_id }}</td>
-                <th class="text-right"> شماره کارمندی مدیر</th>
+                <td class="text-center"> {{ department.manager.employee_id }}</td>
+                <th class="text-center"> شماره کارمندی مدیر</th>
             </tr>
             </tbody>
 
@@ -34,16 +35,16 @@
         <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <th class="text-right">نام خانوادگی کارمند</th>
-                <th class="text-right">نام کارمند</th>
-                <th class="text-right">شماره کارمندی</th>
+                <th class="text-center">نام خانوادگی کارمند</th>
+                <th class="text-center">نام کارمند</th>
+                <th class="text-center">شماره کارمندی</th>
 
             </tr>
             {% for employee in employees %}
                 <tr>
-                    <td class="text-right"> {{ employee.last_name }}</td>
-                    <td class="text-right"> {{ employee.first_name }}</td>
-                    <td class="text-right"> {{ employee.employee_id }}</td>
+                    <td class="text-center"> {{ employee.last_name }}</td>
+                    <td class="text-center"> {{ employee.first_name }}</td>
+                    <td class="text-center"> {{ employee.employee_id }}</td>
 
                 </tr>
             {% endfor %}

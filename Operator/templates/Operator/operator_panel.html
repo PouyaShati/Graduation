@@ -1,5 +1,5 @@
 <head><title>صفحه‌ی اپراتور</title></head>
-{% extends 'base/base.html' %}
+{% extends 'base/emp_base.html' %}
 
 
 
@@ -14,33 +14,31 @@
     {% endif %}
     <div class="col-md-2"></div>
     <div class="container col-md-8">
-        <table class="table table-bordered" style="background-color: aqua;">
+        <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <td class="text-right"> {{ operator.first_name }}</td>
-                <th class="text-right">نام</th>
+                <td class="text-center"> {{ operator.first_name }}</td>
+                <th class="text-center">نام</th>
             </tr>
             <tr>
-                <td class="text-right"> {{ operator.last_name }}</td>
-                <th class="text-right">نام خانوادگی</th>
+                <td class="text-center"> {{ operator.last_name }}</td>
+                <th class="text-center">نام خانوادگی</th>
 
 
             </tr>
             <tr>
-                <td class="text-right"> {{ operator.email }}</td>
-                <th class="text-right">رایانامه</th>
+                <td class="text-center"> {{ operator.email }}</td>
+                <th class="text-center">رایانامه</th>
 
             </tr>
             <tr>
-                <td class="text-right"> {{ operator.phone_number }}</td>
-                <th class="text-right">شماره تلفن</th>
+                <td class="text-center"> {{ operator.phone_number }}</td>
+                <th class="text-center">شماره تلفن</th>
 
             </tr>
             </tbody>
 
         </table>
-
-        <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
     </div>
     <div class="col-md-2"></div>
 {% endblock %}

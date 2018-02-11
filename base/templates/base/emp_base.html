@@ -28,17 +28,17 @@
     <div class="container-fluid">
         <div class="col-sm-4" align="center">
             <ul class="nav navbar-nav">
-                <li class="dropdown"><a id="acc_dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#">SHOULD CHANGE<span
-                        class="caret"></span></a>
+                <li class="dropdown"><a id="acc_dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#">پنل
+                    کاربر<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a id="title" href="#">SHOULD CHANGE</a></li>
                         <li><a href="#">تماس با ما</a></li>
                         <li><a href="/employee/logout">خروج</a></li>
                     </ul>
                 </li>
-                <script>
-                    document.getElementById("acc_dropdown").innerHTML = "{{ employee.first_name }}";
-                </script>
+                {#                <script>#}
+                {#                    document.getElementById("acc_dropdown").innerHTML = "{{ employee.first_name }}";#}
+                {#                </script>#}
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
                         class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -51,12 +51,18 @@
                         <li><a href="/process/create_payment_blueprint">ساخت الگوی پرداخت</a></li>
                         <li><a href="/process/create_question_set">ساخت مجموعه سوال</a></li>
                         <li><a href="####">جست‌و‌جو دانشجو</a></li>
-                        <li><a href="####">فهرست ساختمان‌ها</a></li>
+                        <li><a href="####">فهرست دپارتمان‌ها</a></li>
                         <li><a href="####">فهرست دانشجویان</a></li>
-                        <li><a href="/employee/add_department">اضافه کردن دانشکده</a></li>
+                        <li><a href="/employee/add_department">اضافه کردن دپارتمان</a></li>
                     </ul>
                 </li>
-                <li><a href="/employee/panel">بازگشت</a></li>
+                <li><a href="/employee/panel">خانه</a></li>
+                <li><a href="#" onclick="goBack()">بازگشت</a></li>
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
             </ul>
         </div>
         <div class="col-sm-4" align="center"><img alt="Brand"

@@ -9,7 +9,7 @@
         <div class="row" id="pwd-container">
             <div class="col-md-4"></div>
 
-            <div class="col-md-4">
+            <div class="col-md-4" id="fill_out_form">
                 <section class="login-form">
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
@@ -50,14 +50,14 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
+                            <div class="form-actions" id="button_submit">
                                 <button type="submit" value="استخدام" class="btn btn-primary">استخدام</button>
-                                <ul style="list-style-type:none">
+                                <div id="error" align="center">
                                     {% for error in form.non_field_errors %} {# passwords dont match #}
-                                    <li>{{ error }}</li>
+                                        <li>{{ error }}</li>
                                     {% endfor %}
-                                    {{ message }} {# employee doesnt exist #}
-                                </ul>
+                                    {{ message }}
+                                </div>
                             </div>
                         </div>
                     </form>
