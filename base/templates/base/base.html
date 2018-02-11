@@ -35,12 +35,12 @@
                         <span
                                 class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">pox</a></li>
+                            <li><a href="/user/panel">پنل کاربری</a></li>
                             <li><a href="#">تماس با ما</a></li>
                             <li><a href="/student/logout">خروج</a></li>
                         </ul>
                     </li>
-                    <li><a href="/student/panel">خانه</a></li>
+                    <li><a href="/user/home">خانه</a></li>
                     <li><a href="#" onclick="goBack()">بازگشت</a></li>
                     <script>
                         function goBack() {
@@ -69,6 +69,20 @@
 
     </div>
 </nav>
+
+<script>
+    $(document).ready(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                $(this).toggleClass('open');
+            }
+        );
+    });</script>
 
 
 {% block content %}

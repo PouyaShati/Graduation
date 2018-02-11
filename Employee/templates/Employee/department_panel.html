@@ -51,14 +51,26 @@
             </tbody>
 
         </table>
-        <form class="form-horizontal" novalidate method="get" action="employ">
-            <button type="submit" value="ثبت نام" class="btn btn-primary">استخدام</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="fire">
-            <button type="submit" value="ثبت نام" class="btn btn-primary">اخراج</button>
-        </form>
-        <form class="form-horizontal" novalidate method="get" action="set_manager">
-            <button type="submit" value="ثبت نام" class="btn btn-primary">انتخاب مدیر</button>
-        </form>
+        <div align="center">
+            <div id="table" align="center">
+                <div id="row">
+                    <div id="cell">
+                        <form class="form-horizontal" novalidate method="get" action="employ">
+                            <button type="submit" value="ثبت نام" class="btn btn-primary">استخدام</button>
+                        </form>
+                    </div>
+                    <div id="cell">
+                        <form class="form-horizontal" novalidate method="get" action="fire">
+                            <button type="submit" value="ثبت نام" class="btn btn-primary">اخراج</button>
+                        </form>
+                    </div>
+                    <div id="cell">
+                        <form class="form-horizontal" novalidate method="get" action="set_manager">
+                            <button type="submit" value="ثبت نام" class="btn btn-primary">انتخاب مدیر</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

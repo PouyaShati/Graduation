@@ -31,7 +31,7 @@
                 <li class="dropdown"><a id="acc_dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#">پنل
                     کاربر<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/panel">پنل کاربری</a></li>
+                        <li><a id="title" href="#">SHOULD CHANGE</a></li>
                         <li><a href="#">تماس با ما</a></li>
                         <li><a href="/employee/logout">خروج</a></li>
                     </ul>
@@ -46,19 +46,25 @@
                             <li><a href={{ department_url }}>پنل دپارتمان</a></li>
                             <li><a href="/process/create_process_blueprint">ساخت الگوی فرایند</a></li>
                         {% endif %}
-
                         <li><a href="/process/create_employee_task_blueprint">ساخت الگوی وظیفه کارمند</a></li>
                         <li><a href="/process/create_form_blueprint">ساخت الگوی فرم</a></li>
                         <li><a href="/process/create_payment_blueprint">ساخت الگوی پرداخت</a></li>
                         <li><a href="/process/create_question_set">ساخت مجموعه سوال</a></li>
                         <li><a href="/employee/all_employees_list/">فهرست کارمندان</a></li>
                         <li><a href="/employee/all_departments_list/">فهرست دپارتمان‌ها</a></li>
-                        <li><a href="/student/all_students_list">فهرست دانشجویان</a></li>
+                        <li><a href="####">فهرست دانشجویان</a></li>
+                        <li><a href="/employee/add_department">اضافه کردن دپارتمان</a></li>
+                        <li><a href="/student/signup/">اضافه کردن داشنجو</a> </li>
+                        <li><a href="/employee/signup/">اضافه کردن کارمند</a> </li>
                     </ul>
                 </li>
-                <li><a href="/user/home">خانه</a></li>
+                <li><a href="/user/panel">خانه</a></li>
                 <li><a href="#" onclick="goBack()">بازگشت</a></li>
-
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
             </ul>
         </div>
         <div class="col-sm-4" align="center"><img alt="Brand"
