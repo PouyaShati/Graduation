@@ -15,6 +15,10 @@ class Question_Set(models.Model):
 class Answer_Set (models.Model):
     name = models.CharField(max_length=60, null=True)
 
+    def __str__(self):
+        return str(self.name)
+
+
 class Question(models.Model):
     text = models.CharField(max_length=1000)
     type = models.CharField(max_length=20, choices=[
@@ -25,10 +29,15 @@ class Question(models.Model):
         ('Multiple Choice','Multiple Choice'),])
     belongs_to = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return str(self.name)
+
 class Answer(models.Model):
     text = models.CharField(max_length=1000)
     belongs_to = models.ForeignKey(Answer_Set, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return str(self.name)
 
 
 
@@ -38,6 +47,8 @@ class Task_Blueprint(models.Model):
     name = models.CharField(max_length=60)
     # default_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True, blank=True) #TODO what is default of? null=True ro man gozashtam
 
+    def __str__(self):
+        return str(self.name)
 
 class Process_Blueprint(models.Model):
     name = models.CharField(max_length=60)

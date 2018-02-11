@@ -11,6 +11,7 @@
 
             <div class="col-md-4">
                 <section class="login-form">
+                    {{ successfully_added }}
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>
@@ -60,6 +61,10 @@
                             </div>
                         </div>
                     </form>
+                            <div align="center"><form class="form-horizontal" novalidate action="{{ return_link }}">
+                                <button type="submit" value="اتمام" class="btn btn-primary">اتمام </button>
+                            </form></div>
+
                 </section>
             </div>
         </div>

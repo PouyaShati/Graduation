@@ -1,0 +1,26 @@
+<head><title>ساخت الگوی فرایند</title></head>
+{% extends 'base/emp_base.html' %}
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container">
+        {{ process_pb.name }}
+        <form class="form-horizontal" novalidate method="get" action="add_preprocess">
+                        <button type="submit" value="افزودن فرایند پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز</button>
+        </form>
+        <form class="form-horizontal" novalidate method="get" action="add_default_task">
+                        <button type="submit" value="افزودن وظیفه پیشفرض" class="btn btn-primary">افزودن وظیفه پیشفرض</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+
+

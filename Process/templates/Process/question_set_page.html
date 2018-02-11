@@ -1,0 +1,23 @@
+<head><title>ساخت الگوی فرایند</title></head>
+{% extends 'base/emp_base.html' %}
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container">
+        {{ qs.name }}
+        <form class="form-horizontal" novalidate method="get" action="add_question">
+                        <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+
+

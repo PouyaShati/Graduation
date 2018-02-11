@@ -11,16 +11,6 @@
         </ul>
     {% endif %}
     <div class="container">
-        <form novalidate method="get" action="add_preprocess">
-            <button type="submit" value="افزودن وظیفه پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز</button>
-		</form>
-    </div>
-    <div class="container">
-        <form novalidate method="get" action="add_default_task">
-            <button type="submit" value="افزودن وظیفه پیشفرض" class="btn btn-primary">افزودن وظیفه پیشفرض</button>
-		</form>
-    </div>
-    <div class="container">
         <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>
@@ -71,6 +61,12 @@
                             <div>
                                 {{ success_message }} {# process blueprint added successfuly #}
                             </div>
+                            {% for preprocess in preprocesses %}
+                                {{ preprocess.name }} ok
+                            {% endfor %}
+                        {% for task in tasks%}
+                                {{ task.name }} ok
+                            {% endfor %}
                         </div>
                     </form>
     </div>
