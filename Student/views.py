@@ -130,3 +130,6 @@ def students_list(request):
         return HttpResponseRedirect('/not_eligible')
     students = Student.objects.all()
     return render(request, 'Student/all_students_list.html', {'students': students})
+
+def student_404(request):
+    return render(request, 'Student/404.html')

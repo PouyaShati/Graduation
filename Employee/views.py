@@ -259,3 +259,7 @@ def all_departments_list(request):
         return HttpResponseRedirect('/not_eligible')
     departments = Department.objects.all()
     return render(request, 'Employee/all_departments_list.html', {'departments': departments})
+
+
+def employee_404(request):
+    return render(request, 'Employee/404.html')
