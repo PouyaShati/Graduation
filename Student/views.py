@@ -28,7 +28,7 @@ def student_signup(request):
             student.save()
             for process_bp in Process_Blueprint.objects.all():
                 process = Process(instance_of=process_bp, owner=student)
-                for task_bp in process_bp.task_blueprint_set.all():
+                for task_bp in process_bp.defaults.all():
                     if hasattr(task_bp, 'Employee_Task_Blueprint'):
                         task = Employee_Task(process=process, instance_of=task_bp)
                     elif hasattr(task_bp, 'Form_Blueprint'):

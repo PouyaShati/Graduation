@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint
+from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint, Task_Blueprint
 from Employee.models import Department, Employee
 from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
@@ -40,7 +40,7 @@ def create_process_blueprint(request, action): # TODO handle actions
                         request.session['preprocesses'].append(new_preprocess)
 
                         # ret   urn HttpResponseRedirect('/process/create_process_blueprint')
-                        successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + new_preprocess.name+ ' فرایند '
+                        successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + new_preprocess.name + ' فرایند '
                         return render(request, 'Process/add_preprocess.html', {'form': form, 'successfully_added':successfully_added})
                 except ObjectDoesNotExist:
                     message = 'چنین فرایندی وجود ندارد'
@@ -51,6 +51,25 @@ def create_process_blueprint(request, action): # TODO handle actions
             form = AddPreprocessForm(label_suffix='')
             request.session['preprocesses'] = []
             return render(request, 'Process/add_preprocess.html', {'form': form})
+    elif action == 'add_default_task':
+        if request.method == 'POST':
+            form = AddDefaultTaskForm(request.POST)
+            if form.is_valid():
+                try:
+                    default_task = form.cleaned_data['name']
+                    request.session['default_tasks'].append(default_task)
+
+                    successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
+                    return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added})
+                except ObjectDoesNotExist:
+                    message = 'چنین وظیفه‌ای وجود ندارد'
+                    return render(request, 'Process/add_default_task.html', {'form': form, 'message': message})
+            else:
+                return render(request, 'Process/add_default_task.html', {'form': form})
+        else:
+            form = AddDefaultTaskForm(label_suffix='')
+            request.session['default_tasks'] = []
+            return render(request, 'Process/add_default_task.html', {'form': form})
     else:
         if request.method == 'GET':
 
@@ -67,6 +86,13 @@ def create_process_blueprint(request, action): # TODO handle actions
                             preprocess = Process_Blueprint.objects.get(name=preprocess_name)
                             process_bp.preprocesses.add(preprocess)
                             del request.session['preprocesses']
+
+                    if 'default_tasks' in request.session.keys():
+                        for default_task_name in request.session['default_tasks']:
+                            default_task = Task_Blueprint.objects.get(name=default_task_name)
+                            process_bp.defaults.add(default_task)
+                            del request.session['default_tasks']
+
                     process_bp.save()
                     success_message = 'الگوی فرم با موفقیت ساخته شد'
                     return render(request, 'Process/create_process_blueprint.html', {'form': form, 'success_message':success_message})

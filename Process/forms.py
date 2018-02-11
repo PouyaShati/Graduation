@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Process_Blueprint, Question_Set, Employee_Task_Blueprint, Question, Form_Blueprint, Payment_Blueprint
+from .models import Process_Blueprint, Question_Set, Employee_Task_Blueprint, Question, Form_Blueprint, Payment_Blueprint, Task_Blueprint
 from django.utils.translation import ugettext_lazy as _
 from Employee.models import Department
 
@@ -53,6 +53,21 @@ class AddPreprocessForm(forms.Form):
                                 error_messages={
                                     'required': _('نام فرایند پیشنیاز را وارد کنید'),
                                     'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
+
+
+class AddDefaultTaskForm(forms.Form):
+    name = forms.ModelChoiceField(queryset=Task_Blueprint.objects.all(),
+                                widget=forms.Select(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'نام وظیفه پیشفرض',
+                                                              'style': 'text-align:right'}
+                                                       ),
+                                label=_("نام وظیفه پیشفرض"),
+                                error_messages={
+                                    'required': _('نام وظیفه پیشفرض را وارد کنید'),
+                                    'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
+
 
 class CreateEmployeeTaskBlueprintForm(forms.ModelForm):
     class Meta:
