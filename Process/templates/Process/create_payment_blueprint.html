@@ -1,5 +1,5 @@
 <head><title>ساخت الگوی پرداخت</title></head>
-{% extends 'base/emp_base.html' %}
+{% extends base_html %}
 
 
 {% block content %}
@@ -56,6 +56,9 @@
                                     <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
+                            </div>
+                            <div align="center">
+                            {{ success }}
                             </div>
                         </div>
                     </form>

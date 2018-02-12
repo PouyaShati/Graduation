@@ -1,6 +1,6 @@
 <head><title>ساخت الگوی وظیفه کارمند</title></head>
 
-{% extends 'base/emp_base.html' %}
+{% extends base_html %}
 
 
 {% block content %}
@@ -57,6 +57,9 @@
                                     <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
+                            </div>
+                            <div align="center">
+                            {{ success }}
                             </div>
                         </div>
                     </form>

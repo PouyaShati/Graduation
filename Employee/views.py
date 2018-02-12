@@ -96,7 +96,10 @@ def department_panel(request, department_id, action):
         return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
         return HttpResponseRedirect('/user/login')
-
+    if request.user.user_type == MyUser.ADMINUSER:
+        base_html = 'base/op_base.html'
+    else:
+        base_html = 'base/emp_base.html'
     try:
         department = Department.objects.get(department_id=department_id)
 
@@ -115,12 +118,12 @@ def department_panel(request, department_id, action):
                         return HttpResponseRedirect('/employee/department_panel/' + department_id)
                     except ObjectDoesNotExist:
                         message = 'چنین کارمندی وجود ندارد'
-                        return render(request, 'Employee/employ.html', {'form': form, 'message': message})
+                        return render(request, 'Employee/employ.html', {'form': form, 'message': message , 'base_html': base_html})
                 else:
-                    return render(request, 'Employee/employ.html', {'form': form})
+                    return render(request, 'Employee/employ.html', {'form': form, 'base_html': base_html})
             else:
                 form = EmployForm(label_suffix='')
-                return render(request, 'Employee/employ.html', {'form': form})
+                return render(request, 'Employee/employ.html', {'form': form, 'base_html': base_html})
 
         elif action == 'fire':
             if request.method == 'POST':
@@ -134,12 +137,12 @@ def department_panel(request, department_id, action):
                         return HttpResponseRedirect('/employee/department_panel/' + department_id)
                     except ObjectDoesNotExist:
                         message = 'چنین کارمندی وجود ندارد'
-                        return render(request, 'Employee/fire.html', {'form': form, 'message': message})
+                        return render(request, 'Employee/fire.html', {'form': form, 'message': message, 'base_html': base_html})
                 else:
-                    return render(request, 'Employee/fire.html', {'form': form})
+                    return render(request, 'Employee/fire.html', {'form': form, 'base_html': base_html})
             else:
                 form = FireForm(label_suffix='')
-                return render(request, 'Employee/fire.html', {'form': form})
+                return render(request, 'Employee/fire.html', {'form': form, 'base_html': base_html})
 
         elif action == 'set_manager':
             if request.method == 'POST':
@@ -153,19 +156,19 @@ def department_panel(request, department_id, action):
                         return HttpResponseRedirect('/employee/department_panel/' + department_id)
                     except ObjectDoesNotExist:
                         message = 'چنین کارمندی وجود ندارد'
-                        return render(request, 'Employee/set_manager.html', {'form': form, 'message': message})
+                        return render(request, 'Employee/set_manager.html', {'form': form, 'message': message, 'base_html': base_html})
                 else:
-                    return render(request, 'Employee/set_manager.html', {'form': form})
+                    return render(request, 'Employee/set_manager.html', {'form': form, 'base_html': base_html})
             else:
                 form = SetManagerForm(label_suffix='')
-                return render(request, 'Employee/set_manager.html', {'form': form})
+                return render(request, 'Employee/set_manager.html', {'form': form, 'base_html': base_html})
 
         else:
             if request.method == 'POST':
                 return HttpResponseRedirect('/')
             else:
                 employees = Employee.objects.filter(works_in=department)
-                return render(request, 'Employee/department_panel.html', {'department': department, 'employees': employees })
+                return render(request, 'Employee/department_panel.html', {'department': department, 'employees': employees, 'base_html':base_html})
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/') #TODO change this
 
@@ -259,6 +262,18 @@ def all_departments_list(request):
         return HttpResponseRedirect('/not_eligible')
     departments = Department.objects.all()
     return render(request, 'Employee/all_departments_list.html', {'departments': departments})
+
+def all_students_list(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/not_logged_in')
+    if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/not_eligible')
+    if request.user.user_type == MyUser.ADMINUSER:
+        base_html = 'base/op_base.html'
+    else:
+        base_html = 'base/emp_base.html'
+    students = Student.objects.all()
+    return render(request, 'Employee/all_students_list.html', {'studesnts': students, 'base_html': base_html})
 
 
 def employee_404(request):

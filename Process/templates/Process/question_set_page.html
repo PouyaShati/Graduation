@@ -1,5 +1,5 @@
 <head><title>مجموعه سوال</title></head>
-{% extends 'base/emp_base.html' %}
+{% extends base_html %}
 
 
 {% block content %}
@@ -10,11 +10,16 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="container">
+    <div class="container" align="center">
         {{ qs.name }}
         <form class="form-horizontal" novalidate method="get" action="add_question">
                         <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
         </form>
+    </div>
+    <div align="center">
+        {% for question in qs.question_set.all %}
+            {{ question.text }}
+        {% endfor %}
     </div>
 {% endblock %}
 

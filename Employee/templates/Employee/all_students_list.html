@@ -1,6 +1,6 @@
-<head><title>لیست دپارتمان ها</title></head>
+<head><title>لیست دانشجویان</title></head>
 
-{% extends 'base/op_base.html' %}
+{% extends base_html %}
 
 
 
@@ -17,15 +17,17 @@
         <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <th class="text-right">نام مدیر</th>
+                <th class="text-right">نام خانوادگی</th>
                 <th class="text-right">نام</th>
-                <th class="text-right">شماره دپارتمان</th>
+                <th class="text-right">شماره دانشجویی</th>
+                <th class="text-right">رشته</th>
             </tr>
-            {% for department in departments %}
+            {% for student in students %}
             <tr>
-                <td class="text-right"> {{ department.manager.employee_id }}</td>
-                <td class="text-right"><a href="/employee/department_panel/{{ department.department_id }}">{{ department.name }}</a></td>
-                <td class="text-right"><a href="/employee/department_panel/{{ department.department_id }}">{{ department.department_id }}</td>
+                <td class="text-right"> {{ student.last_name }}</td>
+                <td class="text-right"> {{ student.first_name }}</td>
+                <td class="text-right">{{ student.employee_id }}</td>
+                <td class="text-right">{{ student.major }}</td>
             </tr>
             {% endfor %}
             </tbody>
