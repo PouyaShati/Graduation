@@ -41,7 +41,7 @@ class StudentSignUpForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'student_id', 'major']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'student_id', 'major', 'document']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control',
                                                  'placeholder': 'نام',

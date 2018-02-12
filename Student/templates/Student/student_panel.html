@@ -57,15 +57,21 @@
                 <th class="text-center">وضعیت</th>
             </tr>
             {% for process in processes %}
-            <tr>
-                <td class="text-center"> {{ process.instance_of.name }}</td>
-                <td class="text-center"> {% if process.validated %} کامل {% else %} ناقض {% endif %}</td>
-            </tr>
+                <tr>
+                    <td class="text-center"> {{ process.instance_of.name }}</td>
+                    <td class="text-center"> {% if process.validated %} کامل {% else %} ناقض {% endif %}</td>
+                </tr>
             {% endfor %}
             </tbody>
 
         </table>
     </div>
-    <div class="col-md-2"></div>
+    <div class="container col-md-4">
+        <div>
+            <div class="text-center"><img src="/{{ student.document }}" width="200" height="200"></div>
+            <div class="text-center">عکس</div>
+
+        </div>
+    </div>
 {% endblock %}
 

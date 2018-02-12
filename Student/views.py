@@ -14,7 +14,7 @@ from Process.models import Process_Blueprint, Process, Task, Employee_Task_Bluep
 
 def student_signup(request):
     if request.method == 'POST':
-        form = StudentSignUpForm(request.POST)
+        form = StudentSignUpForm(request.POST, request.FILES)
         if form.is_valid(): # TODO what does this is_valid() condition mean? if the form is invalid we cant be able to signup
             user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], # TODO what does this cleaned_data property mean? it returns form data
                                               user_type=MyUser.STUDENTUSER)
@@ -22,7 +22,8 @@ def student_signup(request):
             student = Student(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
                               email=form.cleaned_data['email'], phone_number=form.cleaned_data['phone_number'],
                               student_id=form.cleaned_data['student_id'],
-                              major=form.cleaned_data['major'])  # Shouldn't we set the value of account_confirmed as well?
+                              major=form.cleaned_data['major'],
+                              document=form.cleaned_data['document'])   # Shouldn't we set the value of account_confirmed as well?
 
             student.user = user
 
