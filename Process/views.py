@@ -199,6 +199,7 @@ def create_employee_task_blueprint(request):
                                                        question_set=form.cleaned_data['question_set'])
             employee_task_bp.save()
             success = ' با موفقیت اضافه شد '+ form.cleaned_data['name']
+            form = CreateEmployeeTaskBlueprintForm(label_suffix='')
             return render(request, 'Process/create_employee_task_blueprint.html', {'form': form, 'base_html': base_html
                                                                                    , 'success': success})
         else:
@@ -228,6 +229,7 @@ def create_form_blueprint(request):
                                      is_timed=form.cleaned_data['is_timed'], max_time=form.cleaned_data['max_time'])
             form_bp.save()
             success = ' با موفقیت اضافه شد '+form.cleaned_data['name']
+            form = CreateFormBlueprintForm(label_suffix='')
             return render(request, 'Process/create_form_blueprint.html', {'form': form, 'base_html': base_html, 'success': success})
         else:
             return render(request, 'Process/create_form_blueprint.html', {'form': form, 'base_html': base_html})
@@ -258,6 +260,7 @@ def create_payment_blueprint(request):
             #request.session.get('pbps').append(payment_bp)
             payment_bp.save()
             success = ' با موفقیت اضافه شد '+form.cleaned_data['name']
+            form = CreatePaymentBlueprintForm(label_suffix='')
             return render(request, 'Process/create_payment_blueprint.html', {'form': form, 'base_html': base_html,
                                                                               'success':success})
         else:

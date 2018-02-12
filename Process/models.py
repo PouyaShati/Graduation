@@ -50,10 +50,7 @@ class Task_Blueprint(models.Model):
 
     def __str__(self):
         return str(self.name)
-
     # TODO Add processes that get invalidate after failing to validate this one
-    def __str__(self):
-        return str(self.name)
 
 class Student_Task_Blueprint(Task_Blueprint):
     is_timed = models.BooleanField(default=False)
@@ -61,6 +58,8 @@ class Student_Task_Blueprint(Task_Blueprint):
 
 class Employee_Task_Blueprint(Task_Blueprint):
     question_set = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return str(self.name)
 
 class Form_Blueprint(Student_Task_Blueprint):
     question_set = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
@@ -81,7 +80,7 @@ class Process_Blueprint(models.Model):
 
 
 class Process(models.Model):
-    validated = models.BooleanField(default=False)
+    # validated = models.BooleanField(default=False) do we need this?
     instance_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True)
     owner = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
 

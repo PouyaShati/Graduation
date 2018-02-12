@@ -15,8 +15,8 @@ from Process.models import Process_Blueprint, Process, Task, Employee_Task_Bluep
 def student_signup(request):
     if request.method == 'POST':
         form = StudentSignUpForm(request.POST, request.FILES)
-        if form.is_valid(): # TODO what does this is_valid() condition mean? if the form is invalid we cant be able to signup
-            user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'], # TODO what does this cleaned_data property mean? it returns form data
+        if form.is_valid():
+            user = MyUser.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password1'],
                                               user_type=MyUser.STUDENTUSER)
             user.save()
             student = Student(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'],
@@ -89,12 +89,13 @@ def perform_task(request, task_id):
     if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
         return HttpResponseRedirect('/')
 
+
     if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
+        student_payment = Payment.objects.get(task_id=task_id)
+
         if request.method == 'POST':
             form = StudentPerformPaymentForm(request.POST)
             if form.is_valid():
-
-                student_payment = Payment.objects.get(task_id=task_id)
 
                 student_payment.paid = student_payment.paid + form['paid']
 
@@ -106,15 +107,21 @@ def perform_task(request, task_id):
             else:
                 return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})
         else:
+
+            for preprocess_bp in student_payment.process.instance_of.preprocesses:
+                preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
+                for preprocess_task in preprocess.task_set:
+                    if not preprocess_task.done:
+                        return HttpResponseRedirect('/')
+
             return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': StudentPerformPaymentForm(label_suffix='')})
 
     elif hasattr(Task.objects.get(task_id=task_id), 'Form'):
+        student_form = Form.objects.get(task_id=task_id)
         FormSet = formset_factory(StudentFillFormForm)
         if request.method == 'POST':
             form_set = FormSet(request.POST)
             if form_set.is_valid():
-
-                student_form = Form.objects.get(task_id=task_id)
 
                 answer_set = Answer_Set()
                 student_form.answer_set = answer_set
@@ -131,6 +138,13 @@ def perform_task(request, task_id):
             else:
                 return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': form_set})
         else:
+
+            for preprocess_bp in student_form.process.instance_of.preprocesses:
+                preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
+                for preprocess_task in preprocess.task_set:
+                    if not preprocess_task.done:
+                        return HttpResponseRedirect('/')
+
             return render(request, 'Student/student_fill_form.html',
                           {'fill_form_form_set': FormSet(label_suffix='')})
 
@@ -162,12 +176,41 @@ def perform_process(request, process_blueprint_name): #TODO kar nemikone in
         #     elif hasattr(task, 'Payment'):
         #         payment_tasks.append(task)
 
+        for preprocess_bp in process.instance_of.preprocesses.all():
+            preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
+            for preprocess_task in preprocess.task_set.all():
+                if not preprocess_task.done:
+                    return render(request, 'Process/process_status.html', {'process': process,
+                                                                           'form_tasks': form_tasks,
+                                                                           'payment_tasks': payment_tasks,
+                                                                           'message': 'پیشنیازی پروسه ها رعایت نشده است'})
+
 
         #tasks = Process.objects.values_list('defaults', flat=True)
         #payment_tasks = Payment.objects.filter(instance_of__default_of=process_bp)
     except ObjectDoesNotExist:
         message = 'چنین فرایندی وجود ندارد'
         return render(request, 'Process/process_status.html', {'message': message})
+
     return render(request, 'Process/process_status.html', {'process': process,
                                                                 'form_tasks':form_tasks,
                                                                 'payment_tasks': payment_tasks}) #TODO this process doesnt exist
+
+
+def graduate(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.STUDENTUSER:
+        return HttpResponseRedirect('/not_eligible')
+
+    student = Student(user=request.user)
+
+    for process in student.process_set:
+        for task in process.task_set:
+            if not task.done:
+                return render(request, 'Student/graduate.html', {'student': student,
+                                                                       'message': 'انجام پروسه ها به اتمام نرسیده است'})
+
+    student.graduated = True
+    student.save()
+    return render(request, 'Student/graduate.html', {'student': student})
