@@ -332,6 +332,23 @@ def add_task(request):  # TODO explain this view so i can build template
                     child_bp = Payment_Blueprint.objects.get(name=form['task_bp'])
                     task = Payment(instance_of=child_bp, process=process)
 
+                process.validated = False
+                process.save()
+
+                for other_process in Process.objects.filter(owner=process.owner):
+                    change = True
+                    for precondition in other_process.instance_of.preprocesses.all():
+                        preprocess_bp = precondition.pre
+                        preprocess = Process.objects.get(instance_of=preprocess_bp,
+                                                         owner=process.owner)
+                        for preprocess_task in preprocess.task_set.all():
+                            if not preprocess_task.done:
+                                change = False
+                    if change == False:
+                        other_process.active = False
+                        other_process.save()
+
+
                 task.save()
                 return HttpResponseRedirect('/user/login7')
         except ObjectDoesNotExist:

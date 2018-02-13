@@ -151,6 +151,28 @@ def perform_task(request, task_id):
                 if student_payment.paid >= student_payment.instance_of.default_amount:
                     student_payment.done = True
 
+                    change = True
+                    for task in student_payment.process.task_set.all():
+                        if task.done == False:
+                            change = False
+                    if change:
+                        student_payment.process.validated = True
+                        student_payment.process.save()
+
+                    for other_process in Process.objects.filter(owner=student_payment.process.owner):
+                        change = True
+                        for precondition in other_process.instance_of.preprocesses.all():
+                            preprocess_bp = precondition.pre
+                            preprocess = Process.objects.get(instance_of=preprocess_bp,
+                                                             owner=student_payment.process.owner)
+                            for preprocess_task in preprocess.task_set.all():
+                                if not preprocess_task.done:
+                                    change = False
+                        if change:
+                            other_process.active = True
+                            other_process.save()
+
+
                 student_payment.save()
                 return HttpResponseRedirect('/student/panel')
             else:
@@ -195,6 +217,26 @@ def perform_task(request, task_id):
                 answer.save()
 
             student_form.done = True
+
+            change = True
+            for task in student_form.process.task_set.all():
+                if task.done == False:
+                    change = False
+            if change:
+                student_form.process.validated = True
+                student_form.process.save()
+
+            for other_process in Process.objects.filter(owner=student_form.process.owner):
+                change = True
+                for precondition in other_process.instance_of.preprocesses.all():
+                    preprocess_bp = precondition.pre
+                    preprocess = Process.objects.get(instance_of=preprocess_bp, owner=student_form.process.owner)
+                    for preprocess_task in preprocess.task_set.all():
+                        if not preprocess_task.done:
+                            change = False
+                if change:
+                    other_process.active = True
+                    other_process.save()
 
             student_form.save()
             return render(request, 'Student/student_fill_form.html', {'questions': questions})
