@@ -1,12 +1,9 @@
 from django.shortcuts import render, redirect, reverse
-from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, \
-    Payment_Blueprint, Task_Blueprint
+from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint, Task_Blueprint, Precondition
 from Employee.models import Department, Employee
 from django.http.response import HttpResponseRedirect, HttpResponse
-from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, \
-    CreateEmployeeTaskBlueprintForm
-from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm, AddDefaultEmployeeTaskForm, \
-    AddDefaultFormBlueprintTaskForm, AddDefaultPaymentBlueprintTaskForm
+from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
+from Process.forms import CreateFormBlueprintForm, CreatePaymentBlueprintForm, AddDefaultEmployeeTaskForm, AddDefaultFormBlueprintTaskForm, AddDefaultPaymentBlueprintTaskForm
 from Process.forms import CreateProcessBlueprintOperatorForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
@@ -139,16 +136,22 @@ def process_blueprint_page(request, id, action=''):
                     # for i in range(0, n):
                     #     request.session['preprocesses'].append(form_set['form-' + str(i) + '-name'])
 
-                    new_preprocess = form.cleaned_data['name']
-                    # request.session['preprocesses'].append(new_preprocess)
-                    process_pb.preprocesses.add(new_preprocess)
-                    process_pb.save()
-                    # ret   urn HttpResponseRedirect('/process/create_process_blueprint')
-                    successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + new_preprocess.name + ' فرایند '
-                    return render(request, 'Process/add_preprocess.html',
-                                  {'form': form, 'successfully_added': successfully_added,
-                                   'return_link': return_link, 'base_html': base_html})
-                    # return render(request, 'Process/create_process_blueprint.html', {'form': CreateProcessBlueprintForm(label_suffix='')})
+                        new_preprocess = form.cleaned_data['name']
+                        # request.session['preprocesses'].append(new_preprocess)
+
+                        # process_pb.preprocesses.add(new_preprocess)
+                        precondtion = Precondition(pre=new_preprocess, post=process_pb)
+                        precondtion.save()
+
+                        #new_preprocess.preprocesses.add(process_pb) # TODO are we sure about this?
+                        #process_pb.save()
+                        #new_preprocess.save()
+
+                        # ret   urn HttpResponseRedirect('/process/create_process_blueprint')
+                        successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + new_preprocess.name + ' فرایند '
+                        return render(request, 'Process/add_preprocess.html', {'form': form, 'successfully_added':successfully_added,
+                                                                               'return_link': return_link, 'base_html': base_html})
+                        # return render(request, 'Process/create_process_blueprint.html', {'form': CreateProcessBlueprintForm(label_suffix='')})
                 except ObjectDoesNotExist:
                     message = 'چنین فرایندی وجود ندارد'
                     return render(request, 'Process/add_preprocess.html',
