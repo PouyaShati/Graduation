@@ -2,7 +2,7 @@ from django import forms
 
 from .models import Employee, Department
 from django.utils.translation import ugettext_lazy as _
-
+from Process.models import Process_Blueprint, Task_Blueprint
 
 class EmployeeSignUpForm(forms.ModelForm):
     username = forms.RegexField(regex=r'^\w+$',
@@ -215,18 +215,32 @@ class EmployeePerformTaskForm(forms.Form): # TODO change it in order to be able 
 
 
 class AddTaskForm(forms.Form):
-    process_bp = forms.RegexField(regex=r'^\d+$',
-                                widget=forms.TextInput(attrs={'class': 'form-control',
+    process_bp = forms.ModelChoiceField(queryset=Process_Blueprint.objects.all(),
+                                widget=forms.Select(attrs={'class': 'form-control',
                                                               'required': 'True',
                                                               'max_length': 30,
-                                                              'placeholder': 'نام پروسه',
-                                                              'style': 'text-align:left',
-                                                              'direction': 'rtl'}
+                                                              'placeholder': 'نام فرایند پیشنیاز',
+                                                              'style': 'text-align:right',
+                                                           'direction': 'rtl'}
                                                        ),
-                                label=_("نام پروسه"),
+                                label=_("نام فرایند پیشنیاز"),
                                 error_messages={
-                                    'invalid': _("تنها استفاده از اعداد در شماره کارمندی مجاز است."),
-                                    'required': _('لطفا نام پروسه را وارد کنید')})
+                                    'required': _('نام فرایند پیشنیاز را وارد کنید'),
+                                    'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
+
+    task_bp = forms.ModelChoiceField(queryset=Task_Blueprint.objects.all(),
+                                widget=forms.Select(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'نام الگوی وظیفه',
+                                                              'style': 'text-align:right',
+                                                           'direction': 'rtl'}
+                                                       ),
+                                label=_('نام الگوی وظیفه'),
+                                error_messages={
+                                    'required': _('نام وظیفه را وارد کنید'),
+                                    'invalid': _("نام باید فقط شامل حروف، اعداد و _ باشد")})
+
     student_id = forms.IntegerField (#regex=r'^\w+$',
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',

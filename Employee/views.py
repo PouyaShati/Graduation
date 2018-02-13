@@ -12,6 +12,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
 
 # Create your views here.
+
+
+not_allowed_error = "شما اجازه‌ی ورود به این بخش را ندارید."
+not_authenticated_error = "ابتدا وارد شوید."
+no_department_error = "چنین دپارتمانی وجود ندارد."
+not_manager_error = "شما مدیر هیج دپارتمانی نیستید."
+task_not_found_error = "وظیفه‌ی موردنظر یافت نشد."
+emp_not_allowed_error = "کارمند مجاز به انجام این وظیفه نمی‌باشد."
+emp_not_allowed_in_dep_error = "کارمند در این دپارتمان استخدام نشده است."
+preprocess_not_done_error = "پیش‌فرایند‌های مربوط به این فرایند انجام نشده‌اند."
+
 def employee_signup(request):
     if request.method == 'POST':
         form = EmployeeSignUpForm(request.POST)
@@ -59,12 +70,16 @@ def employee_logout(request):
 
 def employee_panel(request):  # , action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     try:
         department = Department.objects.get(manager=request.user.Employee)
-        department_url = '/employee/department_panel/'+str(department.department_id)
+        department_url = '/employee/department_panel/' + str(department.department_id)
     except ObjectDoesNotExist:
         department_url = None
     return render(request, 'Employee/employee_panel.html',
@@ -73,9 +88,13 @@ def employee_panel(request):  # , action):
 
 def add_department(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
 
     if request.method == 'GET':
         return render(request, 'Employee/add_department.html',
@@ -90,12 +109,15 @@ def add_department(request):
             return render(request, 'Employee/add_department.html', {'add_department_form': form})
 
 
-
 def department_panel(request, department_id, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -104,8 +126,9 @@ def department_panel(request, department_id, action):
         department = Department.objects.get(department_id=department_id)
 
         if request.user.user_type != MyUser.ADMINUSER and Employee.objects.get(user=request.user) != department.manager:
-            return HttpResponseRedirect('/user/login')
-
+            message = not_allowed_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': 'base/base.html'})
         if action == 'employ':
             if request.method == 'POST':
                 form = EmployForm(request.POST)
@@ -118,7 +141,8 @@ def department_panel(request, department_id, action):
                         return HttpResponseRedirect('/employee/department_panel/' + department_id)
                     except ObjectDoesNotExist:
                         message = 'چنین کارمندی وجود ندارد'
-                        return render(request, 'Employee/employ.html', {'form': form, 'message': message , 'base_html': base_html})
+                        return render(request, 'Employee/employ.html',
+                                      {'form': form, 'message': message, 'base_html': base_html})
                 else:
                     return render(request, 'Employee/employ.html', {'form': form, 'base_html': base_html})
             else:
@@ -137,7 +161,8 @@ def department_panel(request, department_id, action):
                         return HttpResponseRedirect('/employee/department_panel/' + department_id)
                     except ObjectDoesNotExist:
                         message = 'چنین کارمندی وجود ندارد'
-                        return render(request, 'Employee/fire.html', {'form': form, 'message': message, 'base_html': base_html})
+                        return render(request, 'Employee/fire.html',
+                                      {'form': form, 'message': message, 'base_html': base_html})
                 else:
                     return render(request, 'Employee/fire.html', {'form': form, 'base_html': base_html})
             else:
@@ -156,7 +181,8 @@ def department_panel(request, department_id, action):
                         return HttpResponseRedirect('/employee/department_panel/' + department_id)
                     except ObjectDoesNotExist:
                         message = 'چنین کارمندی وجود ندارد'
-                        return render(request, 'Employee/set_manager.html', {'form': form, 'message': message, 'base_html': base_html})
+                        return render(request, 'Employee/set_manager.html',
+                                      {'form': form, 'message': message, 'base_html': base_html})
                 else:
                     return render(request, 'Employee/set_manager.html', {'form': form, 'base_html': base_html})
             else:
@@ -168,23 +194,31 @@ def department_panel(request, department_id, action):
                 return HttpResponseRedirect('/')
             else:
                 employees = Employee.objects.filter(works_in=department)
-                return render(request, 'Employee/department_panel.html', {'department': department, 'employees': employees, 'base_html':base_html})
+                return render(request, 'Employee/department_panel.html',
+                              {'department': department, 'employees': employees, 'base_html': base_html})
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/') #TODO change this
-
+        message = no_department_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
 
 
 def perform_task(request, task_id):  # TODO explain this view so i can build templates
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login1')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/user/login2')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     try:
         Task.objects.get(task_id=task_id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/user/login3')
+        message = task_not_found_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     try:
         Employee_Task.objects.get(task_id=task_id)
@@ -198,15 +232,20 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
                 Payment.objects.get(task_id=task_id)
                 task_type = 'Payment'
             except ObjectDoesNotExist:
-                return HttpResponseRedirect('/user/login4')
-
+                message = task_not_found_error
+                return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': 'base/base.html'})
     if task_type == 'Form' or task_type == 'Payment':
-        return HttpResponseRedirect('/user/login8')
+        message = emp_not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     employee_task = Employee_Task.objects.get(task_id=task_id)
 
     if employee_task.process.instance_of.department != Employee.objects.get(user=request.user).works_in:
-        return HttpResponseRedirect('/user/login')
+        message = emp_not_allowed_in_dep_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     if task_type == 'Employee_Task':
         employee_task = Employee_Task.objects.get(task_id=task_id)
@@ -239,64 +278,102 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
                 preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Employee)
                 for preprocess_task in preprocess.task_set.all():
                     if not preprocess_task.done:
-                        return HttpResponseRedirect('/user/login7')
-
+                        message = preprocess_not_done_error
+                        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                               'base_html': 'base/base.html'})
             return render(request, 'Employee/employee_perform_task.html', {'question_list': question_list,
                                                                            'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
 
 
-def add_task(request, task_bp_name):  # TODO explain this view so i can build template
+def add_task(request):  # TODO explain this view so i can build template
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
 
     if request.method == 'GET':
         return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})
     else:
         form = AddTaskForm(request.POST)
-        process_bp = Process_Blueprint.objects.get(name=form['process_bp'])
-        if process_bp.department != Employee.objects.get(user= request.user).works_in:
-            return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix=''), 'message':"you don't work in that company"})
-        else:
-            task_bp = Task_Blueprint.objects.get(name=task_bp_name)
-            student = Student.objects.get(student_id=form['student_id'])
-            process = Process.objects.get(instance_of=process_bp, owner=student)
+        try:
+            process_bp = Process_Blueprint.objects.get(name=form['process_bp'])
+            if process_bp.department != Employee.objects.get(user=request.user).works_in:
+                return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix=''), 'message':"کارمند در این دپارتمان استخدام نشده است"})
+            else:
+                # task_bp = Task_Blueprint.objects.get(name=form['task_bp_name'])
+                student = Student.objects.get(student_id=form['student_id'])
+                process = Process.objects.get(instance_of=process_bp, owner=student)
 
-            if hasattr(task_bp, 'Employee_Task_Blueprint'):
-                child_bp = Employee_Task_Blueprint.objects.get(name=task_bp_name)
-                task = Employee_Task(instance_of=child_bp, process=process)
-            elif hasattr(task_bp, 'Form_Blueprint'):
-                child_bp = Form_Blueprint.objects.get(name=task_bp_name)
-                task = Form(instance_of=child_bp, process=process)
-            elif hasattr(task_bp, 'Payment_Blueprint'):
-                child_bp = Payment_Blueprint.objects.get(name=task_bp_name)
-                task = Payment(instance_of=child_bp, process=process)
+                try:
+                    Employee_Task_Blueprint.objects.get(name=form['task_bp'])
+                    task_type = 'Employee_Task'
+                except ObjectDoesNotExist:
+                    try:
+                        Form.objects.get(name=form['task_bp'])
+                        task_type = 'Form'
+                    except ObjectDoesNotExist:
+                        try:
+                            Payment.objects.get(name=form['task_bp'])
+                            task_type = 'Payment'
+                        except ObjectDoesNotExist:
+                            return HttpResponseRedirect('/user/login4')
 
-            task.save()
-            return HttpResponseRedirect('/add_task/' + task_bp_name)
+                if task_type == 'Employee_Task_Blueprint':
+                    child_bp = Employee_Task_Blueprint.objects.get(name=form['task_bp'])
+                    task = Employee_Task(instance_of=child_bp, process=process)
+                elif task_type == 'Form_Blueprint':
+                    child_bp = Form_Blueprint.objects.get(name=form['task_bp'])
+                    task = Form(instance_of=child_bp, process=process)
+                elif task_type == 'Payment_Blueprint':
+                    child_bp = Payment_Blueprint.objects.get(name=form['task_bp'])
+                    task = Payment(instance_of=child_bp, process=process)
+
+                task.save()
+                return HttpResponseRedirect('/user/login7')
+        except ObjectDoesNotExist:
+            return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix=''),
+                                                              'message': "دانشجویی با این شماره وجود ندارد"})
+
 
 def all_employees_list(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/not_logged_in')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     employees = Employee.objects.all()
     return render(request, 'Employee/all_employees_list.html', {'employees': employees})
 
+
 def all_departments_list(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/not_logged_in')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     departments = Department.objects.all()
     return render(request, 'Employee/all_departments_list.html', {'departments': departments})
 
+
 def all_students_list(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/not_logged_in')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -304,24 +381,33 @@ def all_students_list(request):
     students = Student.objects.all()
     return render(request, 'Employee/all_students_list.html', {'studesnts': students, 'base_html': base_html})
 
+
 def all_process_blueprints_list(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/not_logged_in')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
         process_pbs = Process_Blueprint.objects.all()
     else:
-        employee = Employee.objects.get(user= request.user)
+        employee = Employee.objects.get(user=request.user)
+        base_html = 'base/emp_base.html'
         try:
-            department = Department.objects.get(manager= employee)
-            process_pbs = Process_Blueprint.objects.filter(department = department)
+            department = Department.objects.get(manager=employee)
+            process_pbs = Process_Blueprint.objects.filter(department=department)
         except ObjectDoesNotExist:
-            return HttpResponseRedirect('/user/login')
+            message = not_manager_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': base_html})
         if department is None:
-            return HttpResponseRedirect('/employee/login')
-    return render(request, 'Employee/all_process_blueprints_list.html', {'process_pbs': process_pbs,  'base_html': base_html})
-
-
+            message = not_manager_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': base_html})
+    return render(request, 'Employee/all_process_blueprints_list.html',
+                  {'process_pbs': process_pbs, 'base_html': base_html})
 
