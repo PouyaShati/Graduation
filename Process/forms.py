@@ -12,11 +12,11 @@ class CreateProcessBlueprintOperatorForm(forms.ModelForm):
         fields = ['name', 'department']
 
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'نام پروسه',
+                                                'placeholder': 'نام فرایند',
                                                 'style': 'text-align:right',
                                                          'direction': 'rtl'}),
-                        label=_('نام پروسه'),
-                                          error_messages={'required': _('نام پروسه را انتحاب کنید')})
+                        label=_('نام فرایند'),
+                                          error_messages={'required': _('نام فرایند را انتحاب کنید')})
 
     department = forms.ModelChoiceField(queryset=Department.objects.all(), widget=forms.Select(
                                                      attrs={'class': 'form-control',
@@ -53,8 +53,8 @@ class CreateProcessBlueprintForm(forms.ModelForm):
                                                 'placeholder': 'نام پروسه',
                                                 'style': 'text-align:right',
                                                          'direction': 'rtl'}),
-                        label=_('نام پروسه'),
-                                          error_messages={'required': _('نام پروسه را انتحاب کنید')})
+                        label=_('نام فرایند'),
+                                          error_messages={'required': _('نام فرایند را انتحاب کنید')})
 
     # department = forms.ModelChoiceField(queryset=Department.objects.all(), widget=forms.Select(
     #                                                  attrs={'class': 'form-control',

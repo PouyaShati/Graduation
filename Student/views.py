@@ -240,21 +240,56 @@ def graduate(request):
 def process_page(request, student_id, process_id):
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        return HttpResponseRedirect('/user/login') #TODO arash
     try:
         student = Student.objects.get(student_id = student_id)
     except ObjectDoesNotExist:
-        return  HttpResponseRedirect('/student_not_found')
+        return  HttpResponseRedirect('/student_not_found') #TODO arash
     if request.user.user_type == MyUser.STUDENTUSER:
         if student.user != request.user:
-            return HttpResponseRedirect('/you_are_not_him')
+            return HttpResponseRedirect('/you_are_not_him') #TODO arash
 
     try:
         process = Process.objects.get(id=process_id)
         forms = Form.objects.filter(process = process)
         payments = Payment.objects.filter(process = process)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/processDoesntExist')
+        return HttpResponseRedirect('/processDoesntExist') #TODO arash
     return render(request, 'Student/student_process_page.html', {'student': student, 'process': process, 'forms': forms, 'payments': payments})
+
+def form_page(request, student_id, form_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login') #TODO arash
+    try:
+        student = Student.objects.get(student_id = student_id)
+    except ObjectDoesNotExist:
+        return  HttpResponseRedirect('/student_not_found') #TODO arash
+    if request.user.user_type == MyUser.STUDENTUSER:
+        if student.user != request.user:
+            return HttpResponseRedirect('/you_are_not_him')
+    try:
+        form = Form.objects.filter(task_id = form_id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/form doesnt exist') #TODO arash
+    return render(request, 'Student/form_page.html', {'form': form})
+
+
+def payment_page(request, student_id, payment_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login') #TODO arash
+    try:
+        student = Student.objects.get(student_id = student_id)
+    except ObjectDoesNotExist:
+        return  HttpResponseRedirect('/student_not_found') #TODO arash
+    if request.user.user_type == MyUser.STUDENTUSER:
+        if student.user != request.user:
+            return HttpResponseRedirect('/you_are_not_him')
+    try:
+        payment = Payment.objects.filter(task_id = payment_id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/form doesnt exist') #TODO arash
+    return render(request, 'Student/form_page.html', {'payment': payment})
+
+
 
 

@@ -1,7 +1,7 @@
-<head><title>صفحه فرایند</title></head>
+<head><title>صفحه پرداخت</title></head>
 {% extends 'base/stu_base.html' %}
 
-
+{# todo #}
 {% block content %}
     {% if messages %}
         <ul class="messages">
@@ -20,7 +20,7 @@
             </tr>
             {% for form in forms %}
                 <tr>
-                    <td class="text-right"><a href="/student/form_page/{{ student.student_id }}/{{ form.task_id }}">{{form.instance_of.name }}</a></td>
+                    <td class="text-right">form.instance_of.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -35,7 +35,7 @@
             </tr>
             {% for payment in payments%}
                 <tr>
-                    <td class="text-right"><a href="/student/payment_page/{{ student.student_id }}/{{ payment.task_id }}">{{payment.instance_of.name }}</a></td>
+                    <td class="text-right">{{ payment.instance_of.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
