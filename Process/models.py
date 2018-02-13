@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Question_Set(models.Model):
-    name = models.CharField(max_length=60, null=True)
+    name = models.CharField(max_length=60, null=True, unique=True, error_messages={'unique': _('نام مجموعه سوال تکراری است')})
     def __str__(self):
         return str(self.name)
 
@@ -48,7 +48,7 @@ class Answer(models.Model):
 
 
 class Task_Blueprint(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True, error_messages={'unique': 'نام  الگوی وظیفه تکراری است'})
     # default_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True, blank=True) #TODO what is default of? null=True ro man gozashtam
 
     def __str__(self):
@@ -73,7 +73,7 @@ class Payment_Blueprint(Student_Task_Blueprint):
 
 
 class Process_Blueprint(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True, error_messages={'unique': 'نام الگوی فرایند تکراری است'})
     # preprocesses = models.ManyToManyField('self', related_name='postprocess')
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     employee_task_bp_defaults = models.ManyToManyField(Employee_Task_Blueprint)

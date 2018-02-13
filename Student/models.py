@@ -16,7 +16,7 @@ class Student(models.Model):
         ('شیمی', 'شیمی')
                               ]
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name='Student')
-    student_id = models.IntegerField()
+    student_id = models.IntegerField(unique=True, error_messages={'unique': 'شماره دانشجویی تکراری است'})
     graduated = models.BooleanField(default=False)
     major = models.CharField(max_length=50, choices=majors)
     first_name = models.CharField(max_length=30)

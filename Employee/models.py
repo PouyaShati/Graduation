@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class Employee(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name='Employee')
-    employee_id = models.IntegerField()
+    employee_id = models.IntegerField(unique=True, error_messages={'unique': _('شماره کارمندی تکراری است')})
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
