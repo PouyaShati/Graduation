@@ -29,7 +29,8 @@
 /*}*/
 
 body {
-    background: white url("../pics/bg.jpg") no-repeat;
+    background: white url("../pics/bg3.jpg") no-repeat fixed center center;
+    background-size: cover;
 }
 
 body div footer.container-fluid.text-right {
