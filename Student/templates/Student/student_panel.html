@@ -2,10 +2,14 @@
 {% extends 'base/stu_base.html' %}
 
 
-
+{% load staticfiles %}
+{% load static %}
 
 {% block content %}
-    <div><h2>اطلاعات دانشجو</h2></div>
+    <div id="panel-header" class="jumbotron">
+        <div id="panel-header" align="center">اطلاعات دانشجو</div>
+    </div>
+
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -13,66 +17,55 @@
             {% endfor %}
         </ul>
     {% endif %}
-    {#    <div class="col-md-2"></div>#}
-    <div class="container col-md-4 col-sm-12">
-        <div>
-            <div class="text-center"><img src="/{{ student.document }}" width="200" height="200"></div>
-            <div class="text-center">عکس</div>
+
+    <div class="panel-group">
+        <div class="panel panel-info col-md-3 col-sm-12">
+            <div class="panel-heading">
+                <div class="text-center">
+                    <img src="/{{ student.document }}" width="200" height="250"
+                         onerror="this.src='{% static "pics/default-user.jpg" %}'">
+                </div>
+            </div>
+            <div align="center">:Username</div>
+            <div align="center" class="panel-body">{{ student.user }}</div>
+            <div></div>
+        </div>
+
+        <div class="panel panel-info col-md-9 col-sm-12">
+            <div class="panel-heading">{{ student.first_name }} {{ student.last_name }}</div>
+
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شماره تلفن"
+                                             value="{{ student.phone_number }}"></div>
+                <div class="col-xs-6">شماره تلفن:‌</div>
+            </div>
+
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="ایمیل"
+                                             value="{{ student.email }}"></div>
+                <div class="col-xs-6">ایمیل:‌</div>
+            </div>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="رشته"
+                                             value="{{ student.major }}"></div>
+                <div class="col-xs-6">رشته:‌</div>
+            </div>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شماره دانشجویی"
+                                             value="{{ student.student_id }}"></div>
+                <div class="col-xs-6">شماره دانشجویی:‌</div>
+            </div>
 
         </div>
     </div>
-    <div class="container col-md-8 col-sm-12">
-        <table class="center table table-striped" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-center">نام</th>
-                <td class="text-center"> {{ student.first_name }}</td>
-            </tr>
-            <tr>
-                <th class="text-center">نام خانوادگی</th>
-                <td class="text-center"> {{ student.last_name }}</td>
 
-
-            </tr>
-            <tr>
-                <th class="text-center">رایانامه</th>
-                <td class="text-center"> {{ student.email }}</td>
-
-            </tr>
-            <tr>
-                <th class="text-center">شماره تلفن</th>
-                <td class="text-center"> {{ student.phone_number }}</td>
-
-            </tr>
-            <tr>
-                <th class="text-center">شماره‌ی دانشجویی</th>
-                <td class="text-center">{{ student.student_id }}</td>
-
-            </tr>
-            <tr>
-                <th class="text-center">رشته</th>
-                <td class="text-center">{{ student.major }}</td>
-
-            </tr>
-            </tbody>
-
-        </table>
-
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-center">نوع فرایند</th>
-                <th class="text-center">وضعیت</th>
-            </tr>
-            {% for process in processes %}
-                <tr>
-                    <td class="text-center"> {{ process.instance_of.name }}</td>
-                    <td class="text-center"> {% if process.validated %} کامل {% else %} ناقض {% endif %}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-
-        </table>
-    </div>
 {% endblock %}
 

@@ -1,8 +1,16 @@
 <head><title>صفحه‌ی کارمند</title></head>
-
 {% extends 'base/emp_base.html' %}
 
+{% load staticfiles %}
+{% load static %}
+
+
+
 {% block content %}
+
+    <div id="panel-header" class="jumbotron">
+        <div id="panel-header" align="center">اطلاعات کارمند</div>
+    </div>
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -10,39 +18,48 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="col-md-2"></div>
-    <div class="container col-md-8" >
-
-        <table class="table table-bordered" style="background-color: #999999">
-            <tbody>
-            <tr>
-                <th class="text-center">نام</th>
-                <td class="text-center"> {{ employee.first_name }}</td>
-            </tr>
-            <tr>
-                <th class="text-center">نام خانوادگی</th>
-                <td class="text-center"> {{ employee.last_name }}</td>
 
 
-            </tr>
-            <tr>
-                <th class="text-center">رایانامه</th>
-                <td class="text-center"> {{ employee.email }}</td>
+    <div class="panel-group">
+        <div class="panel panel-success col-md-3 col-sm-12">
+            <div class="panel-heading">
+                <div class="text-center">
+                    <img src="/{{ student.document }}" width="200" height="250"
+                         onerror="this.src='{% static "pics/default-user.jpg" %}'">
+                </div>
+            </div>
+            <div align="center">:Username</div>
+            <div align="center" class="panel-body">{{ employee.user }}</div>
+            <div></div>
+        </div>
 
-            </tr>
-            <tr>
-                <th class="text-center">شماره تلفن</th>
-                <td class="text-center"> {{ employee.phone_number }}</td>
+        <div class="panel panel-success col-md-9 col-sm-12">
+            <div class="panel-heading">{{ employee.first_name }} {{ employee.last_name }}</div>
 
-            </tr>
-            <tr>
-                <th class="text-center">شماره‌ی کارمندی</th>
-                <td class="text-center">{{ employee.employee_id }}</td>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شماره تلفن"
+                                             value="{{ employee.phone_number }}"></div>
+                <div class="col-xs-6">شماره تلفن:‌</div>
+            </div>
 
-            </tr>
-            </tbody>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="ایمیل"
+                                             value="{{ employee.email }}"></div>
+                <div class="col-xs-6">ایمیل:‌</div>
+            </div>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شماره کارمندی"
+                                             value="{{ employee.employee_id }}"></div>
+                <div class="col-xs-6">شماره کارمندی‌</div>
+            </div>
 
-        </table>
+        </div>
+    </div>
 
-       </div>
 {% endblock %}

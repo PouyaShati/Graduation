@@ -19,7 +19,7 @@
 }
 
 * {
-    font-family: BKoodak;
+    font-family: BKoodak, Arial;
     font-size: 20px;
     direction: rtl;
 }
@@ -102,4 +102,14 @@ body nav.navbar.navbar-inverse a {
 
 #table {
     display: table;
+}
+
+#panel-header {
+    font-size: 50px;
+}
+
+#staticField {
+    width: 200px;
+    height: 50px;
+    font-size: 25px;
 }

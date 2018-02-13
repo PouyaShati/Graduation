@@ -2,9 +2,16 @@
 {% extends 'base/op_base.html' %}
 
 
+{% load staticfiles %}
+{% load static %}
+
+
 
 
 {% block content %}
+    <div id="panel-header" class="jumbotron">
+        <div id="panel-header" align="center">اطلاعات اپراتور</div>
+    </div>
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -12,34 +19,42 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="col-md-2"></div>
-    <div class="container col-md-8">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-center">نام</th>
-                <td class="text-center"> {{ operator.first_name }}</td>
-            </tr>
-            <tr>
-                <th class="text-center">نام خانوادگی</th>
-                <td class="text-center"> {{ operator.last_name }}</td>
 
 
-            </tr>
-            <tr>
-                <th class="text-center">رایانامه</th>
-                <td class="text-center"> {{ operator.email }}</td>
+    <div class="panel-group">
+        <div class="panel panel-warning col-md-3 col-sm-12">
+            <div class="panel-heading">
+                <div class="text-center">
+                    <img src="/{{ student.document }}" width="200" height="250"
+                         onerror="this.src='{% static "pics/default-user.jpg" %}'">
+                </div>
+            </div>
+            <div align="center">:Username</div>
+            <div align="center" class="panel-body">{{ operator.user }}</div>
+            <div></div>
+        </div>
 
-            </tr>
-            <tr>
-                <th class="text-center">شماره تلفن</th>
-                <td class="text-center"> {{ operator.phone_number }}</td>
+        <div class="panel panel-warning col-md-9 col-sm-12">
+            <div class="panel-heading">{{ operator.first_name }} {{ operator.last_name }}</div>
 
-            </tr>
-            </tbody>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="شماره تلفن"
+                                             value="{{ operator.phone_number }}"></div>
+                <div class="col-xs-6">شماره تلفن:‌</div>
+            </div>
 
-        </table>
+            <div class="row panel-body">
+                <div class="col-xs-6"><input type="text" id="staticField" readonly
+                                             class="form-control-plaintext form-control"
+                                             placeholder="ایمیل"
+                                             value="{{ operator.email }}"></div>
+                <div class="col-xs-6">ایمیل:‌</div>
+            </div>
+
+        </div>
     </div>
-    <div class="col-md-2"></div>
+
 {% endblock %}
 
