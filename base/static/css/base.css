@@ -1,15 +1,59 @@
+@font-face {
+    font-family: BTitrBold;
+    src: url("../fonts/BTitrBold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: BKoodak;
+    src: url("../fonts/BKoodak.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: BNazanin;
+    src: url("../fonts/BNazanin.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: BNazaninBold;
+    src: url("../fonts/BNazaninBold.ttf") format("truetype");
+}
+
 * {
-    /*color: #555200;*/
-    font-family: 'Lateef', 'Arial';
+    font-family: BKoodak;
     font-size: 20px;
+    direction: rtl;
 }
 
 /*p {*/
 /*color: #1AAA;*/
 /*}*/
 
+body div footer.container-fluid.text-right {
+    background-color: rgba(36, 62, 152, 0.84);
+}
+
+body nav.navbar {
+    direction: rtl;
+    background-color: rgba(36, 62, 152, 0.84);
+    height: 70px;
+}
+
+#footer {
+    margin-top: 20vh;
+    direction: rtl;
+    background-color: rgba(36, 62, 152, 0.84);
+}
+
+body nav.navbar.navbar-inverse a {
+    color: black;
+}
+
+#head-and-foot {
+    font-family: BNazanin;
+}
+
 #university-brand {
-    color: seagreen;
+    font-family: BNazaninBold;
 }
 
 /*body {*/
@@ -17,12 +61,13 @@
 /*}*/
 
 #table-header {
-    font-family: "Lateef";
-    color: green;
+    font-family: "BKoodak";
+    /*color: green;*/
 }
 
 #error {
     color: red;
+    font-size: 10px; /*fuck this shit*/
 }
 
 #button_submit {
@@ -33,11 +78,10 @@
     box-shadow: 3px 3px #3333;
     background-color: #fff;
     border-radius: 30px;
-"
 }
 
 #fourerror {
-    font-family: 'IranianSansRegular';
+    font-family: BTitrBold;
     font-size: 40px;
     font-weight: normal;
     font-style: normal;

@@ -68,7 +68,7 @@ def create_process_blueprint(request): # TODO handle actions
 
 
 
-def process_blueprint_page(request, name, action=''):
+def process_blueprint_page(request, id, action=''):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
@@ -85,10 +85,10 @@ def process_blueprint_page(request, name, action=''):
     # if department is None:
     #     return HttpResponseRedirect('/employee/login')
     try:
-        process_pb = Process_Blueprint.objects.get(name=name)
+        process_pb = Process_Blueprint.objects.get(id=id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/'+name+'pox')
-    return_link = '/process/process_blueprint_page/'+name
+    return_link = '/process/process_blueprint_page/'+id
     if action =='add_preprocess':
         if request.method == 'POST':
             form = AddPreprocessForm(request.POST)

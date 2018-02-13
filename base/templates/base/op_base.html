@@ -4,19 +4,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    {#    <meta charset="utf-8">#}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {#    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">#}
-    {#    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">#}
-    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>#}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lateef" rel="stylesheet">
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/iranian-sans" type="text/css"/>
+
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <title>Title</title>
 </head>
@@ -26,12 +22,11 @@
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <div class="col-sm-4" align="center">
-            <ul class="nav navbar-nav">
-                <li class="dropdown"><a id="acc_dropdown" class="dropdown-toggle" data-toggle="dropdown" href="#">پنل
+        <ul class="nav navbar-nav">
+            <li class="dropdown"><a id="head-and-foot" class="dropdown-toggle" data-toggle="dropdown" href="#">پنل
                     کاربر<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a id="title" href="#">SHOULD CHANGE</a></li>
+                        <li><a id="title" href="#">پنل کاربر</a></li>
                         <li><a href="#">تماس با ما</a></li>
                         <li><a href="/employee/logout">خروج</a></li>
                     </ul>
@@ -39,9 +34,9 @@
                 {#                <script>#}
                 {#                    document.getElementById("acc_dropdown").innerHTML = "{{ employee.first_name }}";#}
                 {#                </script>#}
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
+                <li class="dropdown"><a id='head-and-foot' class="dropdown-toggle" data-toggle="dropdown" href="#">گزینه‌ها<span
                         class="caret"></span></a>
-                    <ul class="dropdown-menu">
+                    <ul class="hello dropdown-menu">
                         <li><a href="/process/create_process_blueprint">ساخت الگوی فرایند</a></li>
                         <li><a href="/process/create_employee_task_blueprint">ساخت الگوی وظیفه کارمند</a></li>
                         <li><a href="/process/create_form_blueprint">ساخت الگوی فرم</a></li>
@@ -50,34 +45,34 @@
                         <li><a href="/employee/all_employees_list/">فهرست کارمندان</a></li>
                         <li><a href="/employee/all_departments_list/">فهرست دپارتمان‌ها</a></li>
                         <li><a href="/employee/all_students_list/">فهرست دانشجویان</a></li>
+                        <li><a href="/employee/all_process_blueprints_list/">فهرست الگوی فرم ها</a></li>
                         <li><a href="/employee/add_department">اضافه کردن دپارتمان</a></li>
                         <li><a href="/student/signup/">اضافه کردن داشنجو</a> </li>
                         <li><a href="/employee/signup/">اضافه کردن کارمند</a> </li>
                     </ul>
                 </li>
-                <li><a href="/user/panel">خانه</a></li>
-                <li><a href="#" onclick="goBack()">بازگشت</a></li>
+                <li><a id="head-and-foot" href="/">خانه</a></li>
+                <li><a id='head-and-foot' href="#" onclick="goBack()">بازگشت</a></li>
                 <script>
                     function goBack() {
                         window.history.back();
                     }
                 </script>
-            </ul>
-        </div>
-        <div class="col-sm-4" align="center"><img alt="Brand"
-                                                  src={% static "pics/shariffff.png" %} {% comment %}style="height:6%;display:inline-block;"{% endcomment %}/>
-        </div>
-        <div class="col-sm-4" align="center">
-            <div class="navbar-header navbar-right">
-                <div class="row1">
+        </ul>
 
-                    <h3 id="university-brand" class="pull-right">سامانه‌ی فارغ‌التحصیلی</h3></div>
-            </div>
-        </div>
-        {#        <a href="#" class="navbar-right"></a>#}
-
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a id="university-brand" class="navbar-brand" href="#">سامانه فارغ‌التحصیلی
+                    <div align="center"><img
+                            src="{% static "pics/sharifLogoSamll.png" %}" width="30" height="30"
+                            class="d-inline-block align-top"
+                            alt=""></div>
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>
+
 
 <script>
     $(document).ready(function () {
@@ -94,8 +89,71 @@
     });</script>
 
 
+<div class="container col-sm-12 col-md-12 text-right">
+    {% block content %}
+    {% endblock %}
+</div>
 
-{% block content %}
-{% endblock %}
+
+<div></div>
+<div>
+    <footer class="">
+
+        <!--Footer Links-->
+        <div class="container-fluid text-right">
+        </div>
+        <!--/.Footer Links-->
+
+        <!--Copyright-->
+        <div class="footer-copyright">
+        </div>
+        <!--/.Copyright-->
+
+    </footer>
+</div>
+<div>
+    <footer id="footer">
+        <div class="footer container-fluid text-right">
+            <div style="position: relative; bottom: 0" class="row">
+
+                <!--Second column-->
+                <div class="col-md-6"></div>
+                <div id='head-and-foot' class="col-md-6">
+                    <h5 class="title">تماس با ما </h5>
+                    <div><a id='head-and-foot' href="mailto:graduation@example.com"><span
+                            class="oi oi-envelope-closed" title="envelope closed" aria-hidden="true"
+                            style="margin-left:1%;"></span>
+                        به ما ایمیل بزنید </a>
+                    </div>
+                    <div><a id='head-and-foot' href="#!"><span id='head-and-foot' class="oi oi-comment-square"
+                                                               aria-hidden="true"
+                                                               style="margin-left:1%;"></span>سوالات رایج را ببینید</a>
+                    </div>
+                    <div><span id='head-and-foot' class="oi oi-envelope-open" title="star" aria-hidden="true"></span>
+                        <p id="head-and-foot"> صندوق پستی: ۱۱۱۵۵-۱۱۳۶۵</p>
+                    </div>
+                    <div><a id='head-and-foot' href="#!"></a><span id='head-and-foot' class="oi oi-map-marker"
+                                                                   title="social twitter" aria-hidden="true"
+                                                                   style="margin-left:1%;"></span>
+                        <p id="head-and-foot">تهران،خیابان آزادی،دانشگاه صنعتی شریف.</p>
+                    </div>
+
+                </div>
+                <!--/.Second column-->
+            </div>
+        </div>
+        <!--/.Footer Links-->
+
+        <!--Copyright-->
+        <div class="footer-copyright">
+            <div class="container-fluid text-right text-center">
+                © کلیه حقوق مربوط به <a id='head-and-foot' href="https://www.p.com"> گروه پاص </a> است.
+
+            </div>
+        </div>
+    </footer>
+</div>
+
+
 </body>
 </html>

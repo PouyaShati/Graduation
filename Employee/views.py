@@ -275,6 +275,27 @@ def all_students_list(request):
     students = Student.objects.all()
     return render(request, 'Employee/all_students_list.html', {'studesnts': students, 'base_html': base_html})
 
+def all_process_blueprints_list(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/not_logged_in')
+    if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
+        return HttpResponseRedirect('/not_eligible')
+    if request.user.user_type == MyUser.ADMINUSER:
+        base_html = 'base/op_base.html'
+        process_pbs = Process_Blueprint.objects.all()
+    else:
+        employee = Employee.objects.get(user= request.user)
+        try:
+            department = Department.objects.get(manager= employee)
+            process_pbs = Process_Blueprint.objects.filter(department = department)
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect('/user/login')
+        if department is None:
+            return HttpResponseRedirect('/employee/login')
+    return render(request, 'Employee/all_process_blueprints_list.html', {'process_pbs': process_pbs,  'base_html': base_html})
+
+
+
 
 def employee_404(request):
     return render(request, 'Employee/404.html', status=404)
