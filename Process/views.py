@@ -56,8 +56,9 @@ def create_process_blueprint(request): # TODO handle actions
                     process_bp.save()
                     success_message = ' با موفقیت ساخته شد '+form.cleaned_data['name']
                     name = form.cleaned_data['name']
+                    process_bp_id = process_bp.id
                     return render(request, 'Process/create_process_blueprint.html', {'form': form, 'success_message':success_message
-                                                                                     , 'base_html': base_html, 'name': name})
+                                                                                     , 'base_html': base_html, 'name': name, 'process_bp_id': process_bp_id})
                 except ObjectDoesNotExist:
                     return render(request, 'Process/create_process_blueprint.html', {'form': form})
             else:
@@ -74,8 +75,9 @@ def create_process_blueprint(request): # TODO handle actions
                 process_bp.save()
                 success_message = ' با موفقیت ساخته شد '+form.cleaned_data['name']
                 name = form.cleaned_data['name']
+                process_bp_id = process_bp.id
                 return render(request, 'Process/create_process_blueprint.html', {'form': form, 'success_message': success_message
-                                                                                 , 'base_html': base_html, 'name': name})
+                                                                                 , 'base_html': base_html, 'name': name, 'process_bp_id': process_bp_id})
             else:
                 return render(request, 'Process/create_process_blueprint.html', {'form': form, 'base_html': base_html})
 
@@ -106,7 +108,7 @@ def process_blueprint_page(request, id, action=''):
     try:
         process_pb = Process_Blueprint.objects.get(id=id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/'+name+'pox')
+        return HttpResponseRedirect('/'+id+'pox')
     return_link = '/process/process_blueprint_page/'+id
     if action =='add_preprocess':
         if request.method == 'POST':
@@ -313,15 +315,16 @@ def create_question_set(request):
             successfully_added = 'با موفقیت ساخته شد '+form.cleaned_data['name']
             question_set.save()
             name = form.cleaned_data['name']
+            qs_id = question_set.id
             return render(request, 'Process/create_question_set.html', {'form':form, 'success_message' : successfully_added,
-                                                                        'base_html': base_html,'name': name})
+                                                                        'base_html': base_html,'name': name, 'qs_id': qs_id})
         else:
             return render(request, 'Process/create_question_set.html', {'form': form, 'base_html': base_html})
     else:
         form = CreateQuestionSetForm(label_suffix='')
         return render(request, 'Process/create_question_set.html', {'form': form, 'base_html': base_html})
 
-def question_set_page(request, name, action=''):
+def question_set_page(request, id, action=''):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/user/login')
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
@@ -331,10 +334,10 @@ def question_set_page(request, name, action=''):
     else:
         base_html = 'base/emp_base.html'
     try:
-        qs = Question_Set.objects.get(name=name)
+        qs = Question_Set.objects.get(id=id)
     except ObjectDoesNotExist:
         return redirect('not_found')
-    return_link = '/process/question_set_page/'+name
+    return_link = '/process/question_set_page/'+id
     if action == 'add_question':
         if request.method == 'POST':
             form = AddQuestionForm(request.POST)

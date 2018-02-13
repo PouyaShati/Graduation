@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^create_question_set/$', views.create_question_set, name='create_question_set'),
     # url(r'^process_blueprint_page/(?P<name>([a-z][0-9])*)/$', views.process_blueprint_page, name='process_blueprint_page'),
     url(r'^process_blueprint_page/(?P<id>\w*)/(?P<action>\w*)/?$', views.process_blueprint_page, name='process_blueprint_page'),
-    url(r'^question_set_page/(?P<name>\w*)/(?P<action>\w*)/?$', views.question_set_page, name='question_set_page'),
+    url(r'^question_set_page/(?P<id>\w*)/(?P<action>\w*)/?$', views.question_set_page, name='question_set_page'),
 
 ]

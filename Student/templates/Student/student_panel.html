@@ -65,6 +65,21 @@
             </div>
 
         </div>
+    <table class="table table-bordered" style="background-color: #999999;">
+ -            <tbody>
+ -            <tr>
+ -                <th class="text-center">نوع فرایند</th>
+ -                <th class="text-center">وضعیت</th>
+ -            </tr>
+ -            {% for process in processes %}
+ -                <tr>
+ -                    <td class="text-center"><a href="/student/process_page/{{ student.student_id }}/{{ process.id }}"> {{ process.instance_of.name }}</a></td>
+ -                    <td class="text-center"> {% if process.validated %} کامل {% else %} ناقض {% endif %}</td>
+ -                </tr>
+ -            {% endfor %}
+ -            </tbody>
+ -
+ -        </table>
     </div>
 
 {% endblock %}

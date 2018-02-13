@@ -33,54 +33,53 @@
                                 </font>
                                 </div> {% endfor %}
                         </span>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="control-group">
-                            <div align="center">
-                                <label class="control-label">{{ field.label }}</label>
-                            </div>
-                            <div class="controls">{{ field }}
-                                {% if field.help_text %}
-                                    <p class="help-inline">
-                                        <small>
-                                            {{ field.help_text }}
-                                        </small>
-                                    </p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="control-group">
+                                        <div align="center">
+                                            <label class="control-label">{{ field.label }}</label>
+                                        </div>
+                                        <div class="controls">{{ field }}
+                                            {% if field.help_text %}
+                                                <p class="help-inline">
+                                                    <small>
+                                                        {{ field.help_text }}
+                                                    </small>
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 {% endif %}
+                            {% endfor %}
+                        </fieldset>
+                        <div align="center">
+                            <div class="form-actions">
+                                <button type="submit" value="ساخت فرایند" class="btn btn-primary">ساخت فرایند</button>
+                                <ul style="list-style-type:none">
+                                    {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
+                            <div align="center">
+                                {{ success_message }} {# process blueprint added successfuly #}
+                            </div>
+                            {% for preprocess in preprocesses %}
+                                {{ preprocess.name }} ok
+                            {% endfor %}
+                        {% for task in tasks%}
+                                {{ task.name }} ok
+                            {% endfor %}
                         </div>
+                    </form>
+                    {% if name %}
+                    <div align="center">
+                        <form class="form-horizontal" novalidate method="get" action="/process/process_blueprint_page/{{ process_bp_id }}">
+                            <button type="submit" value="صفحه الگوی فرایند" class="btn btn-primary">صفخه الگوی فرایند</button>
+                        </form>
+                    </div>
                     {% endif %}
-                {% endfor %}
-            </fieldset>
-            <div align="center">
-                <div class="form-actions">
-                    <button type="submit" value="ساخت فرایند" class="btn btn-primary">ساخت فرایند</button>
-                    <ul style="list-style-type:none">
-                        {% for error in form.non_field_errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div align="center">
-                    {{ success_message }} {# process blueprint added successfuly #}
-                </div>
-                {% for preprocess in preprocesses %}
-                    {{ preprocess.name }} ok
-                {% endfor %}
-                {% for task in tasks %}
-                    {{ task.name }} ok
-                {% endfor %}
-            </div>
-        </form>
-        {% if name %}
-            <div align="center">
-                <form class="form-horizontal" novalidate method="get"
-                      action="/process/process_blueprint_page/{{ name }}">
-                    <button type="submit" value="صفحه الگوی فرایند" class="btn btn-primary">صفخه الگوی فرایند</button>
-                </form>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}
 
