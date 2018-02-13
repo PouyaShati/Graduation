@@ -57,6 +57,3 @@ def operator_panel(request): #, action):
 
     return render(request, 'Operator/operator_panel.html',
                   {'operator': request.user.Operator})
-
-def operator_404(request):
-    return  render(request, 'Operator/404.html', status=404)

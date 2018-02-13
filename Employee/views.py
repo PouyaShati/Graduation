@@ -325,6 +325,3 @@ def all_process_blueprints_list(request):
 
 
 
-
-def employee_404(request):
-    return render(request, 'Employee/404.html', status=404)

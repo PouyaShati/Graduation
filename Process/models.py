@@ -27,11 +27,14 @@ class Question(models.Model):
         ('Integer','Integer'),
         ('Document','Document'),
         ('Multiple Choice','Multiple Choice')])
-    choices = models.CharField(max_length=1000)
+    choices = models.CharField(max_length=1000, null=True, blank=True)
     belongs_to = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return str(self.text)
+        return str(self.choices)
+
+    def choices_as_list(self):
+        return str(self.choices).split('-')
 
 class Answer(models.Model):
     text = models.CharField(max_length=1000)

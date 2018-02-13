@@ -142,31 +142,29 @@ def perform_task(request, task_id):
     elif task_type == 'Form':
         student_form = Form.objects.get(task_id=task_id)
         # FormSet = formset_factory(StudentFillFormForm)
-        question_list = []
-        question_type_list = []
-        question_choices_list = []
-        for question in student_form.instance_of.question_set.question_set.all():
-            question_list.append(question.text)
-            question_type_list.append(question.type)
-            question_choices_list.append(question.choices)
-
+        # question_list = []
+        # question_type_list = []
+        # for question in student_form.instance_of.question_set.question_set.all():
+        #     question_list.append(question.text)
+        #     question_type_list.append(question.type)
+        #     question_list.append(question.type)
+        questions = student_form.instance_of.question_set.question_set.all()
         if request.method == 'POST':
             # form_set = FormSet(request.POST)
 
             answer_set = Answer_Set()
+            answer_set.save()
             student_form.answer_set = answer_set
             n = len(student_form.instance_of.question_set.question_set.all()) # TODO in dorost kar mikone?
             for i in range(1, n+1):
-                answer = Answer(text=request.POST['answer-' + i], belongs_to=answer_set)
+                answer = Answer(text=request.POST['answer-' + str(i)], belongs_to=answer_set)
                 # TODO add checking validity and rendering a page with error message
                 answer.save()
-            answer_set.save()
 
             student_form.done = True
 
             student_form.save()
-            return render(request, 'Student/student_fill_form.html', {'question_list': question_list,
-                                                                           'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
+            return render(request, 'Student/student_fill_form.html', {'questions': questions})
         else:
             for precondition in student_form.process.instance_of.preprocesses.all():
                 preprocess_bp = precondition.pre
@@ -175,8 +173,8 @@ def perform_task(request, task_id):
                     if not preprocess_task.done:
                         return HttpResponseRedirect('/user/login7')
 
-            return render(request, 'Student/student_fill_form.html', {'question_list': question_list,
-                                                                           'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
+            return render(request, 'Student/student_fill_form.html',
+                                      {'questions': questions})
             # return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': FormSet(label_suffix='')})
 
 def students_list(request):
@@ -186,9 +184,6 @@ def students_list(request):
         return HttpResponseRedirect('/not_eligible')
     students = Student.objects.all()
     return render(request, 'Student/all_students_list.html', {'students': students})
-
-def student_404(request):
-    return render(request, 'Student/404.html', status=404)
 
 def perform_process(request, process_blueprint_name): #TODO kar nemikone in
     if not request.user.is_authenticated():
@@ -278,10 +273,11 @@ def form_page(request, student_id, form_id):
         if student.user != request.user:
             return HttpResponseRedirect('/you_are_not_him')
     try:
-        form = Form.objects.filter(task_id = form_id)
+        form = Form.objects.get(task_id = form_id)
+        questions = form.instance_of.question_set.question_set.all()
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/form doesnt exist') #TODO arash
-    return render(request, 'Student/form_page.html', {'form': form})
+    return render(request, 'Student/form_page.html', {'form': form, 'questions': questions, 'task_id': form_id})
 
 
 def payment_page(request, student_id, payment_id):
@@ -295,10 +291,10 @@ def payment_page(request, student_id, payment_id):
         if student.user != request.user:
             return HttpResponseRedirect('/you_are_not_him')
     try:
-        payment = Payment.objects.filter(task_id = payment_id)
+        payment = Payment.objects.get(task_id = payment_id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/form doesnt exist') #TODO arash
-    return render(request, 'Student/form_page.html', {'payment': payment})
+        return HttpResponseRedirect('/payment doesnt exist') #TODO arash
+    return render(request, 'Student/payment_page.html', {'payment': payment, 'task_id':payment_id})
 
 
 

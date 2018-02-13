@@ -253,7 +253,7 @@ class CreateQuestionSetForm(forms.ModelForm):
 class AddQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['text', 'type']
+        fields = ['text', 'type', 'choices']
         widgets = {
             'text': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'متن سوال',
@@ -263,11 +263,16 @@ class AddQuestionForm(forms.ModelForm):
                                               'placeholder': 'نوع سوال',
                                               'style': 'text-align:right',
                                                 'direction': 'rtl'}),
+            'choices': forms.TextInput(attrs={'class': 'form-control',
+                                              'placeholder': 'گزینه ها',
+                                              'style': 'text-align:right',
+                                              'direction': 'rtl'})
 
         }
         labels = {
             'text': _('متن سوال'),
             'type': _('نوع سوال'),
+            'choices': _('گزینه ها')
         }
         error_messages = {
             'text': {

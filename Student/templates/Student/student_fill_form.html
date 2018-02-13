@@ -1,0 +1,59 @@
+<head><title>تکمیل فرم</title></head>
+{% extends 'base/stu_base.html' %}
+
+{# todo #}
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container col-md-4"></div>
+    <form method="post">
+    {% csrf_token %}
+    <div class="container col-md-4">
+
+        <table class="table table-bordered" style="background-color: #999999;">
+            <tbody>
+            {% for q in questions %}
+                <tr>
+                    <td class="text-right">{{q.text }}</td>
+                    {% if q.type == 'Multiple Choice' %}
+                        <td>
+                        <div class="controls">
+                            <select name="answer-{{ forloop.counter }}" class="form-control" placeholder="انتخاب"
+                                    style="text-align:right" direction="rtl" required id="answer{{ forloop.counter }}">
+                                <option value selected>--------</option>
+                                {% for opt in q.choices_as_list %}
+                                    <option value="{{ forloop.counter }}">{{ opt }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        </td>
+                    {% else %}
+                        <td>
+                        <div class="form-group">
+                        <input style="text-align: right" type="text" class="form-control" name="answer-{{ forloop.counter }}" id="answer{{ forloop.counter0 }}"
+                               aria-describedby="answerHelp" placeholder="لطفا پر کنید">
+                    </div>
+
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+                        <button type="submit" class="btn btn-primary">ذخیره</button>
+
+    </div>
+    </form>
+
+    <div class="container col-md-4"></div>
+
+
+{% endblock %}
+
+
+
+
