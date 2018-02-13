@@ -1,5 +1,5 @@
-<head><title>الگوی فرایند</title></head>
-{% extends base_html %}
+<head><title>صفحه فرایند</title></head>
+{% extends 'base/stu_base.html' %}
 
 
 {% block content %}
@@ -10,27 +10,6 @@
             {% endfor %}
         </ul>
     {% endif %}
-            {{ process_pb.name }}
-    <div class="container" align="center">
-        <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_default_form_task">
-            <button type="submit" value="افزودن فرم پیشفرض" class="btn btn-primary">افزودن فرم پیشفرض</button>
-        </form></div>
-        <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_default_payment_task">
-            <button type="submit" value="افزودن پرداخت پیشفرض" class="btn btn-primary">افزودن پرداخت پیشفرض</button>
-        </form></div>
-        <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_default_employee_task">
-            <button type="submit" value="افزودن وظیفه کارمند پیشفرض" class="btn btn-primary">افزودن وظیفه کارمند
-                پیشفرض
-            </button>
-        </form></div>
-    <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_preprocess">
-            <button type="submit" value="افزودن فرایند پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز</button>
-        </form></div>
-    </div>
     <div class="container col-md-3">
 
         <table class="table table-bordered" style="background-color: #999999;">
