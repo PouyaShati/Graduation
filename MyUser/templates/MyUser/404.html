@@ -1,25 +1,19 @@
 <head><title>صفحه خطا</title></head>
 {% extends 'base/base.html' %}
 
+{% load staticfiles %}
+{% load static %}
 
 
 
 {% block content %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <div class="col-md-4"></div>
-    <div id="fourerror" class="container col-md-4" align="center">
-        !!چنین صفحه‌ای وجود ندارد
+    <div align="center"><img src="{% static "pics/404image.png" %}"></div>
+    <div id="fourerror" class="container" align="center">
+        چنین صفحه‌ای وجود ندارد!!
         <form id="button_submit" novalidate method="get" action="/"> {# todo where to go from here? #}
             <button type="submit" value="بازگشت" class="btn btn-primary">بازگشت</button>
         </form>
 
     </div>
-    <div class="col-md-4"></div>
 {% endblock %}
 
