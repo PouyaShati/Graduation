@@ -71,13 +71,18 @@ class Payment_Blueprint(Student_Task_Blueprint):
 
 class Process_Blueprint(models.Model):
     name = models.CharField(max_length=60)
-    preprocesses = models.ManyToManyField('self')
+    # preprocesses = models.ManyToManyField('self', related_name='postprocess')
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     employee_task_bp_defaults = models.ManyToManyField(Employee_Task_Blueprint)
     form_bp_defaults = models.ManyToManyField(Form_Blueprint)
     payment_bp_defaults = models.ManyToManyField(Payment_Blueprint)
     def __str__(self):
         return str(self.name)
+
+
+class Precondition(models.Model):
+    pre  = models.ForeignKey(Process_Blueprint)
+    post = models.ForeignKey(Process_Blueprint, related_name='preprocesses')
 
 
 class Process(models.Model):
