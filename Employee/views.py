@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from MyUser.models import MyUser
 from .models import Employee, Department
 from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm, EmployeePerformTaskForm, \
-    AddTaskForm
+    AddTaskForm, DeleteDepartmentForm
 from Process.models import Task, Employee_Task, Employee_Task_Blueprint, Form_Blueprint, Answer, Answer_Set
 from Process.models import Payment_Blueprint, Form, Payment, Task_Blueprint, Process_Blueprint, Process
 from Student.models import Student

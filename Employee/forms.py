@@ -252,3 +252,18 @@ class AddTaskForm(forms.Form):
                                 label=_("student_id"),
                                 #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
                                 )
+
+
+'''
+class DeleteDepartmentForm(forms.Form):
+    department_id = forms.IntegerField (
+                                widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                              'required': 'True',
+                                                              'max_length': 30,
+                                                              'placeholder': 'شماره دپارتمان',
+                                                              'style': 'text-align:left'
+                                                                }
+                                                       ),
+                                label=_("شماره دپارتمان"),
+                                )
+'''
