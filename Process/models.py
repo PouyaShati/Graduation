@@ -76,7 +76,8 @@ class Process_Blueprint(models.Model):
     employee_task_bp_defaults = models.ManyToManyField(Employee_Task_Blueprint)
     form_bp_defaults = models.ManyToManyField(Form_Blueprint)
     payment_bp_defaults = models.ManyToManyField(Payment_Blueprint)
-
+    def __str__(self):
+        return str(self.name)
 
 
 class Process(models.Model):

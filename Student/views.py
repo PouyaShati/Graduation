@@ -83,14 +83,33 @@ def student_panel(request): #, action):
 
 def perform_task(request, task_id):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        return HttpResponseRedirect('/user/login1')
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/user/login')
-    if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/user/login2')
 
+    try:
+        Task.objects.get(task_id=task_id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/user/login3')
 
-    if hasattr(Task.objects.get(task_id=task_id), 'Payment'):
+    try:
+        Employee_Task.objects.get(task_id=task_id)
+        task_type = 'Employee_Task'
+    except ObjectDoesNotExist:
+        try:
+            Form.objects.get(task_id=task_id)
+            task_type = 'Form'
+        except ObjectDoesNotExist:
+            try:
+                Payment.objects.get(task_id=task_id)
+                task_type = 'Payment'
+            except ObjectDoesNotExist:
+                return HttpResponseRedirect('/user/login4')
+
+    if task_type == 'Employee_Task':
+        return HttpResponseRedirect('/user/login5')
+
+    if task_type == 'Payment':
         student_payment = Payment.objects.get(task_id=task_id)
 
         if request.method == 'POST':
@@ -108,15 +127,18 @@ def perform_task(request, task_id):
                 return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})
         else:
 
-            for preprocess_bp in student_payment.process.instance_of.preprocesses:
-                preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
-                for preprocess_task in preprocess.task_set:
-                    if not preprocess_task.done:
-                        return HttpResponseRedirect('/')
+            for preprocess_bp in student_payment.process.instance_of.preprocesses.all():
+                try:
+                    preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
+                except ObjectDoesNotExist:
+                    continue
+                for preprocess_task in preprocess.task_set.all():
+                    if preprocess_task.done == False:
+                        return HttpResponseRedirect('/user/login6')
 
             return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': StudentPerformPaymentForm(label_suffix='')})
 
-    elif hasattr(Task.objects.get(task_id=task_id), 'Form'):
+    elif task_type == 'Form':
         student_form = Form.objects.get(task_id=task_id)
         FormSet = formset_factory(StudentFillFormForm)
         if request.method == 'POST':
@@ -143,7 +165,7 @@ def perform_task(request, task_id):
                 preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
                 for preprocess_task in preprocess.task_set:
                     if not preprocess_task.done:
-                        return HttpResponseRedirect('/')
+                        return HttpResponseRedirect('/user/login7')
 
             return render(request, 'Student/student_fill_form.html',
                           {'fill_form_form_set': FormSet(label_suffix='')})
