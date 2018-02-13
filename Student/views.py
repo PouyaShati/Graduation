@@ -146,7 +146,7 @@ def perform_task(request, task_id):
             form = StudentPerformPaymentForm(request.POST)
             if form.is_valid():
 
-                student_payment.paid = student_payment.paid + form['paid']
+                student_payment.paid = student_payment.paid + form.cleaned_data['paid']
 
                 if student_payment.paid >= student_payment.instance_of.default_amount:
                     student_payment.done = True

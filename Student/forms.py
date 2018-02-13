@@ -111,7 +111,7 @@ class StudentSignUpForm(forms.ModelForm):
         return cleaned_data
 
 
-class StudentPerformPaymentForm(forms.ModelForm):
+class StudentPerformPaymentForm(forms.Form):
     paid = forms.IntegerField (#regex=r'^\w+$',
                                 widget=forms.NumberInput(attrs={'class': 'form-control',
                                                               'required': 'True',
@@ -123,7 +123,6 @@ class StudentPerformPaymentForm(forms.ModelForm):
                                 label=_("paid"),
                                 #error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")}
                                 )
-
 
 class StudentFillFormForm(forms.ModelForm): # TODO change it in order to be able to retrieve all the answers
     answer = forms.CharField (#regex=r'^\w+$',
