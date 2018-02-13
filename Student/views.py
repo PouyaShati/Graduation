@@ -122,7 +122,7 @@ def perform_task(request, task_id):
                     student_payment.done = True
 
                 student_payment.save()
-                return HttpResponseRedirect('/student/perform_task')
+                return HttpResponseRedirect('/student/panel')
             else:
                 return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})
         else:
@@ -141,27 +141,30 @@ def perform_task(request, task_id):
 
     elif task_type == 'Form':
         student_form = Form.objects.get(task_id=task_id)
-        FormSet = formset_factory(StudentFillFormForm)
+        # FormSet = formset_factory(StudentFillFormForm)
+        question_list = []
+        question_type_list = []
+        for question in student_form.instance_of.question_set.question_set.all():
+            question_list.append(question.text)
+            question_type_list.append(question.type)
+
         if request.method == 'POST':
-            form_set = FormSet(request.POST)
-            if form_set.is_valid():
+            # form_set = FormSet(request.POST)
 
-                answer_set = Answer_Set()
-                student_form.answer_set = answer_set
-                n = int(form_set['form-TOTAL_FORMS'])
-                for i in range(0, n):
-                    answer = Answer(text=form_set['form-' + str(i) + '-answer'], belongs_to=answer_set)
-                    answer.save()
-                answer_set.save()
+            answer_set = Answer_Set()
+            student_form.answer_set = answer_set
+            n = len(student_form.instance_of.question_set.question_set.all()) # TODO in dorost kar mikone?
+            for i in range(1, n+1):
+                answer = Answer(text=request.POST['answer-' + i], belongs_to=answer_set)
+                # TODO add checking validity and rendering a page with error message
+                answer.save()
+            answer_set.save()
 
-                # TODO add setting the done value
+            student_form.done = True
 
-                student_form.save()
-                return HttpResponseRedirect('/student/perform_task')
-            else:
-                return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': form_set})
+            student_form.save()
+            return render(request, 'Student/student_fill_form.html', {'question_list': question_list, 'question_type_list': question_type_list})
         else:
-
             for precondition in student_form.process.instance_of.preprocesses.all():
                 preprocess_bp = precondition.pre
                 preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
@@ -170,7 +173,8 @@ def perform_task(request, task_id):
                         return HttpResponseRedirect('/user/login7')
 
             return render(request, 'Student/student_fill_form.html',
-                          {'fill_form_form_set': FormSet(label_suffix='')})
+                                      {'question_list': question_list, 'question_type_list': question_type_list})
+            # return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': FormSet(label_suffix='')})
 
 def students_list(request):
     if not request.user.is_authenticated():
@@ -230,8 +234,8 @@ def graduate(request):
 
     student = Student(user=request.user)
 
-    for process in student.process_set:
-        for task in process.task_set:
+    for process in student.process_set.all():
+        for task in process.task_set.all():
             if not task.done:
                 return render(request, 'Student/graduate.html', {'student': student,
                                                                        'message': 'انجام پروسه ها به اتمام نرسیده است'})
@@ -259,5 +263,3 @@ def process_page(request, student_id, process_id):
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/processDoesntExist')
     return render(request, 'Student/student_process_page.html', {'student': student, 'process': process, 'forms': forms, 'payments': payments})
-
-
