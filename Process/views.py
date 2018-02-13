@@ -10,13 +10,23 @@ from django.forms import formset_factory
 from MyUser.models import MyUser
 # Create your views here.
 
+not_allowed_error = "شما اجازه‌ی ورود به این بخش را ندارید."
+not_authenticated_error = "ابتدا وارد شوید."
+not_manager_error = "شما مدیر هیج دپارتمانی نسیتید."
+
+
+
 
 def create_process_blueprint(request): # TODO handle actions
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'Process/not_authenticated.html', {'error_m' : message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
 
 
 
@@ -27,10 +37,13 @@ def create_process_blueprint(request): # TODO handle actions
         try:
             department = Department.objects.get(manager= employee)
         except ObjectDoesNotExist:
-            return HttpResponseRedirect('/user/login')
+            message = not_manager_error
+            return render(request, 'Process/not_authenticated.html', {'error_m': message,
+                                                                      'base_html': base_html})
         if department is None:
-            return HttpResponseRedirect('/employee/login')
-
+            message = not_manager_error
+            return render(request, 'Process/not_authenticated.html', {'error_m': message,
+                                                                      'base_html': base_html})
         if request.method == 'GET':
             form = CreateProcessBlueprintForm(label_suffix='')
             return render(request, 'Process/create_process_blueprint.html', {'form': form, 'base_html':base_html})
@@ -70,9 +83,15 @@ def create_process_blueprint(request): # TODO handle actions
 
 def process_blueprint_page(request, id, action=''):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
+
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
+
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
