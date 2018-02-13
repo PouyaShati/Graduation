@@ -25,9 +25,9 @@ class Question(models.Model):
     type = models.CharField(max_length=20, choices=[
         ('Text','Text'),
         ('Integer','Integer'),
-        ('Real','Real'),
         ('Document','Document'),
-        ('Multiple Choice','Multiple Choice'),])
+        ('Multiple Choice','Multiple Choice')])
+    choices = models.CharField(max_length=1000)
     belongs_to = models.ForeignKey(Question_Set, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

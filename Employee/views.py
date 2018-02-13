@@ -177,43 +177,72 @@ def department_panel(request, department_id, action):
 def perform_task(request, task_id):  # TODO explain this view so i can build templates
 
     if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login1')
+    if request.user.user_type != MyUser.STUDENTUSER:
+        return HttpResponseRedirect('/user/login2')
+
+    try:
+        Task.objects.get(task_id=task_id)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/user/login3')
+
+    try:
+        Employee_Task.objects.get(task_id=task_id)
+        task_type = 'Employee_Task'
+    except ObjectDoesNotExist:
+        try:
+            Form.objects.get(task_id=task_id)
+            task_type = 'Form'
+        except ObjectDoesNotExist:
+            try:
+                Payment.objects.get(task_id=task_id)
+                task_type = 'Payment'
+            except ObjectDoesNotExist:
+                return HttpResponseRedirect('/user/login4')
+
+    if task_type == 'Form' or task_type == 'Payment':
+        return HttpResponseRedirect('/user/login8')
+
+    employee_task = Employee_Task.objects.get(task_id=task_id)
+
+    if employee_task.process.instance_of.department != Employee.objects.get(user=request.user).works_in:
         return HttpResponseRedirect('/user/login')
-    if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/user/login')
 
-    task = Task.objects.get(task_id=task_id)
+    if task_type == 'Employee_Task':
+        employee_task = Employee_Task.objects.get(task_id=task_id)
+        question_list = []
+        question_type_list = []
+        question_choices_list = []
+        for question in employee_task.instance_of.question_set.question_set.all():
+            question_list.append(question.text)
+            question_type_list.append(question.type)
+            question_choices_list.append(question.choices)
 
-    if hasattr(task, 'Form'):
-        return HttpResponseRedirect('/')
-    if hasattr(task, 'Payment'):
-        return HttpResponseRedirect('/')
-
-    if task.process.instance_of.department != Employee.objects.get(user= request.user).works_in:
-        return HttpResponseRedirect('/user/login')
-
-    if hasattr(Task.objects.get(task_id=task_id), 'Employee_Task'):
-        FormSet = formset_factory(EmployeePerformTaskForm)
         if request.method == 'POST':
-            form_set = FormSet(request.POST)
-            if form_set.is_valid():  # TODO what does this is_valid() condition mean?
+            answer_set = Answer_Set()
+            employee_task.answer_set = answer_set
+            n = len(employee_task.instance_of.question_set.question_set.all()) # TODO in dorost kar mikone?
+            for i in range(1, n+1):
+                answer = Answer(text=request.POST['answer-' + i], belongs_to=answer_set)
+                # TODO add checking validity and rendering a page with error message
+                answer.save()
+            answer_set.save()
 
-                employee_task = Employee_Task.objects.get(task_id=task_id)
+            employee_task.done = True
 
-                answer_set = Answer_Set()
-                employee_task.answer_set = answer_set
-                n = int(form_set['form-TOTAL_FORMS'])
-                for i in range(0, n):
-                    answer = Answer(text=form_set['form-' + str(i) + '-answer'], belongs_to=answer_set)
-                    answer.save()
-                answer_set.save()
-
-                employee_task.save()
-                return HttpResponseRedirect('/employee/perform_task')
-            else:
-                return render(request, 'Employee/employee_perform_task.html', {'perform_employee_task_form_set': form_set})
+            employee_task.save()
+            return render(request, 'Employee/employee_perform_task.html', {'question_list': question_list,
+                                                                           'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
         else:
-            return render(request, 'Employee/employee_perform_task.html',
-                          {'perform_employee_task_form_set': FormSet(label_suffix='')})
+            for precondition in employee_task.process.instance_of.preprocesses.all():
+                preprocess_bp = precondition.pre
+                preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Employee)
+                for preprocess_task in preprocess.task_set.all():
+                    if not preprocess_task.done:
+                        return HttpResponseRedirect('/user/login7')
+
+            return render(request, 'Employee/employee_perform_task.html', {'question_list': question_list,
+                                                                           'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
 
 
 def add_task(request, task_bp_name):  # TODO explain this view so i can build template

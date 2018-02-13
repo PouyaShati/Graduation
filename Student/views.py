@@ -144,9 +144,11 @@ def perform_task(request, task_id):
         # FormSet = formset_factory(StudentFillFormForm)
         question_list = []
         question_type_list = []
+        question_choices_list = []
         for question in student_form.instance_of.question_set.question_set.all():
             question_list.append(question.text)
             question_type_list.append(question.type)
+            question_choices_list.append(question.choices)
 
         if request.method == 'POST':
             # form_set = FormSet(request.POST)
@@ -163,17 +165,18 @@ def perform_task(request, task_id):
             student_form.done = True
 
             student_form.save()
-            return render(request, 'Student/student_fill_form.html', {'question_list': question_list, 'question_type_list': question_type_list})
+            return render(request, 'Student/student_fill_form.html', {'question_list': question_list,
+                                                                           'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
         else:
             for precondition in student_form.process.instance_of.preprocesses.all():
                 preprocess_bp = precondition.pre
                 preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
-                for preprocess_task in preprocess.task_set:
+                for preprocess_task in preprocess.task_set.all():
                     if not preprocess_task.done:
                         return HttpResponseRedirect('/user/login7')
 
-            return render(request, 'Student/student_fill_form.html',
-                                      {'question_list': question_list, 'question_type_list': question_type_list})
+            return render(request, 'Student/student_fill_form.html', {'question_list': question_list,
+                                                                           'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
             # return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': FormSet(label_suffix='')})
 
 def students_list(request):
