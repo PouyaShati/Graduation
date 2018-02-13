@@ -1,0 +1,49 @@
+<head><title>صفحه فرایند</title></head>
+{% extends 'base/stu_base.html' %}
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container col-md-3"></div>
+    <div class="container col-md-3">
+
+        <table class="table table-bordered" style="background-color: #999999;">
+            <tbody>
+            <tr>
+                <th class="text-right">نام فرم</th>
+            </tr>
+            {% for form in forms %}
+                <tr>
+                    <td class="text-right">{{ form.instance_of.name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="container col-md-3">
+        <table class="table table-bordered" style="background-color: #999999;">
+            <tbody>
+            <tr>
+                <th class="text-right">نام پرداخت</th>
+            </tr>
+            {% for payment in payments%}
+                <tr>
+                    <td class="text-right">{{ payment.instance_of.name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+
+
+

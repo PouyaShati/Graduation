@@ -239,3 +239,25 @@ def graduate(request):
     student.graduated = True
     student.save()
     return render(request, 'Student/graduate.html', {'student': student})
+
+def process_page(request, student_id, process_id):
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    try:
+        student = Student.objects.get(student_id = student_id)
+    except ObjectDoesNotExist:
+        return  HttpResponseRedirect('/student_not_found')
+    if request.user.user_type == MyUser.STUDENTUSER:
+        if student.user != request.user:
+            return HttpResponseRedirect('/you_are_not_him')
+
+    try:
+        process = Process.objects.get(id=process_id)
+        forms = Form.objects.filter(process = process)
+        payments = Payment.objects.filter(process = process)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/processDoesntExist')
+    return render(request, 'Student/student_process_page.html', {'student': student, 'process': process, 'forms': forms, 'payments': payments})
+
+
