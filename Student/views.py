@@ -127,7 +127,8 @@ def perform_task(request, task_id):
                 return render(request, 'Student/student_perform_payment.html', {'perform_payment_form': form})
         else:
 
-            for preprocess_bp in student_payment.process.instance_of.preprocesses.all():
+            for precondition in student_payment.process.instance_of.preprocesses.all():
+                preprocess_bp = precondition.pre
                 try:
                     preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
                 except ObjectDoesNotExist:
@@ -161,7 +162,8 @@ def perform_task(request, task_id):
                 return render(request, 'Student/student_fill_form.html', {'fill_form_form_set': form_set})
         else:
 
-            for preprocess_bp in student_form.process.instance_of.preprocesses:
+            for precondition in student_form.process.instance_of.preprocesses.all():
+                preprocess_bp = precondition.pre
                 preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
                 for preprocess_task in preprocess.task_set:
                     if not preprocess_task.done:
@@ -198,7 +200,8 @@ def perform_process(request, process_blueprint_name): #TODO kar nemikone in
         #     elif hasattr(task, 'Payment'):
         #         payment_tasks.append(task)
 
-        for preprocess_bp in process.instance_of.preprocesses.all():
+        for precondition in process.instance_of.preprocesses.all():
+            preprocess_bp = precondition.pre
             preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Student)
             for preprocess_task in preprocess.task_set.all():
                 if not preprocess_task.done:

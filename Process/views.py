@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint, Task_Blueprint
+from Process.models import Process_Blueprint, Employee_Task_Blueprint, Question_Set, Question, Form_Blueprint, Payment_Blueprint, Task_Blueprint, Precondition
 from Employee.models import Department, Employee
 from django.http.response import HttpResponseRedirect, HttpResponse
 from Process.forms import CreateProcessBlueprintForm, CreateQuestionSetForm, AddQuestionForm, AddPreprocessForm, CreateEmployeeTaskBlueprintForm
@@ -102,8 +102,15 @@ def process_blueprint_page(request, id, action=''):
 
                         new_preprocess = form.cleaned_data['name']
                         # request.session['preprocesses'].append(new_preprocess)
-                        process_pb.preprocesses.add(new_preprocess)
-                        process_pb.save()
+
+                        # process_pb.preprocesses.add(new_preprocess)
+                        precondtion = Precondition(pre=new_preprocess, post=process_pb)
+                        precondtion.save()
+
+                        #new_preprocess.preprocesses.add(process_pb) # TODO are we sure about this?
+                        #process_pb.save()
+                        #new_preprocess.save()
+
                         # ret   urn HttpResponseRedirect('/process/create_process_blueprint')
                         successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + new_preprocess.name + ' فرایند '
                         return render(request, 'Process/add_preprocess.html', {'form': form, 'successfully_added':successfully_added,
