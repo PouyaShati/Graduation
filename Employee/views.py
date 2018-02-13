@@ -17,6 +17,7 @@ from django.forms import formset_factory
 not_allowed_error = "شما اجازه‌ی ورود به این بخش را ندارید."
 not_authenticated_error = "ابتدا وارد شوید."
 no_department_error = "چنین دپارتمانی وجود ندارد."
+not_manager_error = "شما مدیر هیج دپارتمانی نیستید."
 
 
 def employee_signup(request):
@@ -67,11 +68,11 @@ def employee_logout(request):
 def employee_panel(request):  # , action):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER:
         message = not_allowed_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     try:
         department = Department.objects.get(manager=request.user.Employee)
@@ -85,11 +86,11 @@ def employee_panel(request):  # , action):
 def add_department(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
 
     if request.method == 'GET':
@@ -108,11 +109,11 @@ def add_department(request):
 def department_panel(request, department_id, action):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
         message = not_allowed_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
@@ -123,7 +124,7 @@ def department_panel(request, department_id, action):
 
         if request.user.user_type != MyUser.ADMINUSER and Employee.objects.get(user=request.user) != department.manager:
             message = not_allowed_error
-            return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                        'base_html': 'base/base.html'})
         if action == 'employ':
             if request.method == 'POST':
@@ -194,7 +195,7 @@ def department_panel(request, department_id, action):
                               {'department': department, 'employees': employees, 'base_html': base_html})
     except ObjectDoesNotExist:
         message = no_department_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
 
 
@@ -202,11 +203,11 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
 
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER:
         message = not_allowed_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
 
     task = Task.objects.get(task_id=task_id)
@@ -248,10 +249,12 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
 def add_task(request, task_bp_name):  # TODO explain this view so i can build template
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
 
     if request.method == 'GET':
         return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})
@@ -283,10 +286,12 @@ def add_task(request, task_bp_name):  # TODO explain this view so i can build te
 def all_employees_list(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     employees = Employee.objects.all()
     return render(request, 'Employee/all_employees_list.html', {'employees': employees})
 
@@ -294,10 +299,12 @@ def all_employees_list(request):
 def all_departments_list(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     departments = Department.objects.all()
     return render(request, 'Employee/all_departments_list.html', {'departments': departments})
 
@@ -305,10 +312,12 @@ def all_departments_list(request):
 def all_students_list(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -320,22 +329,29 @@ def all_students_list(request):
 def all_process_blueprints_list(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Employee/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER and request.user.user_type != MyUser.EMPLOYEEUSER:
-        return HttpResponseRedirect('/not_eligible')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
         process_pbs = Process_Blueprint.objects.all()
     else:
         employee = Employee.objects.get(user=request.user)
+        base_html = 'base/emp_base.html'
         try:
             department = Department.objects.get(manager=employee)
             process_pbs = Process_Blueprint.objects.filter(department=department)
         except ObjectDoesNotExist:
-            return HttpResponseRedirect('/user/login')
+            message = not_manager_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': base_html})
         if department is None:
-            return HttpResponseRedirect('/employee/login')
+            message = not_manager_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': base_html})
     return render(request, 'Employee/all_process_blueprints_list.html',
                   {'process_pbs': process_pbs, 'base_html': base_html})
 

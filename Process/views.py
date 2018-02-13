@@ -20,13 +20,13 @@ question_set_error = "مجموعه‌ی سوال یافت نشد."
 
 def authentication_error(request):
     message = not_authenticated_error
-    return render(request, 'Process/not_authenticated.html', {'error_m': message,
+    return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                               'base_html': 'base/base.html'})
 
 
 def allow_error(request):
     message = not_allowed_error
-    return render(request, 'Process/not_authenticated.html', {'error_m': message,
+    return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                               'base_html': 'base/base.html'})
 
 
@@ -34,11 +34,11 @@ def create_process_blueprint(request):  # TODO handle actions
 
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
 
     if request.user.user_type == MyUser.EMPLOYEEUSER:
@@ -49,11 +49,11 @@ def create_process_blueprint(request):  # TODO handle actions
             department = Department.objects.get(manager=employee)
         except ObjectDoesNotExist:
             message = not_manager_error
-            return render(request, 'Process/not_authenticated.html', {'error_m': message,
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                       'base_html': base_html})
         if department is None:
             message = not_manager_error
-            return render(request, 'Process/not_authenticated.html', {'error_m': message,
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                       'base_html': base_html})
         if request.method == 'GET':
             form = CreateProcessBlueprintForm(label_suffix='')
@@ -99,11 +99,11 @@ def create_process_blueprint(request):  # TODO handle actions
 def process_blueprint_page(request, id, action=''):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
 
     if request.user.user_type == MyUser.ADMINUSER:
@@ -121,7 +121,7 @@ def process_blueprint_page(request, id, action=''):
         process_pb = Process_Blueprint.objects.get(id=id)
     except ObjectDoesNotExist:
         message = process_blueprint_not_found_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': base_html})
 
     return_link = '/process/process_blueprint_page/' + id
@@ -247,11 +247,11 @@ def process_blueprint_page(request, id, action=''):
 def create_employee_task_blueprint(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
@@ -279,11 +279,11 @@ def create_employee_task_blueprint(request):
 def create_form_blueprint(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
@@ -311,11 +311,11 @@ def create_form_blueprint(request):
 def create_payment_blueprint(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
@@ -345,11 +345,11 @@ def create_payment_blueprint(request):
 def create_question_set(request):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
@@ -382,11 +382,11 @@ def create_question_set(request):
 def question_set_page(request, id, action=''):
     if not request.user.is_authenticated():
         message = not_authenticated_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
         message = not_allowed_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
@@ -396,7 +396,7 @@ def question_set_page(request, id, action=''):
         qs = Question_Set.objects.get(id=id)
     except ObjectDoesNotExist:
         message = question_set_error
-        return render(request, 'Process/not_authenticated.html', {'error_m': message,
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                   'base_html': base_html})
     return_link = '/process/question_set_page/' + id
     if action == 'add_question':
