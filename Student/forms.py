@@ -39,8 +39,8 @@ class StudentSignUpForm(forms.ModelForm):
                                     'required': _('لطفا رمزعبور را تکرار کنید')
                                 })
 
-    document = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر', 'style': 'text-align-right'}),
-                               label = _('تصویر'))
+    # document = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر', 'style': 'text-align-right'}),
+    #                            label = _('تصویر'))
 
     class Meta:
         model = Student
@@ -66,8 +66,8 @@ class StudentSignUpForm(forms.ModelForm):
             'major': forms.Select(choices=Student.majors, attrs={'class': 'form-control'})
                                                                  #'style': 'text-align:right'
             ,
-            'document': forms.ClearableFileInput(attrs={'class': 'form-ctonrol', 'placeholder': 'تصویر',
-                                                        'style': 'text-align-right'})
+            'document': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'تصویر',
+                                                        'style': 'text-align:right'})
         }
         labels = {
             'first_name': _('نام'),
@@ -76,6 +76,7 @@ class StudentSignUpForm(forms.ModelForm):
             'phone_number': _('شماره تماس'),
             'student_id': _('شماره دانشجویی'),
             'major': _('رشته تحصیلی'),
+            'document': _('تصویر')
         }
         error_messages = {
             'first_name': {

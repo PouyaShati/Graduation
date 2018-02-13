@@ -10,16 +10,17 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <div class="container col-md-3"></div>
     <div class="container col-md-3">
 
         <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <th class="text-right">نام الگوی فرم</th>
+                <th class="text-right">نام فرم</th>
             </tr>
-            {% for form_bp in process_pb.form_bp_defaults.all %}
+            {% for form in forms %}
                 <tr>
-                    <td class="text-right">{{ form_bp.name }}</td>
+                    <td class="text-right">{{ form.instance_of.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -30,46 +31,16 @@
         <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <th class="text-right">نام الگوی پرداخت</th>
+                <th class="text-right">نام پرداخت</th>
             </tr>
-            {% for payment_bp in process_pb.payment_bp_defaults.all %}
+            {% for payment in payments%}
                 <tr>
-                    <td class="text-right">{{ payment_bp.name }}</td>
+                    <td class="text-right">{{ payment.instance_of.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
-    <div class="container col-md-3">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام الگوی وظیفه کارمند</th>
-            </tr>
-            {% for et_bp in process_pb.employee_task_bp_defaults.all %}
-                <tr>
-                    <td class="text-right">{{ et_bp.name }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="container col-md-3">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام الگوی فرایند پیشنیاز</th>
-            </tr>
-            {% for preprocess in process_pb.preprocesses.all %}
-                <tr>
-                    <td class="text-right"><a href="/process/process_blueprint_page/{{ preprocess.id }}/"> {{ preprocess.name }}</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-
 
 {% endblock %}
 

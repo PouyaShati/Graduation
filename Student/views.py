@@ -251,9 +251,10 @@ def process_page(request, student_id, process_id):
 
     try:
         process = Process.objects.get(id=process_id)
+        forms = Form.objects.filter(process = process)
+        payments = Payment.objects.filter(process = process)
     except ObjectDoesNotExist:
         return HttpResponseRedirect('/processDoesntExist')
-
-    return render(request, 'Student/student_process_page.html', {'student': student, 'process': process})
+    return render(request, 'Student/student_process_page.html', {'student': student, 'process': process, 'forms': forms, 'payments': payments})
 
 
