@@ -4,6 +4,9 @@ from MyUser.models import MyUser
 from django.contrib.auth import authenticate, login, logout
 from .forms import OperatorSignUpForm
 from .models import Operator
+from Employee.models import Department, Employee
+from Process.models import Process_Blueprint, Task_Blueprint, Employee_Task_Blueprint, Form, Payment
+from Student.models import Student
 # Create your views here.
 
 
@@ -64,3 +67,69 @@ def operator_panel(request): #, action):
 
     return render(request, 'Operator/operator_panel.html',
                   {'operator': request.user.Operator})
+
+def operator_404(request):
+    return  render(request, 'Operator/404.html', status=404)
+
+
+
+
+def delete_department(request, department_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/user/login')
+
+    department = Department(department_id=department_id)
+    department.delete()
+
+    return render(request, 'Operator/delete_complete.html', {'message': 'دپارتمان با موفقیت حذف شد'})
+
+
+
+def delete_employee(request, employee_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/user/login')
+
+    employee = Employee(employee_id=employee_id)
+    employee.delete()
+
+    return render(request, 'Operator/delete_complete.html', {'message': 'کارمند با موفقیت حذف شد'})
+
+
+def delete_student(request, student_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/user/login')
+
+    student = Student(student_id=student_id)
+    student.delete()
+
+    return render(request, 'Operator/delete_complete.html', {'message': 'دانشجو با موفقیت حذف شد'})
+
+
+def delete_task_blueprint(request, task_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/user/login')
+
+    task_blueprint = Task_Blueprint(id=task_id)
+    task_blueprint.delete()
+
+    return render(request, 'Operator/delete_complete.html', {'message': 'الگوی وظیفه با موفقیت حذف شد'})
+
+
+def delete_process_blueprint(request, process_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
+    if request.user.user_type != MyUser.ADMINUSER:
+        return HttpResponseRedirect('/user/login')
+
+    process_blueprint = Process_Blueprint(id=process_id)
+    process_blueprint.delete()
+
+    return render(request, 'Operator/delete_complete.html', {'message': 'الگوی فرآیند با موفقیت حذف شد'})

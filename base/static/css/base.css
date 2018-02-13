@@ -28,20 +28,24 @@
 /*color: #1AAA;*/
 /*}*/
 
+body {
+    background: white url("../pics/bg.jpg") no-repeat;
+}
+
 body div footer.container-fluid.text-right {
-    background-color: rgba(12, 150, 152, 0.84);
+    background-color: rgba(245, 241, 239, 0.84);
 }
 
 body nav.navbar {
     direction: rtl;
-    background-color: rgba(12, 150, 152, 0.84);
+    background-color:rgba(245, 241, 239, 0.84);
     height: 70px;
 }
 
 #footer {
     margin-top: 20vh;
     direction: rtl;
-    background-color: rgba(12, 150, 152, 0.84);
+    background-color: rgba(245, 241, 239, 0.84);
 }
 
 body nav.navbar.navbar-inverse a {
