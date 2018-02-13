@@ -8,32 +8,56 @@ from Process.forms import CreateProcessBlueprintOperatorForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
 from MyUser.models import MyUser
+
 # Create your views here.
 
+not_allowed_error = "شما اجازه‌ی ورود به این بخش را ندارید."
+not_authenticated_error = "ابتدا وارد شوید."
+not_manager_error = "شما مدیر هیج دپارتمانی نسیتید."
+process_blueprint_not_found_error = "الگوی فرایند موردنظر یافت نشد."
+question_set_error = "مجموعه‌ی سوال یافت نشد."
 
-def create_process_blueprint(request): # TODO handle actions
+
+def authentication_error(request):
+    message = not_authenticated_error
+    return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                              'base_html': 'base/base.html'})
+
+
+def allow_error(request):
+    message = not_allowed_error
+    return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                              'base_html': 'base/base.html'})
+
+
+def create_process_blueprint(request):  # TODO handle actions
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
-
-
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
 
     if request.user.user_type == MyUser.EMPLOYEEUSER:
         base_html = 'base/emp_base.html'
         created = False
-        employee = Employee.objects.get(user= request.user)
+        employee = Employee.objects.get(user=request.user)
         try:
-            department = Department.objects.get(manager= employee)
+            department = Department.objects.get(manager=employee)
         except ObjectDoesNotExist:
-            return HttpResponseRedirect('/user/login')
+            message = not_manager_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                      'base_html': base_html})
         if department is None:
-            return HttpResponseRedirect('/employee/login')
-
+            message = not_manager_error
+            return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                      'base_html': base_html})
         if request.method == 'GET':
             form = CreateProcessBlueprintForm(label_suffix='')
-            return render(request, 'Process/create_process_blueprint.html', {'form': form, 'base_html':base_html})
+            return render(request, 'Process/create_process_blueprint.html', {'form': form, 'base_html': base_html})
         else:
             form = CreateProcessBlueprintForm(request.POST)
             if form.is_valid():
@@ -41,11 +65,12 @@ def create_process_blueprint(request): # TODO handle actions
                     process_bp = Process_Blueprint(name=form.cleaned_data['name'], department=department)
 
                     process_bp.save()
-                    success_message = ' با موفقیت ساخته شد '+form.cleaned_data['name']
+                    success_message = ' با موفقیت ساخته شد ' + form.cleaned_data['name']
                     name = form.cleaned_data['name']
                     process_bp_id = process_bp.id
-                    return render(request, 'Process/create_process_blueprint.html', {'form': form, 'success_message':success_message
-                                                                                     , 'base_html': base_html, 'name': name, 'process_bp_id': process_bp_id})
+                    return render(request, 'Process/create_process_blueprint.html',
+                                  {'form': form, 'success_message': success_message
+                                      , 'base_html': base_html, 'name': name, 'process_bp_id': process_bp_id})
                 except ObjectDoesNotExist:
                     return render(request, 'Process/create_process_blueprint.html', {'form': form})
             else:
@@ -58,23 +83,29 @@ def create_process_blueprint(request): # TODO handle actions
         else:
             form = CreateProcessBlueprintOperatorForm(request.POST)
             if form.is_valid():
-                process_bp = Process_Blueprint(name=form.cleaned_data['name'], department=form.cleaned_data['department'])
+                process_bp = Process_Blueprint(name=form.cleaned_data['name'],
+                                               department=form.cleaned_data['department'])
                 process_bp.save()
-                success_message = ' با موفقیت ساخته شد '+form.cleaned_data['name']
+                success_message = ' با موفقیت ساخته شد ' + form.cleaned_data['name']
                 name = form.cleaned_data['name']
                 process_bp_id = process_bp.id
-                return render(request, 'Process/create_process_blueprint.html', {'form': form, 'success_message': success_message
-                                                                                 , 'base_html': base_html, 'name': name, 'process_bp_id': process_bp_id})
+                return render(request, 'Process/create_process_blueprint.html',
+                              {'form': form, 'success_message': success_message
+                                  , 'base_html': base_html, 'name': name, 'process_bp_id': process_bp_id})
             else:
                 return render(request, 'Process/create_process_blueprint.html', {'form': form, 'base_html': base_html})
 
 
-
 def process_blueprint_page(request, id, action=''):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
+
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -89,9 +120,12 @@ def process_blueprint_page(request, id, action=''):
     try:
         process_pb = Process_Blueprint.objects.get(id=id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/'+id+'pox')
-    return_link = '/process/process_blueprint_page/'+id
-    if action =='add_preprocess':
+        message = process_blueprint_not_found_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': base_html})
+
+    return_link = '/process/process_blueprint_page/' + id
+    if action == 'add_preprocess':
         if request.method == 'POST':
             form = AddPreprocessForm(request.POST)
             if form.is_valid():
@@ -120,13 +154,16 @@ def process_blueprint_page(request, id, action=''):
                         # return render(request, 'Process/create_process_blueprint.html', {'form': CreateProcessBlueprintForm(label_suffix='')})
                 except ObjectDoesNotExist:
                     message = 'چنین فرایندی وجود ندارد'
-                    return render(request, 'Process/add_preprocess.html', {'form': form, 'message': message, 'return_link': return_link
-                                                                           , 'base_html': base_html})
+                    return render(request, 'Process/add_preprocess.html',
+                                  {'form': form, 'message': message, 'return_link': return_link
+                                      , 'base_html': base_html})
             else:
-                return render(request, 'Process/add_preprocess.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+                return render(request, 'Process/add_preprocess.html',
+                              {'form': form, 'return_link': return_link, 'base_html': base_html})
         else:
             form = AddPreprocessForm(label_suffix='')
-            return render(request, 'Process/add_preprocess.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+            return render(request, 'Process/add_preprocess.html',
+                          {'form': form, 'return_link': return_link, 'base_html': base_html})
     elif action == 'add_default_employee_task':
         if request.method == 'POST':
             form = AddDefaultEmployeeTaskForm(request.POST)
@@ -137,16 +174,21 @@ def process_blueprint_page(request, id, action=''):
                     process_pb.employee_task_bp_defaults.add(default_task)
                     process_pb.save()
                     successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
-                    return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added
-                                                                             ,'return_link': return_link, 'base_html': base_html})
+                    return render(request, 'Process/add_default_task.html',
+                                  {'form': form, 'successfully_added': successfully_added
+                                      , 'return_link': return_link, 'base_html': base_html})
                 except ObjectDoesNotExist:
                     message = 'چنین وظیفه‌ای وجود ندارد'
-                    return render(request, 'Process/add_default_task.html', {'form': form, 'message': message, 'return_link': return_link, 'base_html': base_html})
+                    return render(request, 'Process/add_default_task.html',
+                                  {'form': form, 'message': message, 'return_link': return_link,
+                                   'base_html': base_html})
             else:
-                return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+                return render(request, 'Process/add_default_task.html',
+                              {'form': form, 'return_link': return_link, 'base_html': base_html})
         else:
             form = AddDefaultEmployeeTaskForm(label_suffix='')
-            return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+            return render(request, 'Process/add_default_task.html',
+                          {'form': form, 'return_link': return_link, 'base_html': base_html})
     elif action == 'add_default_form_task':
         if request.method == 'POST':
             form = AddDefaultFormBlueprintTaskForm(request.POST)
@@ -157,16 +199,21 @@ def process_blueprint_page(request, id, action=''):
                     process_pb.form_bp_defaults.add(default_task)
                     process_pb.save()
                     successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
-                    return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added
-                                                                             ,'return_link': return_link, 'base_html': base_html})
+                    return render(request, 'Process/add_default_task.html',
+                                  {'form': form, 'successfully_added': successfully_added
+                                      , 'return_link': return_link, 'base_html': base_html})
                 except ObjectDoesNotExist:
                     message = 'چنین وظیفه‌ای وجود ندارد'
-                    return render(request, 'Process/add_default_task.html', {'form': form, 'message': message, 'return_link': return_link, 'base_html': base_html})
+                    return render(request, 'Process/add_default_task.html',
+                                  {'form': form, 'message': message, 'return_link': return_link,
+                                   'base_html': base_html})
             else:
-                return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+                return render(request, 'Process/add_default_task.html',
+                              {'form': form, 'return_link': return_link, 'base_html': base_html})
         else:
             form = AddDefaultFormBlueprintTaskForm(label_suffix='')
-            return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+            return render(request, 'Process/add_default_task.html',
+                          {'form': form, 'return_link': return_link, 'base_html': base_html})
     elif action == 'add_default_payment_task':
         if request.method == 'POST':
             form = AddDefaultPaymentBlueprintTaskForm(request.POST)
@@ -177,25 +224,35 @@ def process_blueprint_page(request, id, action=''):
                     process_pb.payment_bp_defaults.add(default_task)
                     process_pb.save()
                     successfully_added = ' با موفقیت به عنوان پیشنیاز افزوده شد ' + default_task.name + ' وظیفه '
-                    return render(request, 'Process/add_default_task.html', {'form': form, 'successfully_added':successfully_added
-                                                                             ,'return_link': return_link, 'base_html': base_html})
+                    return render(request, 'Process/add_default_task.html',
+                                  {'form': form, 'successfully_added': successfully_added
+                                      , 'return_link': return_link, 'base_html': base_html})
                 except ObjectDoesNotExist:
                     message = 'چنین وظیفه‌ای وجود ندارد'
-                    return render(request, 'Process/add_default_task.html', {'form': form, 'message': message, 'return_link': return_link, 'base_html': base_html})
+                    return render(request, 'Process/add_default_task.html',
+                                  {'form': form, 'message': message, 'return_link': return_link,
+                                   'base_html': base_html})
             else:
-                return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+                return render(request, 'Process/add_default_task.html',
+                              {'form': form, 'return_link': return_link, 'base_html': base_html})
         else:
             form = AddDefaultPaymentBlueprintTaskForm(label_suffix='')
-            return render(request, 'Process/add_default_task.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+            return render(request, 'Process/add_default_task.html',
+                          {'form': form, 'return_link': return_link, 'base_html': base_html})
     else:
-        return render(request, 'Process/process_blueprint_page.html', {'process_pb': process_pb, 'base_html': base_html})
+        return render(request, 'Process/process_blueprint_page.html',
+                      {'process_pb': process_pb, 'base_html': base_html})
+
 
 def create_employee_task_blueprint(request):
-
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -207,39 +264,43 @@ def create_employee_task_blueprint(request):
             employee_task_bp = Employee_Task_Blueprint(name=form.cleaned_data['name'],
                                                        question_set=form.cleaned_data['question_set'])
             employee_task_bp.save()
-            success = ' با موفقیت اضافه شد '+ form.cleaned_data['name']
+            success = ' با موفقیت اضافه شد ' + form.cleaned_data['name']
             form = CreateEmployeeTaskBlueprintForm(label_suffix='')
             return render(request, 'Process/create_employee_task_blueprint.html', {'form': form, 'base_html': base_html
-                                                                                   , 'success': success})
+                , 'success': success})
         else:
-            return render(request, 'Process/create_employee_task_blueprint.html', {'form': form, 'base_html': base_html})
+            return render(request, 'Process/create_employee_task_blueprint.html',
+                          {'form': form, 'base_html': base_html})
     else:
         form = CreateEmployeeTaskBlueprintForm(label_suffix='')
         return render(request, 'Process/create_employee_task_blueprint.html', {'form': form, 'base_html': base_html})
 
 
-
 def create_form_blueprint(request):
-
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
         base_html = 'base/emp_base.html'
 
-
     if request.method == 'POST':
         form = CreateFormBlueprintForm(request.POST)
         if form.is_valid():
-            form_bp = Form_Blueprint(name=form.cleaned_data['name'], question_set=Question_Set.objects.get(name=form.cleaned_data['question_set']),
+            form_bp = Form_Blueprint(name=form.cleaned_data['name'],
+                                     question_set=Question_Set.objects.get(name=form.cleaned_data['question_set']),
                                      is_timed=form.cleaned_data['is_timed'], max_time=form.cleaned_data['max_time'])
             form_bp.save()
-            success = ' با موفقیت اضافه شد '+form.cleaned_data['name']
+            success = ' با موفقیت اضافه شد ' + form.cleaned_data['name']
             form = CreateFormBlueprintForm(label_suffix='')
-            return render(request, 'Process/create_form_blueprint.html', {'form': form, 'base_html': base_html, 'success': success})
+            return render(request, 'Process/create_form_blueprint.html',
+                          {'form': form, 'base_html': base_html, 'success': success})
         else:
             return render(request, 'Process/create_form_blueprint.html', {'form': form, 'base_html': base_html})
     else:
@@ -248,16 +309,18 @@ def create_form_blueprint(request):
 
 
 def create_payment_blueprint(request):
-
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
         base_html = 'base/emp_base.html'
-
 
     if request.method == 'POST':
         form = CreatePaymentBlueprintForm(request.POST)
@@ -266,26 +329,28 @@ def create_payment_blueprint(request):
                                            default_amount=form.cleaned_data['default_amount'],
                                            is_timed=form.cleaned_data['is_timed'],
                                            max_time=form.cleaned_data['max_time'])
-            #request.session.get('pbps').append(payment_bp)
+            # request.session.get('pbps').append(payment_bp)
             payment_bp.save()
-            success = ' با موفقیت اضافه شد '+form.cleaned_data['name']
+            success = ' با موفقیت اضافه شد ' + form.cleaned_data['name']
             form = CreatePaymentBlueprintForm(label_suffix='')
             return render(request, 'Process/create_payment_blueprint.html', {'form': form, 'base_html': base_html,
-                                                                              'success':success})
+                                                                             'success': success})
         else:
-            return render(request, 'Process/create_payment_blueprint.html', {'form': form, 'base_html':base_html})
+            return render(request, 'Process/create_payment_blueprint.html', {'form': form, 'base_html': base_html})
     else:
         form = CreatePaymentBlueprintForm(label_suffix='')
         return render(request, 'Process/create_payment_blueprint.html', {'form': form, 'base_html': base_html})
 
 
-
 def create_question_set(request):
-
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -300,23 +365,29 @@ def create_question_set(request):
             #         question = Question(text = request.session['question_texts'][i], type = request.session['question_types'][i],
             #                             belongs_to=question_set)
             #         question.save()
-            successfully_added = 'با موفقیت ساخته شد '+form.cleaned_data['name']
+            successfully_added = 'با موفقیت ساخته شد ' + form.cleaned_data['name']
             question_set.save()
             name = form.cleaned_data['name']
             qs_id = question_set.id
-            return render(request, 'Process/create_question_set.html', {'form':form, 'success_message' : successfully_added,
-                                                                        'base_html': base_html,'name': name, 'qs_id': qs_id})
+            return render(request, 'Process/create_question_set.html',
+                          {'form': form, 'success_message': successfully_added,
+                           'base_html': base_html, 'name': name, 'qs_id': qs_id})
         else:
             return render(request, 'Process/create_question_set.html', {'form': form, 'base_html': base_html})
     else:
         form = CreateQuestionSetForm(label_suffix='')
         return render(request, 'Process/create_question_set.html', {'form': form, 'base_html': base_html})
 
+
 def question_set_page(request, id, action=''):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.EMPLOYEEUSER and request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/user/login')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': 'base/base.html'})
     if request.user.user_type == MyUser.ADMINUSER:
         base_html = 'base/op_base.html'
     else:
@@ -324,25 +395,30 @@ def question_set_page(request, id, action=''):
     try:
         qs = Question_Set.objects.get(id=id)
     except ObjectDoesNotExist:
-        return redirect('not_found')
-    return_link = '/process/question_set_page/'+id
+        message = question_set_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                  'base_html': base_html})
+    return_link = '/process/question_set_page/' + id
     if action == 'add_question':
         if request.method == 'POST':
             form = AddQuestionForm(request.POST)
             if form.is_valid():
                 question = Question(text = form.cleaned_data['text'], type = form.cleaned_data['type'],
+                                    choices= form.cleaned_data['choices'],
                                     belongs_to=qs)
                 # qs.save()
                 question.save()
-                successfully_added = ' با موفقیت اضافه شد '+form.cleaned_data['text']
+                successfully_added = ' با موفقیت اضافه شد ' + form.cleaned_data['text']
                 return render(request, 'Process/add_question.html', {'form': form,
                                                                      'successfully_added': successfully_added,
                                                                      'return_link': return_link, 'base_html': base_html
                                                                      })
             else:
-                return render(request, 'Process/add_question.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+                return render(request, 'Process/add_question.html',
+                              {'form': form, 'return_link': return_link, 'base_html': base_html})
         else:
             form = AddQuestionForm(label_suffix='')
-            return render(request, 'Process/add_question.html', {'form': form, 'return_link': return_link, 'base_html': base_html})
+            return render(request, 'Process/add_question.html',
+                          {'form': form, 'return_link': return_link, 'base_html': base_html})
     else:
         return render(request, 'Process/question_set_page.html', {'qs': qs, 'base_html': base_html})

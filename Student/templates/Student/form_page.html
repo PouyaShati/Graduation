@@ -10,37 +10,28 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="container col-md-3"></div>
-    <div class="container col-md-3">
+    <div class="container col-md-4"></div>
+    <div class="container col-md-4">
 
         <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <th class="text-right">نام فرم</th>
+                <th class="text-right">سوالات</th>
             </tr>
-            {% for form in forms %}
+{#            {% for question in form.instance_of.question_set.question_set.all %}#}
+            {% for question in questions %}
                 <tr>
-                    <td class="text-right">form.instance_of.name }}</td>
+                    <td class="text-right">{{question.text }}</td>
                 </tr>
             {% endfor %}
             </tbody>
+        </table>
+        <form class="form-horizontal" novalidate method="get" action="/student/perform_task/{{ task_id }}">
+                        <button type="submit" value="تکمیل فرم" class="btn btn-primary">تکمیل فرم</button>
+        </form>
+    </div>
+    <div class="container col-md-4"></div>
 
-        </table>
-    </div>
-    <div class="container col-md-3">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام پرداخت</th>
-            </tr>
-            {% for payment in payments%}
-                <tr>
-                    <td class="text-right">{{ payment.instance_of.name }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
 
 {% endblock %}
 

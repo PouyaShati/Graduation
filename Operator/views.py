@@ -10,6 +10,9 @@ from Student.models import Student
 # Create your views here.
 
 
+not_allowed_error = "شما اجازه‌ی ورود به این بخش را ندارید."
+not_authenticated_error = "ابتدا وارد شوید."
+
 def operator_signup(request):
     if request.method == 'POST':
         form = OperatorSignUpForm(request.POST)
@@ -54,9 +57,13 @@ def operator_logout(request):
 
 def operator_panel(request): #, action):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/operator/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.ADMINUSER:
-        return HttpResponseRedirect('/operator/login')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
 
     return render(request, 'Operator/operator_panel.html',
                   {'operator': request.user.Operator})
