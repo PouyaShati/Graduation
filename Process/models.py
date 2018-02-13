@@ -89,7 +89,9 @@ class Precondition(models.Model):
 
 
 class Process(models.Model):
-    # validated = models.BooleanField(default=False) do we need this?
+    validated = models.BooleanField(default=False)
+    active = models.BooleanField(default=False)
+
     instance_of = models.ForeignKey(Process_Blueprint, on_delete=models.CASCADE, null=True)
     owner = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
 
