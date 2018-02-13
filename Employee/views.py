@@ -285,7 +285,7 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
                                                                            'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
 
 
-def add_task(request, task_bp_name):  # TODO explain this view so i can build template
+def add_task(request):  # TODO explain this view so i can build template
     if not request.user.is_authenticated():
         message = not_authenticated_error
         return render(request, 'base/not_authenticated.html', {'error_m': message,
@@ -299,27 +299,44 @@ def add_task(request, task_bp_name):  # TODO explain this view so i can build te
         return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix='')})
     else:
         form = AddTaskForm(request.POST)
-        process_bp = Process_Blueprint.objects.get(name=form['process_bp'])
-        if process_bp.department != Employee.objects.get(user=request.user).works_in:
-            return render(request, 'Employee/add_task.html',
-                          {'add_task': AddTaskForm(label_suffix=''), 'message': "you don't work in that company"})
-        else:
-            task_bp = Task_Blueprint.objects.get(name=task_bp_name)
-            student = Student.objects.get(student_id=form['student_id'])
-            process = Process.objects.get(instance_of=process_bp, owner=student)
+        try:
+            process_bp = Process_Blueprint.objects.get(name=form['process_bp'])
+            if process_bp.department != Employee.objects.get(user=request.user).works_in:
+                return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix=''), 'message':"کارمند در این دپارتمان استخدام نشده است"})
+            else:
+                # task_bp = Task_Blueprint.objects.get(name=form['task_bp_name'])
+                student = Student.objects.get(student_id=form['student_id'])
+                process = Process.objects.get(instance_of=process_bp, owner=student)
 
-            if hasattr(task_bp, 'Employee_Task_Blueprint'):
-                child_bp = Employee_Task_Blueprint.objects.get(name=task_bp_name)
-                task = Employee_Task(instance_of=child_bp, process=process)
-            elif hasattr(task_bp, 'Form_Blueprint'):
-                child_bp = Form_Blueprint.objects.get(name=task_bp_name)
-                task = Form(instance_of=child_bp, process=process)
-            elif hasattr(task_bp, 'Payment_Blueprint'):
-                child_bp = Payment_Blueprint.objects.get(name=task_bp_name)
-                task = Payment(instance_of=child_bp, process=process)
+                try:
+                    Employee_Task_Blueprint.objects.get(name=form['task_bp'])
+                    task_type = 'Employee_Task'
+                except ObjectDoesNotExist:
+                    try:
+                        Form.objects.get(name=form['task_bp'])
+                        task_type = 'Form'
+                    except ObjectDoesNotExist:
+                        try:
+                            Payment.objects.get(name=form['task_bp'])
+                            task_type = 'Payment'
+                        except ObjectDoesNotExist:
+                            return HttpResponseRedirect('/user/login4')
 
-            task.save()
-            return HttpResponseRedirect('/add_task/' + task_bp_name)
+                if task_type == 'Employee_Task_Blueprint':
+                    child_bp = Employee_Task_Blueprint.objects.get(name=form['task_bp'])
+                    task = Employee_Task(instance_of=child_bp, process=process)
+                elif task_type == 'Form_Blueprint':
+                    child_bp = Form_Blueprint.objects.get(name=form['task_bp'])
+                    task = Form(instance_of=child_bp, process=process)
+                elif task_type == 'Payment_Blueprint':
+                    child_bp = Payment_Blueprint.objects.get(name=form['task_bp'])
+                    task = Payment(instance_of=child_bp, process=process)
+
+                task.save()
+                return HttpResponseRedirect('/user/login7')
+        except ObjectDoesNotExist:
+            return render(request, 'Employee/add_task.html', {'add_task': AddTaskForm(label_suffix=''),
+                                                              'message': "دانشجویی با این شماره وجود ندارد"})
 
 
 def all_employees_list(request):
@@ -397,3 +414,5 @@ def all_process_blueprints_list(request):
 
 def employee_404(request):
     return render(request, 'Employee/404.html', status=404)
+
+
