@@ -77,6 +77,8 @@ class Process_Blueprint(models.Model):
     form_bp_defaults = models.ManyToManyField(Form_Blueprint)
     payment_bp_defaults = models.ManyToManyField(Payment_Blueprint)
 
+    def __str__(self):
+        return self.name
 
 
 class Process(models.Model):

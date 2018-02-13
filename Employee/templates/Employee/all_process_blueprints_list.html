@@ -1,0 +1,33 @@
+<head><title>لیست الگوی فرم ها</title></head>
+
+{% extends base_html %}
+
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="col-md-4"></div>
+    <div class="container col-md-4">
+        <table class="table table-bordered" style="background-color: #999999;">
+            <tbody>
+            <tr>
+                <th class="text-right">نام الگوی فرایند</th>
+            </tr>
+            {% for process_bp in process_pbs %}
+            <tr>
+                <td class="text-right"><a href="/process/process_blueprint_page/{{ process_bp.id }}/"> {{ process_bp.name }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-md-4"></div>
+{% endblock %}
+
