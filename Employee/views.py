@@ -18,7 +18,10 @@ not_allowed_error = "شما اجازه‌ی ورود به این بخش را ن�
 not_authenticated_error = "ابتدا وارد شوید."
 no_department_error = "چنین دپارتمانی وجود ندارد."
 not_manager_error = "شما مدیر هیج دپارتمانی نیستید."
-
+task_not_found_error = "وظیفه‌ی موردنظر یافت نشد."
+emp_not_allowed_error = "کارمند مجاز به انجام این وظیفه نمی‌باشد."
+emp_not_allowed_in_dep_error = "کارمند در این دپارتمان استخدام نشده است."
+preprocess_not_done_error = "پیش‌فرایند‌های مربوط به این فرایند انجام نشده‌اند."
 
 def employee_signup(request):
     if request.method == 'POST':
@@ -202,14 +205,20 @@ def department_panel(request, department_id, action):
 def perform_task(request, task_id):  # TODO explain this view so i can build templates
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/user/login1')
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
     if request.user.user_type != MyUser.STUDENTUSER:
-        return HttpResponseRedirect('/user/login2')
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     try:
         Task.objects.get(task_id=task_id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/user/login3')
+        message = task_not_found_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     try:
         Employee_Task.objects.get(task_id=task_id)
@@ -223,15 +232,20 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
                 Payment.objects.get(task_id=task_id)
                 task_type = 'Payment'
             except ObjectDoesNotExist:
-                return HttpResponseRedirect('/user/login4')
-
+                message = task_not_found_error
+                return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                       'base_html': 'base/base.html'})
     if task_type == 'Form' or task_type == 'Payment':
-        return HttpResponseRedirect('/user/login8')
+        message = emp_not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     employee_task = Employee_Task.objects.get(task_id=task_id)
 
     if employee_task.process.instance_of.department != Employee.objects.get(user=request.user).works_in:
-        return HttpResponseRedirect('/user/login')
+        message = emp_not_allowed_in_dep_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                               'base_html': 'base/base.html'})
 
     if task_type == 'Employee_Task':
         employee_task = Employee_Task.objects.get(task_id=task_id)
@@ -264,8 +278,9 @@ def perform_task(request, task_id):  # TODO explain this view so i can build tem
                 preprocess = Process.objects.get(instance_of=preprocess_bp, owner=request.user.Employee)
                 for preprocess_task in preprocess.task_set.all():
                     if not preprocess_task.done:
-                        return HttpResponseRedirect('/user/login7')
-
+                        message = preprocess_not_done_error
+                        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                               'base_html': 'base/base.html'})
             return render(request, 'Employee/employee_perform_task.html', {'question_list': question_list,
                                                                            'question_type_list': question_type_list, 'question_choices_list': question_choices_list})
 
