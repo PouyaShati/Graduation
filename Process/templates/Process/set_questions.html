@@ -8,11 +8,12 @@
         <div class="row" id="pwd-container">
             <div class="col-md-4"></div>
 
-            <div id = "fill_out_form" class="col-md-4">
+            <div id="fill_out_form" class="col-md-4">
                 <section class="login-form">
                     {% if successfully_added %}
                         <div align="center">
-                            <div class="alert alert-success">
+                            <div class="alert alert-success fade in alert-dismissable">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                                 <strong>{{ successfully_added }}</strong>
                             </div>
                         </div>
@@ -60,7 +61,7 @@
                                 <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
+                                        <li>{{ error }}</li>
                                     {% endfor %}
                                     {{ message }} {# preprocess doesnt exist #}
                                 </ul>

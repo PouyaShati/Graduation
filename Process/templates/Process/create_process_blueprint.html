@@ -5,7 +5,8 @@
 {% block content %}
     {% if success_message %}
         <div align="center">
-            <div class="alert alert-success">
+            <div class="alert alert-success fade in alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                 <strong>{{ success_message }}</strong>
             </div>
         </div>
@@ -50,7 +51,7 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
+                            <div id="button_submit" class="form-actions">
                                 <button type="submit" value="ساخت فرایند" class="btn btn-primary">ساخت فرایند</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
@@ -68,7 +69,7 @@
                     </form>
                     {% if name %}
                     <div align="center">
-                        <form class="form-horizontal" novalidate method="get" action="/process/process_blueprint_page/{{ process_bp_id }}">
+                        <form id="button_submit" class="form-horizontal" novalidate method="get" action="/process/process_blueprint_page/{{ process_bp_id }}">
                             <button type="submit" value="صفحه الگوی فرایند" class="btn btn-primary">صفخه الگوی فرایند</button>
                         </form>
                     </div>
