@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Operator.apps.OperatorConfig',
     'MyUser.apps.MyuserConfig',
     'Process.apps.ProcessConfig',
+    'homepage.apps.HomepageConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
