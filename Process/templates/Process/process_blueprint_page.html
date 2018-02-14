@@ -10,7 +10,9 @@
             {% endfor %}
         </ul>
     {% endif %}
-            {{ process_pb.name }}
+    <div id="panel-header">
+        <div id="panel-header" align="center">{{ process_pb.name }}</div>
+    </div>
     <div class="container" align="center">
         <div class="container col-md-3">
         <form class="form-horizontal" novalidate method="get" action="add_default_form_task">
@@ -83,7 +85,7 @@
             </tr>
             {% for preprocess in process_pb.preprocesses.all %}
                 <tr>
-                    <td class="text-right"><a href="/process/process_blueprint_page/{{ preprocess.id }}/"> {{ preprocess.name }}</a></td>
+                    <td class="text-right"><a href="/process/process_blueprint_page/{{ preprocess.pre.id }}/"> {{ preprocess.pre.name }}</a></td>
                 </tr>
             {% endfor %}
             </tbody>
