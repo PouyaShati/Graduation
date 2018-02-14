@@ -1,6 +1,8 @@
 {% load bootstrap %}
 {% load staticfiles %}
 {% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,18 +16,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <title>Title</title>
+    <title>خانه</title>
 </head>
-<body style="font-family: Arial,serif;background-color: #eeeeee">
+<body class="homeback" style="font-family: Arial,serif;background-color: #eeeeee">
 
 {#NAVBAR#}
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <li class=""><a id='head-and-foot' href="/">خانه<img
-                            src="{% static "pics/home.svg" %}" width="15" height="15"
-                            alt=""></a></li>
+            <li class=""><a id='head-and-foot' href="/user/login/">ورود</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
@@ -42,25 +42,27 @@
 </nav>
 
 
-<script>
-    $(document).ready(function () {
-        $(".dropdown").hover(
-            function () {
-                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
-                $(this).toggleClass('open');
-            },
-            function () {
-                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
-                $(this).toggleClass('open');
-            }
-        );
-    });</script>
-
-
 <div class="container col-sm-12 col-md-12 text-right">
-    {% block content %}
-    {% endblock %}
+    <div id="welcome_content">
+        <div id="welcome">به سامانه‌ای فارغ‌التحصیلی خوش آمدید!</div>
+        <div align="center"><a class="btn btn-outline-primary" href="/user/login/" role="button">
+            <button type="button" class="btn btn-primary">ورود!</button></a></div>
+    </div>
 </div>
+
+<script>
+    $(function () {
+        $(window).on('resize', function resize() {
+            $(window).off('resize', resize);
+            setTimeout(function () {
+                var content = $('#welcome_content');
+                var top = (window.innerHeight - content.height()) / 2 - 80;
+                content.css('top', Math.max(0, top) + 'px');
+                $(window).on('resize', resize);
+            }, 50);
+        }).resize();
+    });
+</script>
 
 
 <div></div>

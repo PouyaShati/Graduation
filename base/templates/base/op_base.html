@@ -26,7 +26,7 @@
             <li class="dropdown"><a id="head-and-foot" class="dropdown-toggle" data-toggle="dropdown" href="#">پنل
                     کاربر<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/panel" href="#">پنل کاربر</a></li>
+                        <li><a id="title" href="/user/panel">پنل کاربر</a></li>
                         <li><a href="#">تماس با ما</a></li>
                         <li><a href="/user/logout">خروج</a></li>
                     </ul>
@@ -52,7 +52,9 @@
                         <li><a href="/employee/signup/">اضافه کردن کارمند</a> </li>
                     </ul>
                 </li>
-                <li><a id="head-and-foot" href="/">خانه</a></li>
+                <li class=""><a id='head-and-foot' href="/">خانه<img
+                            src="{% static "pics/home.svg" %}" width="15" height="15"
+                            alt=""></a></li>
                 <li><a id='head-and-foot' href="#" onclick="goBack()">بازگشت</a></li>
                 <script>
                     function goBack() {

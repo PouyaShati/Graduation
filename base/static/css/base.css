@@ -27,6 +27,10 @@
 /*p {*/
 /*color: #1AAA;*/
 /*}*/
+body.homeback {
+    background: white url("../pics/home_bg.jpg") no-repeat fixed center center;
+    background-size: cover;
+}
 
 body {
     background: white url("../pics/bg.jpg") no-repeat fixed center center;
@@ -44,7 +48,7 @@ body nav.navbar {
 }
 
 #footer {
-    margin-top: 20vh;
+    margin-top: 70vh;
     direction: rtl;
     background-color: rgba(245, 241, 239, 0.84);
 }
@@ -59,6 +63,12 @@ body nav.navbar.navbar-inverse a {
 
 #university-brand {
     font-family: BNazaninBold;
+}
+
+#welcome {
+    font-family: BKoodak;
+    font-size: 45px;
+    color: #001899;
 }
 
 /*body {*/
@@ -119,4 +129,12 @@ body nav.navbar.navbar-inverse a {
     width: 300px;
     height: 50px;
     font-size: 15px;
+}
+
+#welcome_content {
+    max-width: 600px;
+    margin: auto;
+    left: 1%;
+    right: 1%;
+    position: absolute;
 }

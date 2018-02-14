@@ -9,13 +9,20 @@
         <div class="row" id="pwd-container">
             <div class="col-md-4"></div>
 
-            <div class="col-md-4">
+            <div id="fill_out_form" class="col-md-4">
                 <section class="login-form">
-                    <div align="center">{{ successfully_added }}</div>
+                    {% if successfully_added %}
+                        <div align="center">
+                            <div class="alert alert-success">
+                                <strong>{{ successfully_added }}</strong>
+                            </div>
+                        </div>
+                    {% endif %}
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>
                             {% for field in form %}
+                                <div>{{ field.as_hidden }}</div>
                                 {% if field.errors %}
                                     <div class="control-group error">
                                         <div align="center" class="form-actions">
@@ -31,6 +38,7 @@
                                 </div> {% endfor %}
                         </span>
                                         </div>
+                                    {{ form.media }}
                                     </div>
                                 {% else %}
                                     <div class="control-group">
@@ -55,15 +63,17 @@
                                 <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
+                                        <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
                         </div>
                     </form>
-                            <div align="center"><form class="form-horizontal" novalidate action="{{ return_link }}">
-                                <button type="submit" value="اتمام" class="btn btn-primary">اتمام </button>
-                            </form></div>
+                    <div align="center">
+                        <form class="form-horizontal" novalidate action="{{ return_link }}">
+                            <button type="submit" value="اتمام" class="btn btn-primary">اتمام</button>
+                        </form>
+                    </div>
 
                 </section>
             </div>
