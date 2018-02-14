@@ -52,9 +52,9 @@
                     </fieldset>
                     <div align="center">
                         <div id="button_submit" class="form-actions">
-                            <font color="red">
+                            <div id="error">
                                 <button type="submit" value="ثبت نام" class="btn btn-primary">ثبت نام</button>
-                            </font>
+                            </div>
                             <ul style="list-style-type:none">
                                 <div align="center" id="error">{% for error in signup_form.non_field_errors %} </div>
                                     {# passwords dont match #}

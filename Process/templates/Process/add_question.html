@@ -14,6 +14,7 @@
                     {% if successfully_added %}
                         <div align="center">
                             <div class="alert alert-success fade in alert-dismissable">
+                                 <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                                 <strong>{{ successfully_added }}</strong>
                             </div>
                         </div>
@@ -32,9 +33,9 @@
                                             <span class="help-inline">
                             {% for error in  field.errors %}
                                 <div align="center">
-                                <font color="red">
+                                <div id="error"">
                                     {{ error }}
-                                </font>
+                                </div>
                                 </div> {% endfor %}
                         </span>
                                         </div>
@@ -59,7 +60,7 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
+                            <div id="button_submit" class="form-actions">
                                 <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
@@ -69,7 +70,7 @@
                             </div>
                         </div>
                     </form>
-                    <div align="center">
+                    <div id="button_submit" align="center">
                         <form class="form-horizontal" novalidate action="{{ return_link }}">
                             <button type="submit" value="اتمام" class="btn btn-primary">اتمام</button>
                         </form>
