@@ -6,7 +6,7 @@ from .models import Employee, Department
 from .forms import EmployeeSignUpForm, AddDepartmentForm, EmployForm, FireForm, SetManagerForm, EmployeePerformTaskForm, \
     AddTaskForm
 from Process.models import Task, Employee_Task, Employee_Task_Blueprint, Form_Blueprint, Answer, Answer_Set
-from Process.models import Payment_Blueprint, Form, Payment, Task_Blueprint, Process_Blueprint, Process
+from Process.models import Payment_Blueprint, Form, Payment, Task_Blueprint, Process_Blueprint, Process, Question_Set
 from Student.models import Student
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
@@ -428,3 +428,15 @@ def all_process_blueprints_list(request):
     return render(request, 'Employee/all_process_blueprints_list.html',
                   {'process_pbs': process_pbs, 'base_html': base_html})
 
+def all_question_sets_list(request):
+
+    if not request.user.is_authenticated():
+        message = not_authenticated_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
+    if request.user.user_type != MyUser.ADMINUSER:
+        message = not_allowed_error
+        return render(request, 'base/not_authenticated.html', {'error_m': message,
+                                                                   'base_html': 'base/base.html'})
+    question_sets = Question_Set.objects.all()
+    return render(request, 'Employee/all_question_sets_list.html', {'question_sets': question_sets})
