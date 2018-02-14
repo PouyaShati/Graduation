@@ -282,3 +282,6 @@ class AddQuestionForm(forms.ModelForm):
                 'required': _('نوع سوال را وارد کنید')
             }
         }
+    class Media:
+        js = ('static/base/js/base.js',)
+

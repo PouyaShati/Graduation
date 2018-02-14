@@ -3,18 +3,15 @@
 
 
 {% block content %}
-    {% if error_m %}
-        <ul class="messages">
-            {% if error_m %}
-                <li>
-                    <div class="alert alert-danger">
-                        <strong>اخطار!</strong> که نخور
-                    </div>
-                </li>
-            {% endif %}
-        </ul>
+    {% if success_message %}
+        <div align="center">
+            <div class="alert alert-success fade in alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                <strong>{{ success_message }}</strong>
+            </div>
+        </div>
     {% endif %}
-    <div class="container">
+    <div class="container" id="fill_out_form">
         <form class="form-horizontal" novalidate method="post">{% csrf_token %}
             <fieldset>
                 <legend>{{ title }}</legend>
@@ -54,16 +51,13 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
+                            <div id="button_submit" class="form-actions">
                                 <button type="submit" value="ساخت فرایند" class="btn btn-primary">ساخت فرایند</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}
                                     <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
-                            </div>
-                            <div align="center">
-                                {{ success_message }} {# process blueprint added successfuly #}
                             </div>
                             {% for preprocess in preprocesses %}
                                 {{ preprocess.name }} ok
@@ -75,7 +69,7 @@
                     </form>
                     {% if name %}
                     <div align="center">
-                        <form class="form-horizontal" novalidate method="get" action="/process/process_blueprint_page/{{ process_bp_id }}">
+                        <form id="button_submit" class="form-horizontal" novalidate method="get" action="/process/process_blueprint_page/{{ process_bp_id }}">
                             <button type="submit" value="صفحه الگوی فرایند" class="btn btn-primary">صفخه الگوی فرایند</button>
                         </form>
                     </div>
