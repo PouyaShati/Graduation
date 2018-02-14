@@ -10,89 +10,98 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div id="panel-header">
-        <div id="panel-header" align="center">{{ process_pb.name }}</div>
-    </div>
-    <div class="container" align="center">
+    <div id="fill_out_form">
+        <div id="panel-header">
+            <div id="panel-header" align="center">{{ process_pb.name }}</div>
+        </div>
+        <div class="container" align="center">
+            <div class="container col-md-3">
+                <form class="form-horizontal" novalidate method="get" action="add_default_form_task">
+                    <button type="submit" value="افزودن فرم پیشفرض" class="btn btn-primary">افزودن فرم پیشفرض</button>
+                </form>
+            </div>
+            <div class="container col-md-3">
+                <form class="form-horizontal" novalidate method="get" action="add_default_payment_task">
+                    <button type="submit" value="افزودن پرداخت پیشفرض" class="btn btn-primary">افزودن پرداخت پیشفرض
+                    </button>
+                </form>
+            </div>
+            <div class="container col-md-3">
+                <form class="form-horizontal" novalidate method="get" action="add_default_employee_task">
+                    <button type="submit" value="افزودن وظیفه کارمند پیشفرض" class="btn btn-primary">افزودن وظیفه کارمند
+                        پیشفرض
+                    </button>
+                </form>
+            </div>
+            <div class="container col-md-3">
+                <form class="form-horizontal" novalidate method="get" action="add_preprocess">
+                    <button type="submit" value="افزودن فرایند پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز
+                    </button>
+                </form>
+            </div>
+        </div>
         <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_default_form_task">
-            <button type="submit" value="افزودن فرم پیشفرض" class="btn btn-primary">افزودن فرم پیشفرض</button>
-        </form></div>
+
+            <table class="table table-bordered" style="background-color: #999999;">
+                <tbody>
+                <tr>
+                    <th class="text-right">نام الگوی فرم</th>
+                </tr>
+                {% for form_bp in process_pb.form_bp_defaults.all %}
+                    <tr>
+                        <td class="text-right">{{ form_bp.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
         <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_default_payment_task">
-            <button type="submit" value="افزودن پرداخت پیشفرض" class="btn btn-primary">افزودن پرداخت پیشفرض</button>
-        </form></div>
+            <table class="table table-bordered" style="background-color: #999999;">
+                <tbody>
+                <tr>
+                    <th class="text-right">نام الگوی پرداخت</th>
+                </tr>
+                {% for payment_bp in process_pb.payment_bp_defaults.all %}
+                    <tr>
+                        <td class="text-right">{{ payment_bp.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_default_employee_task">
-            <button type="submit" value="افزودن وظیفه کارمند پیشفرض" class="btn btn-primary">افزودن وظیفه کارمند
-                پیشفرض
-            </button>
-        </form></div>
-    <div class="container col-md-3">
-        <form class="form-horizontal" novalidate method="get" action="add_preprocess">
-            <button type="submit" value="افزودن فرایند پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز</button>
-        </form></div>
-    </div>
-    <div class="container col-md-3">
-
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام الگوی فرم</th>
-            </tr>
-            {% for form_bp in process_pb.form_bp_defaults.all %}
+            <table class="table table-bordered" style="background-color: #999999;">
+                <tbody>
                 <tr>
-                    <td class="text-right">{{ form_bp.name }}</td>
+                    <th class="text-right">نام الگوی وظیفه کارمند</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-
-        </table>
-    </div>
-    <div class="container col-md-3">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام الگوی پرداخت</th>
-            </tr>
-            {% for payment_bp in process_pb.payment_bp_defaults.all %}
+                {% for et_bp in process_pb.employee_task_bp_defaults.all %}
+                    <tr>
+                        <td class="text-right">{{ et_bp.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="container col-md-3">
+            <table class="table table-bordered" style="background-color: #999999;">
+                <tbody>
                 <tr>
-                    <td class="text-right">{{ payment_bp.name }}</td>
+                    <th class="text-right">نام الگوی فرایند پیشنیاز</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="container col-md-3">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام الگوی وظیفه کارمند</th>
-            </tr>
-            {% for et_bp in process_pb.employee_task_bp_defaults.all %}
-                <tr>
-                    <td class="text-right">{{ et_bp.name }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="container col-md-3">
-        <table class="table table-bordered" style="background-color: #999999;">
-            <tbody>
-            <tr>
-                <th class="text-right">نام الگوی فرایند پیشنیاز</th>
-            </tr>
-            {% for preprocess in process_pb.preprocesses.all %}
-                <tr>
-                    <td class="text-right"><a href="/process/process_blueprint_page/{{ preprocess.pre.id }}/"> {{ preprocess.pre.name }}</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                {% for preprocess in process_pb.preprocesses.all %}
+                    <tr>
+                        <td class="text-right"><a
+                                href="/process/process_blueprint_page/{{ preprocess.pre.id }}/"> {{ preprocess.pre.name }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-
+    </div>
 
 {% endblock %}
 

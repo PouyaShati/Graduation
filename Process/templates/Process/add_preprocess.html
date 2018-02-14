@@ -8,7 +8,7 @@
         <div class="row" id="pwd-container">
             <div class="col-md-4"></div>
 
-            <div class="col-md-4">
+            <div id="fill_out_form" class="col-md-4">
                 <section class="login-form">
                     <div align="center">{{ successfully_added }}</div>
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
@@ -50,7 +50,7 @@
                             {% endfor %}
                         </fieldset>
                         <div align="center">
-                            <div class="form-actions">
+                            <div id="button_submit"class="form-actions">
                                 <button type="submit" value="افزودن فرایند پیشنیاز" class="btn btn-primary">افزودن فرایند پیشنیاز</button>
                                 <ul style="list-style-type:none">
                                     {% for error in form.non_field_errors %}

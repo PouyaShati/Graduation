@@ -10,10 +10,17 @@
             {% endfor %}
         </ul>
     {% endif %}
+    {% if success_message %}
+        <div align="center">
+            <div class="alert alert-success">
+                <strong>{{ success_message }}</strong>
+            </div>
+        </div>
+    {% endif %}
     <div class="col-md-4"></div>
     <div class="container col-md-4" id="fill_out_form">
 
-    <div id="fill_out_form" align="center">
+    <div align="center">
         <form novalidate method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -58,16 +65,11 @@
                         </button>
                     </div>
                 </div>
-                <div align="center">
-                    <div class="alert alert-success">
-                        <strong>موفقیت!</strong> {{ success_message }}
-                    </div>
-                </div>
             </div>
         </form>
         {% if qs_id %}
             <div align="center">
-                <form class="form-horizontal" novalidate method="get" action="/process/question_set_page/{{ qs_id }}">
+                <form id="button_submit" class="form-horizontal" novalidate method="get" action="/process/question_set_page/{{ qs_id }}">
                     <button type="submit" value="صفحه مجموعه سوال" class="btn btn-primary">صفخه مجموعه سوال</button>
                 </form>
             </div>

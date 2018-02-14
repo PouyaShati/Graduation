@@ -4,6 +4,13 @@
 
 
 {% block content %}
+    {% if success %}
+        <div align="center">
+            <div class="alert alert-success">
+                <strong>{{ success }}</strong>
+            </div>
+        </div>
+    {% endif %}
     <div class="container">
 
         <div class="row" id="pwd-container">
@@ -58,9 +65,9 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <div align="center">
-                            {{ success }}
-                            </div>
+{#                            <div align="center">#}
+{#                            {{ success }}#}
+{#                            </div>#}
                         </div>
                     </form>
                 </section>

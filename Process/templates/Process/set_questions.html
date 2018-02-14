@@ -8,9 +8,15 @@
         <div class="row" id="pwd-container">
             <div class="col-md-4"></div>
 
-            <div class="col-md-4">
+            <div id = "fill_out_form" class="col-md-4">
                 <section class="login-form">
-                    {{ successfully_added }}
+                    {% if successfully_added %}
+                        <div align="center">
+                            <div class="alert alert-success">
+                                <strong>{{ successfully_added }}</strong>
+                            </div>
+                        </div>
+                    {% endif %}
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
                             <legend>{{ title }}</legend>

@@ -3,12 +3,19 @@
 
 
 {% block content %}
+    {% if success %}
+        <div align="center">
+            <div class="alert alert-success">
+                <strong>{{ success }}</strong>
+            </div>
+        </div>
+    {% endif %}
     <div class="container">
         <div class="col-md-2"></div>
         <div class="col-md-8" id = "fill_out_form">
             <div class="col-md-4"></div>
 
-            <div class="col-md-4">
+            <div id="fill_out_form" class="col-md-4">
                 <section class="login-form">
                     <form class="form-horizontal" novalidate method="post">{% csrf_token %}
                         <fieldset>
@@ -57,9 +64,9 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <div align="center">
-                            {{ success }}
-                            </div>
+{#                            <div align="center">#}
+{#                            {{ success }}#}
+{#                            </div>#}
                         </div>
                     </form>
                 </section>

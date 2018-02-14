@@ -3,18 +3,14 @@
 
 
 {% block content %}
-    {% if error_m %}
-        <ul class="messages">
-            {% if error_m %}
-                <li>
-                    <div class="alert alert-danger">
-                        <strong>اخطار!</strong> که نخور
-                    </div>
-                </li>
-            {% endif %}
-        </ul>
+    {% if success_message %}
+        <div align="center">
+            <div class="alert alert-success">
+                <strong>{{ success_message }}</strong>
+            </div>
+        </div>
     {% endif %}
-    <div class="container">
+    <div class="container" id="fill_out_form">
         <form class="form-horizontal" novalidate method="post">{% csrf_token %}
             <fieldset>
                 <legend>{{ title }}</legend>
@@ -61,9 +57,6 @@
                                     <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
-                            </div>
-                            <div align="center">
-                                {{ success_message }} {# process blueprint added successfuly #}
                             </div>
                             {% for preprocess in preprocesses %}
                                 {{ preprocess.name }} ok

@@ -13,7 +13,7 @@
     <div class="container" align="center">
         {{ qs.name }}
         <form class="form-horizontal" novalidate method="get" action="add_question">
-                        <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
+            <button type="submit" value="افزودن سوال" class="btn btn-primary">افزودن سوال</button>
         </form>
     </div>
     <div class="container col-md-4"></div>
@@ -21,17 +21,17 @@
         <table class="table table-bordered" style="background-color: #999999;">
             <tbody>
             <tr>
-                <th class="text-right">سوالات این  مجموعه</th>
+                <th class="text-right">سوالات این مجموعه</th>
             </tr>
             {% for question in qs.question_set.all %}
                 <tr>
-                    <td class="text-right">{{ question.text}}</td>
+                    <td class="text-right">{{ question.text }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
-        <div class="container col-md-4"></div>
+    <div class="container col-md-4"></div>
 
 {% endblock %}
 
