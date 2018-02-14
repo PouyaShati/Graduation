@@ -404,7 +404,6 @@ def question_set_page(request, id, action=''):
             form = AddQuestionForm(request.POST)
             if form.is_valid():
                 question = Question(text = form.cleaned_data['text'], type = form.cleaned_data['type'],
-                                    choices= form.cleaned_data['choices'],
                                     belongs_to=qs)
                 # qs.save()
                 question.save()
