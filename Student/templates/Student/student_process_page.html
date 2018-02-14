@@ -41,6 +41,20 @@
             </tbody>
         </table>
     </div>
+    <div class="container col-md-3">
+        <table class="table table-bordered" style="background-color: #999999;">
+            <tbody>
+            <tr>
+                <th class="text-right">پیشنیازها</th>
+            </tr>
+            {% for pre in pres%}
+                <tr>
+                    <td class="text-right"><a href="/student/process_page/{{ student.student_id }}/{{ pre.id }}">{{pre.instance_of.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}
 

@@ -356,8 +356,16 @@ def process_page(request, student_id, process_id):
         message = process_not_found_error
         return render(request, 'base/not_authenticated.html', {'error_m': message,
                                                                    'base_html': 'base/base.html'})
+    pres_bp = []
+    for precondition in process.instance_of.preprocesses.all():
+        pres_bp.append(precondition.pre)
+    my_processes = Process.objects.filter(owner = student)
+    pres = []
+    for this_process in my_processes:
+        if this_process.instance_of in pres_bp:
+            pres.append(this_process)
     return render(request, 'Student/student_process_page.html',
-                  {'student': student, 'process': process, 'forms': forms, 'payments': payments})
+                  {'student': student, 'process': process, 'forms': forms, 'payments': payments, 'pres': pres})
 
 
 def form_page(request, student_id, form_id):
